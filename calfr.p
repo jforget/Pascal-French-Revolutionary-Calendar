@@ -2,7 +2,7 @@ program calendrier(input,output);
 { sur une idee originale de Fabre d'Eglantine,
  voici une realisation de Jean Forget,
 un programme de conversion entre calendriers republicain & gregorien
- version 2.2 du 10/01/1984 }
+ version 2.3 du 19/01/1984 }
 const
 	diml=38;
 	dimc=131;
@@ -299,11 +299,20 @@ writeln('	Date (j m a) ?');
 writeln('{ Vous repondez }');
 writeln('	22 9 1983');
 writeln('{ La date est correcte, il n''y a donc pas de message d''erreur');
-writeln('{ Le programme repond alors }');
+writeln('Le programme repond alors }');
 writeln('	22 septembre 1982');
 writeln('{ puis }');
 writeln('	5 sans-culottide 191');
 writeln('{ Les jours complementaires s''appelaient en effet sans-culottides');
+writeln('de nouveau, voici le menu : }');
+if menu(true)=20 then writeln;
+writeln('{ Vous repondez : }');
+writeln('	4');
+writeln('{ Le programme demande }');
+writeln('	annee ?');
+writeln('{ Vous repondez par l''annee de votre choix, puis,');
+writeln('avant de presser retour-chariot, vous vous placez au');
+writeln('debut de la feuille suivante.');
 writeln('Et revoila le menu. A vous de jouer ! }');
 writeln;
 end;
