@@ -2,7 +2,7 @@ program calendrier(input,output);
 { sur une idee originale de Fabre d'Eglantine,
  voici une realisation de Jean Forget,
 un programme de conversion entre calendriers republicaine & gregorien
- version 2.1 du 08/12/1983 }
+ version 2.1 du 12/12/1983 }
 const
 	diml=38;
 	dimc=131;
@@ -15,8 +15,33 @@ type
 		jour:integer;
 		end;
 	ttab=array[1..diml,1..dimc] of char;
+	alpha6=array[1..6] of char;
+	alpha18=packed array[1..18] of char;
 var
 	action:integer;
+
+procedure convalpha(n:integer;var ch:alpha6);
+var
+	i:integer;
+	negatif:boolean;
+begin
+for i:=1 to 6 do
+	ch[i]:=' ';
+i:=6;
+if n<0 then
+then	begin
+	negatif:=true;
+	n:=-n;
+	end
+else	negatif:=false;
+repeat
+	ch[i]:=chr(ord('0')+n mod 10);
+	n:=n div 10;
+	i:=i-1
+until n=0;
+if negatif
+then	ch[i]:='-';
+end;
 
 function bissex(an:integer):integer;
 { rend 1 si l'annee est bissextile, et 0 sinon. }
@@ -140,8 +165,8 @@ var
 	n,ans,siecle:integer;
 begin
 ans:=(date.an-1) mod 100;
-siecle:=(date.an-1) div 100;
-if (siecle>=17) and (siecle<=21)
+siecle:=1+(date.an-1) div 100;
+if (siecle>=18) and (siecle<=21)
 then	case siecle of
 		18:n:=-2;
 		19:n:=-1;
@@ -151,66 +176,66 @@ n:=n+ans+ans div 4;
 joursem:=(n+gregnum(date)) mod 7;
 end;
 
-function veraffrep(date:tdate;onaffiche:boolean):boolean;
+function verifrep(date:tdate):boolean;
 var
 	ver:boolean;
 begin
 ver:=(date.mois>=1) and (date.mois<=13) and (date.jour>=1) and (date.jour<=30);
-ver:=ver and ((date.mois<=12) or (date.jour<=6));
-if ver and onaffiche
-then	begin
-	write(date.jour);
-	case date.mois of
-		1:write(' vendemiaire ');
-		2:write(' brumaire ');
-		3:write(' frimaire ');
-		4:write(' nivose ');
-		5:write(' pluviose ');
-		6:write(' ventose ');
-		7:write(' germinal ');
-		8:write(' floreal ');
-		9:write(' prairial ');
-		10:write(' messidor ');
-		11:write(' thermidor ');
-		12:write(' fructidor ');
-		13:write(' sans-culottide ');
-		end;
-	writeln(date.an);
-	end;
-veraffrep:=ver;
+verifrep:=ver and ((date.mois<=12) or (date.jour<=6));
 end;
 
-function veraffgreg(date:tdate;onaffiche:boolean):boolean;
+function verifgreg(date:tdate):boolean;
 var
 	ver:boolean;
 begin
 ver:=(date.mois>=1) and (date.mois<=12) and (date.jour>=1);
 if  date.mois in [4,6,9,11]
-then	ver:=ver and (date.jour<=30)
+then	verifgreg:=ver and (date.jour<=30)
 else	if date.mois=2
-	then	ver:=ver and (date.jour<=28+bissex(date.an))
-	else	ver:=ver and (date.jour<=31);
-if ver and onaffiche
-then	begin
-	write(joursem(date));
-	write(date.jour);
-	case date.mois of
-		1:write(' janvier ');
-		2:write(' fevrier ');
-		3:write(' mars ');
-		4:write(' avril ');
-		5:write(' mai ');
-		6:write(' juin ');
-		7:write(' juillet ');
-		8:write(' aout ');
-		9:write(' septembre ');
-		10:write(' octobre ');
-		11:write(' novembre ');
-		12:write(' decembre ');
-		end;
-	writeln(date.an)
+	then	verifgreg:=ver and (date.jour<=28+bissex(date.an))
+	else	verifgreg:=ver and (date.jour<=31);
+end;
+
+procedure affrep(date:tdate);
+begin
+write(date.jour);
+case date.mois of
+	1:write(' vendemiaire ');
+	2:write(' brumaire ');
+	3:write(' frimaire ');
+	4:write(' nivose ');
+	5:write(' pluviose ');
+	6:write(' ventose ');
+	7:write(' germinal ');
+	8:write(' floreal ');
+	9:write(' prairial ');
+	10:write(' messidor ');
+	11:write(' thermidor ');
+	12:write(' fructidor ');
+	13:write(' sans-culottide ');
 	end;
-veraffgreg:=ver;
+writeln(date.an);
+end;
+
+procedure affgreg(date:tdate);
+begin
+write(joursem(date));
+write(date.jour);
+case date.mois of
+	1:write(' janvier ');
+	2:write(' fevrier ');
+	3:write(' mars ');
+	4:write(' avril ');
+	5:write(' mai ');
+	6:write(' juin ');
+	7:write(' juillet ');
+	8:write(' aout ');
+	9:write(' septembre ');
+	10:write(' octobre ');
+	11:write(' novembre ');
+	12:write(' decembre ');
+	end;
+writeln(date.an)
 end;
 
 function menu(demo:boolean):integer;
@@ -222,10 +247,11 @@ repeat
 	writeln('1:demonstration');
 	writeln('2:conversion de republicain en gregorien');
 	writeln('3:conversion de gregorien en republicain');
+	writeln('4:affichage du calendrier pour une annee entiere');
 	if demo
 	then	n:=1
 	else	read(n)
-until (n>=0) and (n<=3);
+until (n>=0) and (n<=4);
 menu:=n;
 end;
 
@@ -275,11 +301,11 @@ var
 begin
 writeln('Date (j m a) ');
 readln(daterep.jour,daterep.mois,daterep.an);
-if veraffrep(daterep,false)
+if verifrep(daterep)
 then	begin
 	repgreg(daterep,dategreg);
-	if veraffrep(daterep,true) and veraffgreg(dategreg,true)
-	then	writeln;
+	affrep(daterep);
+	affgreg(dategreg);
 	end
 else	writeln('La date est incorrecte');
 end;
@@ -290,11 +316,11 @@ var
 begin
 writeln('Date (j m a) ');
 readln(dategreg.jour,dategreg.mois,dategreg.an);
-if veraffgreg(dategreg,false)
+if verifgreg(dategreg)
 then	begin
 	gregrep(dategreg,daterep);
-	if veraffgreg(dategreg,true) and veraffrep(daterep,true)
-	then	writeln;
+	affgreg(dategreg);
+	affrep(daterep);
 	end
 else	writeln('La date est incorrecte');
 end;
@@ -305,31 +331,40 @@ var
 	n,l,c:integer;
 begin
 for l:=2 to diml-1 do
-	for c:=2 to dimc-1 do tab[l,c]:=' '
+	for c:=2 to dimc-1 do tab[l,c]:=' ';
 for c:=1 to dimc do
 	begin
 	tab[1,c]:='-';
-	tab[4,c]:='-';
-	tab[7,c]:='-';
+	tab[ltitre-1,c]:='-';
+	tab[lmois-1,c]:='-';
 	tab[diml,c]:='-';
 	end;
 tab[2,1]:='|';
 tab[3,1]:='|';
 tab[2,dimc]:='|';
-tab[3,dimc]:='|'
-for n:=0 to 11 do
+tab[3,dimc]:='|';
+for n:=0 to 13 do
 	begin
 	c:=n*10+1;
 	tab[5,c]:='|';
 	tab[6,c]:='|';
 	for l:=lmois to diml-1 do tab[l,c]:='|';
 	end;
-for c:=0 to 11 do
+for n:=0 to 11 do
 	for l:=lmois to diml-1 do
 		begin
-		tab[l,10*c+5]:='(';
-		tab[l,10*c+9]:=')'
+		tab[l,10*n+5]:='(';
+		tab[l,10*n+9]:=')'
 		end;
+for l:=1 to 30 do
+	begin
+	convalpha(l,ch);
+	for n:=0 to 11 do
+		begin
+		tab[l+lmois-1,10*n+2]:=ch[5];
+		tab[l+lmois-1,10*n+3]:=ch[6];
+		end;
+	end;
 end;
 procedure affichage;
 var
@@ -341,7 +376,7 @@ for l:=1 to diml do
 	begin
 	writeln;
 	for c:=1 to dimc do
-		write(tab(c));
+		write(tab[l,c]);
 	end;
 end;
 begin
