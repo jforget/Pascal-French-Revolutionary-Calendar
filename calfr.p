@@ -1,8 +1,8 @@
 program calendrier(input,output);
 { sur une idee originale de Fabre d'Eglantine,
  voici une realisation de Jean Forget,
-un programme de conversion entre calendriers republicaine & gregorien
- version 2.1 du 12/12/1983 }
+un programme de conversion entre calendriers republicain & gregorien
+ version 2.2 du 10/01/1984 }
 const
 	diml=38;
 	dimc=131;
@@ -28,7 +28,7 @@ begin
 for i:=1 to 6 do
 	ch[i]:=' ';
 i:=6;
-if n<0 then
+if n<0
 then	begin
 	negatif:=true;
 	n:=-n;
@@ -56,17 +56,39 @@ else	if an mod 100 = 0
 end;
 
 function equinoxe(annee:integer):integer;
-{ cette fonction est provisoire. Elle donne le numero en septembre
-de l'equinoxe d'automne, qui est le 1er vendemiaire. }
-var
-	n:integer;
 begin
-repeat
-	writeln;
-	write('En',annee,', l''equinoxe est tombe le ? ');
-	read(n);
-until (n>=22-bissex(annee)) and (n<=24);
-equinoxe:=n
+case annee mod 4 of
+	0:	begin
+		equinoxe:=22;
+		if (annee=2092) or (annee=2096)
+		then	equinoxe:=21;
+		if ((annee>=1800) and (annee<=1836))
+			or ((annee>=1900) and (annee<=1964))
+		then	equinoxe:=23;
+		end;
+	1:	begin
+		if annee<=1993
+		then	equinoxe:=23
+		else	equinoxe:=22;
+		if (annee<=1797) or ((annee>=1873) and (annee<=1897))
+		then	equinoxe:=22;
+		if (annee>=2101) and (annee<=2121)
+		then	equinoxe:=23;
+		end;
+	2:	begin
+		equinoxe:=23;
+		if (annee<=1798) or ((annee>=2030) and (annee<=2098))
+			or (annee>=2154)
+		then	equinoxe:=22;
+		end;
+	3:	begin
+		equinoxe:=23;
+		if (annee=1803) or ((annee>=1903) and (annee<=1931))
+		then	equinoxe:=24;
+		if ((annee>=2059) and (annee<=2099)) or (annee>=2187)
+		then	equinoxe:=22;
+		end;
+	end;
 end;
 
 function gregnum(date:tdate):integer;
@@ -219,7 +241,15 @@ end;
 
 procedure affgreg(date:tdate);
 begin
-write(joursem(date));
+case joursem(date) of
+	0:write('lundi ');
+	1:write('mardi ');
+	2:write('mercredi ');
+	3:write('jeudi ');
+	4:write('vendredi ');
+	5:write('samedi ');
+	6:write('dimanche ');
+	end;
 write(date.jour);
 case date.mois of
 	1:write(' janvier ');
@@ -269,23 +299,6 @@ writeln('	Date (j m a) ?');
 writeln('{ Vous repondez }');
 writeln('	22 9 1983');
 writeln('{ La date est correcte, il n''y a donc pas de message d''erreur');
-writeln(' Le programme demande }');
-writeln('	En 1983 l''equinoxe est tombe le ?');
-writeln('{ Vous repondez }');
-writeln('	23');
-writeln('{ En effet l''equinoxe d''automne en 1983 etait le 23 septembre.');
-writeln('Comme cet exemple est tordu,le programme redemande }');
-writeln('	En 1982 l''equinoxe est tombe le ?');
-writeln('{ Mais en general, il n''a besoin que de connaitre un seul equinoxe');
-writeln('Vous repondez donc }');
-writeln('	17');
-writeln('{ ce qui constitue une aberration,');
-writeln('etant donne que l''equinoxe d''automne tombe toujours entre le 22');
-writeln('et le 24 septembre, sauf certaines annees bissextiles ou il tombe');
-writeln('le 21 septembre. Le programme redemande donc }');
-writeln('	En 1982 l''equinoxe est tombe le ?');
-writeln('{ Vous repondez sans vous tromper }');
-writeln('	23');
 writeln('{ Le programme repond alors }');
 writeln('	22 septembre 1982');
 writeln('{ puis }');
@@ -329,6 +342,7 @@ procedure inittab(var tab:ttab);
 {initialise le tableau qui donnera le calendrier. }
 var
 	n,l,c:integer;
+	ch:alpha6;
 begin
 for l:=2 to diml-1 do
 	for c:=2 to dimc-1 do tab[l,c]:=' ';
@@ -361,17 +375,15 @@ for l:=1 to 30 do
 	convalpha(l,ch);
 	for n:=0 to 11 do
 		begin
-		tab[l+lmois-1,10*n+2]:=ch[5];
-		tab[l+lmois-1,10*n+3]:=ch[6];
+		tab[l+lmois-1,10*n+3]:=ch[5];
+		tab[l+lmois-1,10*n+4]:=ch[6];
 		end;
 	end;
 end;
-procedure affichage;
+procedure affichage(tab:ttab);
 var
-	tab:ttab;
 	l,c:integer;
 begin
-inittab(tab);
 for l:=1 to diml do
 	begin
 	writeln;
@@ -379,6 +391,99 @@ for l:=1 to diml do
 		write(tab[l,c]);
 	end;
 end;
+
+procedure remplmois(n,long:integer;nom:alpha18;
+			var tab:ttab;var njour,sjour:integer);
+{ remplit la colonne correspondant au ne mois. }
+var
+	l,c:integer;
+	ch:alpha6;
+begin
+for c:=1 to 9 do
+	begin
+	tab[ltitre,10*n-9+c]:=nom[c];
+	tab[ltitre+1,10*n-9+c]:=nom[c+9];
+	end;
+if n=13
+then	l:=lmois+11
+else	l:=lmois-1;
+repeat
+	convalpha(njour,ch);
+	case sjour of
+		0:ch[4]:='L';
+		1:ch[4]:='M';
+		2:ch[4]:='M';
+		3:ch[4]:='J';
+		4:ch[4]:='V';
+		5:ch[4]:='S';
+		6:ch[4]:='D';
+		end;
+	l:=l+1;
+	tab[l,n*10-4]:=ch[4];
+	tab[l,n*10-3]:=ch[5];
+	tab[l,n*10-2]:=ch[6];
+	if njour=long
+	then	njour:=1
+	else	njour:=njour+1;
+	if sjour=6
+	then	sjour:=0
+	else	sjour:=sjour+1;
+	if n=13
+	then	begin
+		tab[l,124]:=chr(ord('0')+l-lmois-11);
+		tab[l,125]:='(';
+		tab[l,129]:=')';
+		end;
+until (l=lmois+29) or ((n=13) and (njour=long));
+end;
+
+procedure calend;
+{ construit le tableau de caracteres qui donnera le calendrier. }
+var
+	cal:ttab;
+	i,annee,debut,fin,sem:integer;
+	eq:tdate;
+	ch:alpha6;
+begin
+write('annee ? ');
+readln(annee);
+debut:=equinoxe(annee);
+fin:=equinoxe(annee+1);
+inittab(cal);
+eq.an:=annee;
+eq.mois:=9;
+eq.jour:=debut;
+sem:=joursem(eq);
+remplmois(1,30,'VENDEMIAI SEP-OCT ',cal,debut,sem);
+remplmois(2,31,'BRUMAIRE  OCT-NOV ',cal,debut,sem);
+remplmois(3,30,'FRIMAIRE  NOV-DEC ',cal,debut,sem);
+remplmois(4,31,' NIVOSE	  DEC-JAN ',cal,debut,sem);
+remplmois(5,31,'PLUVIOSE  JAN-FEV ',cal,debut,sem);
+remplmois(6,28+bissex(annee+1),' VENTOSE  FEV-MAR ',cal,debut,sem);
+remplmois(7,31,'GERMINAL  MAR-AVR ',cal,debut,sem);
+remplmois(8,30,' FLOREAL  AVR-MAI ',cal,debut,sem);
+remplmois(9,31,'PRAIRIAL  MAI-JUN ',cal,debut,sem);
+remplmois(10,30,'MESSIDOR  JUN-JUL ',cal,debut,sem);
+remplmois(11,31,'THERMIDOR JUL-AOU ',cal,debut,sem);
+remplmois(12,31,'FRUCTIDOR AOU-SEP ',cal,debut,sem);
+remplmois(13,fin,'SS-CULOTT   SEP   ',cal,debut,sem);
+cal[3,65]:='-';
+cal[3,66]:='-';
+cal[3,67]:='-';
+convalpha(annee,ch);
+for i:=1 to 4 do
+	cal[3,60+i]:=ch[2+i];
+convalpha(annee+1,ch);
+for i:=1 to 4 do
+	cal[3,67+i]:=ch[2+i];
+convalpha(annee-1791,ch);
+for i:=1 to 3 do
+	cal[2,64+i]:=ch[3+i];
+affichage(cal);
+for i:=1 to 38 do
+	writeln;
+end;
+
 begin
 repeat
 	action:=menu(false);
@@ -387,7 +492,7 @@ repeat
 			1:demonstration;
 			2:convrepgreg;
 			3:convgregrep;
-			4:affichage;
+			4:calend;
 			end;
 until action=0
 end.
