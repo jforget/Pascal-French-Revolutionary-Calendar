@@ -1,0 +1,88 @@
+-*- encoding: utf-8; indent-tabs-mode: nil -*-
+
+=encoding utf8
+
+=head1 SCANS OF THE ORIGINAL LISTINGS
+
+=head2 8 December 1983
+
+Files F<a>I<nnn>F<-nb.png>.
+
+Beware, although these are black-and-white files, you cannot use them directly for the char
+recognition app. Actually, they are 1-bit grayscale files and they must be converted to B&W
+files by C<conv_nb>.
+
+One missing line between F<a003-nb.png> and F<a004-nb.png>, just a C<end;>.
+
+One missing line between F<a005-bn.png> and F<a006-nb.png>, the error message on the date.
+
+In F<a006-nb.png>, two hand-written  notes overlap the end value of a  loop. The first loop ends
+with a printed C<11>  overwritten with a "13".  The second loops ends  with a printed C<11> that
+was overwritten with a "13" which was itself  overwritten with a "11". In both cases I have kept
+the original printed values, C<11>.
+
+=head2 12 December 1983
+
+Files F<ab>I<nnn>F<-coul.png>
+
+I had the intention not to scan the  12th december listing and instead, building the source file
+with much copying-pasting from the 8th December and 10th January source files. And I did so. But
+I thought it  was interesting to provide the  scans to show where the 12th  December source file
+comes from.
+
+Yet, the  files are  meant to  be looked  at, they are  not meant  to be  processed by  the char
+recognition program. The files  have been scanned with a 96 dpi  resolution, which is much lower
+than the resolution used for the three other listings, 300 dpi.
+
+F<ab001_coul.png> begins with a  work session under Unix. In the lower  part, the version number
+is identical to  the 8th December version, but  overwritten with the version number  of the 10th
+January. The  printed date  can be  read as 12th  December, so  I used this  date for  the whole
+listing.
+
+F<ab004_coul.png>: truncated line C<< <=30); >>
+
+F<ab005_coul.png>: another truncated line, with only a semi-colon missing.
+
+F<ab006_coul.png>:  several truncated  lines. But  actually we  do not  care, since  we  work by
+copying-pasting lines from the 8th December and 10th January versions.
+
+F<ab007_coul.png>: the hand-written fixes still allow  the original printed version to be easily
+read.
+
+=head2 10 January 1984
+
+Files F<b>I<nnn>F<-coul.png>
+
+From the beginning, my  intention was to scan in colors and then  to convert the resulting files
+into black and white. C<conv_nb> has been developped exactly for this purpose.
+
+=head2 19 January 1984
+
+Files F<c>I<nnn>F<_nb.png> as well as F<c0065.png>
+
+It seems that these files were directly scanned in black & white, not in 1-bit grayscale so they
+did not need to be converted to B&W by C<conv_nb>.
+
+Since there is a gap of 20 lines  or so between F<c006_nb.png> and F<c007_nb.png>, I took a file
+from a previous scan session to fill the gap.
+
+A general problem for this listing is that on each page, the first line is blotched by the paper
+fold.  So, even  if this  line exists  in the  file, I  exclude it  from the  part that  will be
+processed by  the recognition  program and I  wait for  the text editor  step to  copy-paste the
+missing line from the 10th January source file.
+
+F<c002_nb.png>: lines 76, 80,  86 and 88 are truncated and must be  fixed during the text editor
+step.
+
+F<c003.png>: lines 131 and 142 have been truncated.
+
+Most hand-written fixes in these files allow  the original printed version to be easily read. At
+the bottom of F<c006_nb.png> and at the top of F<c0065.png>, a typo was fixed: "1983" instead of
+C<1982>.  I have kept  the printed  value, even  if wrong.  Just below  in F<c0065.png>,  I have
+hand-written "HTAB"  to replace  a normal  space by  a tabulation. But  I did  not take  it into
+account 34 years later, since I now prefer spaces.
+
+=head1 LICENSE
+
+The programs  are licensed under the  same terms as Perl  5: GPL and Artistic  License. For more
+details, please read the F<LICENSE> file in this repository.

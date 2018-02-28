@@ -1,0 +1,89 @@
+-*- encoding: utf-8; indent-tabs-mode: nil -*-
+
+=encoding utf8
+
+=head1 NUMÉRISATION DES LISTINGS D'ORIGINE
+
+=head2 8 décembre 1983
+
+Fichiers F<a>I<nnn>F<-nb.png>.
+
+Attention, bien  que ce  soient des  fichiers en  noir et blanc,  ils ne  conviennent pas  pour la
+reconnaissance de caractères.  Ils sont en fait en S<« niveaux> de gris 1 S<bit »>  et il faut les
+convertir avec C<conv_nb>.
+
+Une ligne perdue entre F<a003-nb.png> et F<a004-nb.png>, un C<end;>.
+
+Une ligne perdue entre F<a005-bn.png> et F<a006-nb.png>, le message d'erreur sur la date.
+
+Dans F<a006-nb.png>,  à deux  endroits la valeur  de fin  d'une boucle est  raturée par  un nombre
+manuscrit.  Dans le  premier cas,  c'est un  C<11>  imprimé qui  est surchargé  par un  S<« 13  »>
+manuscrit. Dans le second  cas, c'est aussi un C<11> imprimé, qui  est surchargé une première fois
+par un S<« 13 »> manuscrit et une seconde fois par un S<« 11 »> manuscrit. Dans les deux cas, j'ai
+conservé la valeur imprimée, C<11>.
+
+=head2 12 décembre 1983
+
+Fichiers F<ab>I<nnn>F<-coul.png>
+
+J'avais prévu de ne  pas numériser le listing du 12 décembre et  de reconstituer le fichier source
+avec des  copier-coller à partir des fichiers  du 8 décembre et  du 10 janvier. C'est  ce que j'ai
+fait, le fichier source  a été reconstitué à grands coups de  copier-coller. Mais après coup, j'ai
+décidé de numériser le listing pour laisser une trace plus significative.
+
+Toutefois, les  fichiers sont là pour  être regardés, pas pour  être traités par  mon programme de
+reconnaissance. En effet, ils ont été numérisés à  96 points par pouce, alors que les fichiers des
+trois autres listings ont été numérisés à 300 points par pouce.
+
+F<ab001_coul.png> commence par le  début de la session de travail sous  Unix. Le numéro de version
+est identique  au listing du  8 décembre, mais raturés  pour y mettre  le numéro de version  du 10
+janvier. Et  la date  imprimée est  celle du  12 décembre 1983,  que j'ai  utilisée pour  dater le
+listing dans son ensemble.
+
+F<ab004_coul.png> : une ligne tronquée C<< <=30); >>
+
+F<ab005_coul.png> : une ligne tronquée, il manque juste le point-virgule final.
+
+F<ab006_coul.png> : plusieurs lignes tronquées, mais en fait on s'en moque, puisque l'on travaille
+par copier-coller depuis la version du 8 décembre et celle du 10 janvier.
+
+F<ab007_coul.png> : les  ratures laissent facilement apparaître l'ancienne version,  donc il n'y a
+pas de problème.
+
+=head2 10 janvier 1984
+
+Fichiers F<b>I<nnn>F<-coul.png>
+
+Dès le début, j'ai su qu'il fallait les numériser en couleurs puis les convertir en noir et blanc
+et C<conv_nb> a été fait pour cela.
+
+=head2 19 janvier 1984
+
+Fichiers F<c>I<nnn>F<_nb.png> ainsi que F<c0065.png>
+
+Apparamment, ces fichiers  ont été scannés directement en  noir et blanc et non pas  en niveaux de
+gris, donc ils n'ont pas eu besoin d'être convertis par C<conv_nb>.
+
+Comme il  existait une lacune  d'une vingtaine de  lignes entre F<c006_nb.png>  et F<c007_nb.png>,
+j'ai repris un fichier d'une ancienne série de numérisation pour faire la soudure.
+
+Un problème assez général  pour ce listing est que sur chaque page,  la ligne supérieure n'est pas
+numérisée proprement à cause de la pliure de  la page.  Donc, même si cette ligne apparaît dans le
+fichier,  je  ne la  prend  pas  en compte  lorsque  je  traite le  fichier  par  le programme  de
+reconnaissance de caractères et j'attends d'avoir généré le fichier-texte pour copier-coller cette
+ligne à partir du fichier texte du listing the 10 janvier.
+
+F<c002_nb.png> : rectification après coup pour les lignes 76, 80, 86 et 88 qui ont été tronquées.
+
+F<c003.png> : troncation des lignes 131 et 142.
+
+La plupart des  corrections manuscrites de cette série de  fichiers laissent clairement apparaître
+la version originale imprimée.  Le point le plus problématique se trouve  en bas de F<c006_nb.png>
+et en  haut de F<c0065.png>,  l'année erronée C<1982>  ayant été rectifiée  en S<« 1983  »>. Juste
+en-dessous dans F<c0065.png>, j'ai écrit S<« HTAB  »> pour noter qu'il fallait remplacer un espace
+par une tabulation. Sauf que 34 ans plus tard, je préfère les espaces aux tabulations.
+
+=head1 LICENCE
+
+Les programmes de ce dépôt sont sous la même licence que S<Perl :> GPL et licence artistique. Voir
+le texte (en anglais) dans le fichier F<LICENSE>.
