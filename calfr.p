@@ -1,7 +1,8 @@
+{ -*- encoding: utf-8; indent-tabs-mode: nil -*- }
 program calendrier(input,output);
-{ sur une idee originale de Fabre d'Eglantine,
- voici une realisation de Jean Forget,
-un programme de conversion entre calendriers republicain & gregorien
+{ Sur une idée originale de Fabre d'Églantine,
+ voici une réalisation de Jean Forget,
+un programme de conversion entre calendriers républicain & grégorien
 Program to convert Gregorian dates into French Revolutionary dates or the other way.
 Copyright (C) 1983, 1984, 2018 Jean Forget
 
@@ -56,7 +57,7 @@ var
 	action:integer;
 
 procedure convalpha(n:integer;var ch:alpha6);
-{ conversion d'un nombre entier a 6 chiffres en chaine alphanumerique (ou 5 chiffres si negatif) }
+{ conversion d'un nombre entier à 6 chiffres en chaîne alphanumérique (ou 5 chiffres si négatif) }
 var
 	i:integer;
 	negatif:boolean;
@@ -80,7 +81,7 @@ then	ch[i]:='-';
 end;
 
 function bissex(an:integer):integer;
-{ rend 1 si l'annee est bissextile, et 0 sinon. }
+{ rend 1 si l'année est bissextile, et 0 sinon. }
 begin
 if an mod 400 = 0
 then	bissex:=1
@@ -128,7 +129,7 @@ case annee mod 4 of
 end;
 
 function gregnum(date:tdate):integer;
-{ donne le nombre de jours entre date et le 0 janvier de l'annee }
+{ donne le nombre de jours entre date et le 0 janvier de l'année }
 begin
 case date.mois of
 	1:gregnum:=date.jour;
@@ -147,7 +148,7 @@ case date.mois of
 end;
 
 function repnum(date:tdate):integer;
-{ donne en fonction de date l'ecart avec le 0 vendemiaire. }
+{ donne en fonction de date l'écart avec le 0 vendémiaire. }
 begin
 repnum:=date.jour+30*(date.mois-1)
 end;
@@ -164,8 +165,8 @@ date.jour:=n-gregnum(date)+1
 end;
 
 procedure numrep(n,annee:integer;var date:tdate);
-{ donne la date en fonction de l'annee et du nombre de jours ecoules
-depuis le 0 vendemiaire. }
+{ donne la date en fonction de l'année et du nombre de jours écoulés
+depuis le 0 vendémiaire. }
 begin
 date.an:=annee;
 date.mois:=(n-1) div 30 +1;
@@ -175,7 +176,7 @@ end;
 procedure gregrep(dategreg:tdate;var daterep:tdate);
 { convertit dategreg en daterep. }
 var
-	numero,eq:integer;{ ecart entre date ou equinoxe, et le 0 janvier }
+	numero,eq:integer;{ écart entre date ou équinoxe, et le 0 janvier }
 	dateeq:tdate;
 begin
 numero:=gregnum(dategreg);
@@ -262,14 +263,14 @@ procedure affrep(date:tdate);
 begin
 write(date.jour:2);
 case date.mois of
-	1:write(' vendemiaire ');
+        1:write(' vendémiaire ');
 	2:write(' brumaire ');
 	3:write(' frimaire ');
-	4:write(' nivose ');
-	5:write(' pluviose ');
-	6:write(' ventose ');
+        4:write(' nivôse ');
+        5:write(' pluviôse ');
+        6:write(' ventôse ');
 	7:write(' germinal ');
-	8:write(' floreal ');
+        8:write(' floréal ');
 	9:write(' prairial ');
 	10:write(' messidor ');
 	11:write(' thermidor ');
@@ -293,17 +294,17 @@ case joursem(date) of
 write(date.jour:2);
 case date.mois of
 	1:write(' janvier ');
-	2:write(' fevrier ');
+        2:write(' février ');
 	3:write(' mars ');
 	4:write(' avril ');
 	5:write(' mai ');
 	6:write(' juin ');
 	7:write(' juillet ');
-	8:write(' aout ');
+        8:write(' août ');
 	9:write(' septembre ');
 	10:write(' octobre ');
 	11:write(' novembre ');
-	12:write(' decembre ');
+        12:write(' décembre ');
 	end;
 writeln(date.an:4)
 end;
@@ -314,10 +315,10 @@ var
 begin
 repeat
 	writeln('0:fin');
-	writeln('1:demonstration');
-	writeln('2:conversion de republicain en gregorien');
-	writeln('3:conversion de gregorien en republicain');
-	writeln('4:affichage du calendrier pour une annee entiere');
+        writeln('1:démonstration');
+        writeln('2:conversion de républicain en grégorien');
+        writeln('3:conversion de grégorien en républicain');
+        writeln('4:affichage du calendrier pour une année entière');
 	if demo
 	then	n:=1
 	else	read(n)
@@ -328,32 +329,32 @@ end;
 procedure demonstration;
 begin
 writeln;
-writeln('		DEMONSTRATION');
+writeln('               DÉMONSTRATION');
 writeln('{ Tout ce qui est entre accolades est un commentaire du programme');
-writeln('de demonstration. Le menu s''affiche : }');
+writeln('de démonstration. Le menu s''affiche : }');
 if menu(true)=20	then writeln;
-writeln('{ Vous repondez : }');
+writeln('{ Vous répondez : }');
 writeln('	3');
 writeln('{ On affiche alors }');
 writeln('	Date (j m a) ?');
-writeln('{ Vous repondez }');
+writeln('{ Vous répondez }');
 writeln('	22 9 1983');
 writeln('{ La date est correcte, il n''y a donc pas de message d''erreur');
-writeln('Le programme repond alors }');
+writeln('Le programme répond alors }');
 writeln('       jeudi 22 septembre 1983');
 writeln('{ puis }');
 writeln('	5 sans-culottide 191');
-writeln('{ Les jours complementaires s''appelaient en effet sans-culottides');
+writeln('{ Les jours complémentaires s''appelaient en effet sans-culottides');
 writeln('de nouveau, voici le menu : }');
 if menu(true)=20 then writeln;
-writeln('{ Vous repondez : }');
+writeln('{ Vous répondez : }');
 writeln('	4');
 writeln('{ Le programme demande }');
-writeln('	annee ?');
-writeln('{ Vous repondez par l''annee de votre choix, puis,');
+writeln('       année ?');
+writeln('{ Vous répondez par l''année de votre choix, puis,');
 writeln('avant de presser retour-chariot, vous vous placez au');
-writeln('debut de la feuille suivante.');
-writeln('Et revoila le menu. A vous de jouer ! }');
+writeln('début de la feuille suivante.');
+writeln('Et revoilà le menu. À vous de jouer ! }');
 writeln;
 end;
 
@@ -444,7 +445,7 @@ end;
 
 procedure remplmois(n,long:integer;nom:alpha18;
 			var tab:ttab;var njour,sjour:integer);
-{ remplit la colonne correspondant au ne mois. }
+{ remplit la colonne correspondant au n-ième mois. }
 var
 	l,c:integer;
 	ch:alpha6;
@@ -495,7 +496,7 @@ var
 	eq:tdate;
 	ch:alpha6;
 begin
-write('annee ? (n''oubliez pas de positionner le papier en debut de page) ');
+write('année ? (n''oubliez pas de positionner le papier en début de page) ');
 readln(annee);
 debut:=equinoxe(annee);
 fin:=equinoxe(annee+1);
