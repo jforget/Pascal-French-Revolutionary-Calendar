@@ -56,6 +56,7 @@ var
 	action:integer;
 
 procedure convalpha(n:integer;var ch:alpha6);
+{ conversion d'un nombre entier a 6 chiffres en chaine alphanumerique (ou 5 chiffres si negatif) }
 var
 	i:integer;
 	negatif:boolean;
@@ -223,12 +224,14 @@ var
 begin
 ans:=(date.an-1) mod 100;
 siecle:=1+(date.an-1) div 100;
-if (siecle>=18) and (siecle<=21)
+if (siecle>=18) and (siecle<=22)
 then	case siecle of
-		18:n:=-2;
-		19:n:=-1;
-		20,21:n:=0;
-		end;
+                18: n := 4;
+                19: n := 2;
+                20: n := 0;
+                21: n := 6;
+                22: n := 4;
+                end;
 n:=n+ans+ans div 4;
 joursem:=(n+gregnum(date)) mod 7;
 end;
@@ -238,7 +241,8 @@ var
 	ver:boolean;
 begin
 ver:=(date.mois>=1) and (date.mois<=13) and (date.jour>=1) and (date.jour<=30);
-verifrep:=ver and ((date.mois<=12) or (date.jour<=6));
+ver := ver and ((date.mois <= 12) or (date.jour <= 6));
+verifrep:=ver and (date.an >= 0) and (date.an <= 407);
 end;
 
 function verifgreg(date:tdate):boolean;
@@ -246,6 +250,7 @@ var
 	ver:boolean;
 begin
 ver:=(date.mois>=1) and (date.mois<=12) and (date.jour>=1);
+ver := ver and (date.an >= 1792) and (date.an <= 2199);
 if  date.mois in [4,6,9,11]
 then	verifgreg:=ver and (date.jour<=30)
 else	if date.mois=2
@@ -255,7 +260,7 @@ end;
 
 procedure affrep(date:tdate);
 begin
-write(date.jour);
+write(date.jour:2);
 case date.mois of
 	1:write(' vendemiaire ');
 	2:write(' brumaire ');
@@ -271,7 +276,7 @@ case date.mois of
 	12:write(' fructidor ');
 	13:write(' sans-culottide ');
 	end;
-writeln(date.an);
+writeln(date.an:3);
 end;
 
 procedure affgreg(date:tdate);
@@ -285,7 +290,7 @@ case joursem(date) of
 	5:write('samedi ');
 	6:write('dimanche ');
 	end;
-write(date.jour);
+write(date.jour:2);
 case date.mois of
 	1:write(' janvier ');
 	2:write(' fevrier ');
@@ -300,7 +305,7 @@ case date.mois of
 	11:write(' novembre ');
 	12:write(' decembre ');
 	end;
-writeln(date.an)
+writeln(date.an:4)
 end;
 
 function menu(demo:boolean):integer;
@@ -335,7 +340,7 @@ writeln('{ Vous repondez }');
 writeln('	22 9 1983');
 writeln('{ La date est correcte, il n''y a donc pas de message d''erreur');
 writeln('Le programme repond alors }');
-writeln('	22 septembre 1982');
+writeln('       jeudi 22 septembre 1983');
 writeln('{ puis }');
 writeln('	5 sans-culottide 191');
 writeln('{ Les jours complementaires s''appelaient en effet sans-culottides');
@@ -356,7 +361,7 @@ procedure convrepgreg;
 var
 	daterep,dategreg:tdate;
 begin
-writeln('Date (j m a) ');
+write('Date (j m a) ');
 readln(daterep.jour,daterep.mois,daterep.an);
 if verifrep(daterep)
 then	begin
@@ -371,7 +376,7 @@ procedure convgregrep;
 var
 	dategreg,daterep:tdate;
 begin
-writeln('Date (j m a) ');
+write('Date (j m a) ');
 readln(dategreg.jour,dategreg.mois,dategreg.an);
 if verifgreg(dategreg)
 then	begin
@@ -424,6 +429,7 @@ for l:=1 to 30 do
 		end;
 	end;
 end;
+
 procedure affichage(tab:ttab);
 var
 	l,c:integer;
@@ -489,7 +495,7 @@ var
 	eq:tdate;
 	ch:alpha6;
 begin
-write('annee ? ');
+write('annee ? (n''oubliez pas de positionner le papier en debut de page) ');
 readln(annee);
 debut:=equinoxe(annee);
 fin:=equinoxe(annee+1);
@@ -524,7 +530,7 @@ convalpha(annee-1791,ch);
 for i:=1 to 3 do
 	cal[2,64+i]:=ch[3+i];
 affichage(cal);
-for i:=1 to 38 do
+for i:=1 to 30 do
 	writeln;
 end;
 
