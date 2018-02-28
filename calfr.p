@@ -40,92 +40,92 @@ Inc., http://www.fsf.org/.
 }
 
 const
-	diml=38;
-	dimc=131;
-	ltitre=5;
-	lmois=8;
+        diml=38;
+        dimc=131;
+        ltitre=5;
+        lmois=8;
 type
-	tdate=record
-		an:integer;
-		mois:integer;
-		jour:integer;
-		end;
-	ttab=array[1..diml,1..dimc] of char;
-	alpha6=array[1..6] of char;
-	alpha18=packed array[1..18] of char;
+        tdate=record
+                an:integer;
+                mois:integer;
+                jour:integer;
+                end;
+        ttab=array[1..diml,1..dimc] of char;
+        alpha6=array[1..6] of char;
+        alpha18=packed array[1..18] of char;
 var
-	action:integer;
+        action:integer;
 
 procedure convalpha(n:integer;var ch:alpha6);
 { conversion d'un nombre entier à 6 chiffres en chaîne alphanumérique (ou 5 chiffres si négatif) }
 var
-	i:integer;
-	negatif:boolean;
+        i:integer;
+        negatif:boolean;
 begin
 for i:=1 to 6 do
-	ch[i]:=' ';
+        ch[i]:=' ';
 i:=6;
 if n<0
-then	begin
-	negatif:=true;
-	n:=-n;
-	end
-else	negatif:=false;
+then    begin
+        negatif:=true;
+        n:=-n;
+        end
+else    negatif:=false;
 repeat
-	ch[i]:=chr(ord('0')+n mod 10);
-	n:=n div 10;
-	i:=i-1
+        ch[i]:=chr(ord('0')+n mod 10);
+        n:=n div 10;
+        i:=i-1
 until n=0;
 if negatif
-then	ch[i]:='-';
+then    ch[i]:='-';
 end;
 
 function bissex(an:integer):integer;
 { rend 1 si l'année est bissextile, et 0 sinon. }
 begin
 if an mod 400 = 0
-then	bissex:=1
-else	if an mod 100 = 0
-	then	bissex:=0
-	else	if an mod 4 = 0
-		then	bissex:=1
-		else	bissex:=0
+then    bissex:=1
+else    if an mod 100 = 0
+        then    bissex:=0
+        else    if an mod 4 = 0
+                then    bissex:=1
+                else    bissex:=0
 end;
 
 function equinoxe(annee:integer):integer;
 begin
 case annee mod 4 of
-	0:	begin
-		equinoxe:=22;
-		if (annee=2092) or (annee=2096)
-		then	equinoxe:=21;
-		if ((annee>=1800) and (annee<=1836))
-			or ((annee>=1900) and (annee<=1964))
-		then	equinoxe:=23;
-		end;
-	1:	begin
-		if annee<=1993
-		then	equinoxe:=23
-		else	equinoxe:=22;
-		if (annee<=1797) or ((annee>=1873) and (annee<=1897))
-		then	equinoxe:=22;
-		if (annee>=2101) and (annee<=2121)
-		then	equinoxe:=23;
-		end;
-	2:	begin
-		equinoxe:=23;
-		if (annee<=1798) or ((annee>=2030) and (annee<=2098))
-			or (annee>=2154)
-		then	equinoxe:=22;
-		end;
-	3:	begin
-		equinoxe:=23;
-		if (annee=1803) or ((annee>=1903) and (annee<=1931))
-		then	equinoxe:=24;
-		if ((annee>=2059) and (annee<=2099)) or (annee>=2187)
-		then	equinoxe:=22;
-		end;
-	end;
+        0:      begin
+                equinoxe:=22;
+                if (annee=2092) or (annee=2096)
+                then    equinoxe:=21;
+                if ((annee>=1800) and (annee<=1836))
+                        or ((annee>=1900) and (annee<=1964))
+                then    equinoxe:=23;
+                end;
+        1:      begin
+                if annee<=1993
+                then    equinoxe:=23
+                else    equinoxe:=22;
+                if (annee<=1797) or ((annee>=1873) and (annee<=1897))
+                then    equinoxe:=22;
+                if (annee>=2101) and (annee<=2121)
+                then    equinoxe:=23;
+                end;
+        2:      begin
+                equinoxe:=23;
+                if (annee<=1798) or ((annee>=2030) and (annee<=2098))
+                        or (annee>=2154)
+                then    equinoxe:=22;
+                end;
+        3:      begin
+                equinoxe:=23;
+                if (annee=1803) or ((annee>=1903) and (annee<=1931))
+                then    equinoxe:=24;
+                if ((annee>=2059) and (annee<=2099)) or (annee>=2187)
+                then    equinoxe:=22;
+                end;
+        end;
 end;
 
 function gregnum(date:tdate):integer;
@@ -160,7 +160,7 @@ date.an:=annee;
 date.jour:=1;
 date.mois:=12;
 while gregnum(date)>n do
-	date.mois:=date.mois-1;
+        date.mois:=date.mois-1;
 date.jour:=n-gregnum(date)+1
 end;
 
@@ -176,33 +176,33 @@ end;
 procedure gregrep(dategreg:tdate;var daterep:tdate);
 { convertit dategreg en daterep. }
 var
-	numero,eq:integer;{ écart entre date ou équinoxe, et le 0 janvier }
-	dateeq:tdate;
+        numero,eq:integer;{ écart entre date ou équinoxe, et le 0 janvier }
+        dateeq:tdate;
 begin
 numero:=gregnum(dategreg);
 dateeq.mois:=9;
 if numero>=265 { 21/09 bissextile, ou 22/09 normal }
-then	dateeq.an:=dategreg.an
-else	begin
-	dateeq.an:=dategreg.an-1;
-	numero:=numero+365+bissex(dateeq.an)
-	end;
+then    dateeq.an:=dategreg.an
+else    begin
+        dateeq.an:=dategreg.an-1;
+        numero:=numero+365+bissex(dateeq.an)
+        end;
 dateeq.jour:=equinoxe(dateeq.an);
 eq:=gregnum(dateeq);
 if eq>numero
-then	begin
-	dateeq.an:=dateeq.an-1;
-	dateeq.jour:=equinoxe(dateeq.an);
-	eq:=gregnum(dateeq);
-	numero:=numero+365+bissex(dateeq.an)
-	end;
+then    begin
+        dateeq.an:=dateeq.an-1;
+        dateeq.jour:=equinoxe(dateeq.an);
+        eq:=gregnum(dateeq);
+        numero:=numero+365+bissex(dateeq.an)
+        end;
 numrep(numero-eq+1,dateeq.an-1791,daterep)
 end;
 
 procedure repgreg(daterep:tdate;var dategreg:tdate);
 var
-	dateeq:tdate;
-	annee,numero,eq:integer;
+        dateeq:tdate;
+        annee,numero,eq:integer;
 begin
 numero:=repnum(daterep);
 dateeq.an:=daterep.an+1791;
@@ -211,22 +211,22 @@ dateeq.jour:=equinoxe(dateeq.an);
 eq:=gregnum(dateeq);
 numero:=numero+eq-1;
 if numero>365+bissex(dateeq.an)
-then	begin
-	annee:=daterep.an+1792;
-	numero:=numero-365-bissex(dateeq.an);
-	end
-else	annee:=daterep.an+1791;
+then    begin
+        annee:=daterep.an+1792;
+        numero:=numero-365-bissex(dateeq.an);
+        end
+else    annee:=daterep.an+1791;
 numgreg(numero,annee,dategreg);
 end;
 
 function joursem(date:tdate):integer;
 var
-	n,ans,siecle:integer;
+        n,ans,siecle:integer;
 begin
 ans:=(date.an-1) mod 100;
 siecle:=1+(date.an-1) div 100;
 if (siecle>=18) and (siecle<=22)
-then	case siecle of
+then    case siecle of
                 18: n := 4;
                 19: n := 2;
                 20: n := 0;
@@ -239,7 +239,7 @@ end;
 
 function verifrep(date:tdate):boolean;
 var
-	ver:boolean;
+        ver:boolean;
 begin
 ver:=(date.mois>=1) and (date.mois<=13) and (date.jour>=1) and (date.jour<=30);
 ver := ver and ((date.mois <= 12) or (date.jour <= 6));
@@ -248,15 +248,15 @@ end;
 
 function verifgreg(date:tdate):boolean;
 var
-	ver:boolean;
+        ver:boolean;
 begin
 ver:=(date.mois>=1) and (date.mois<=12) and (date.jour>=1);
 ver := ver and (date.an >= 1792) and (date.an <= 2199);
 if  date.mois in [4,6,9,11]
-then	verifgreg:=ver and (date.jour<=30)
-else	if date.mois=2
-	then	verifgreg:=ver and (date.jour<=28+bissex(date.an))
-	else	verifgreg:=ver and (date.jour<=31);
+then    verifgreg:=ver and (date.jour<=30)
+else    if date.mois=2
+        then    verifgreg:=ver and (date.jour<=28+bissex(date.an))
+        else    verifgreg:=ver and (date.jour<=31);
 end;
 
 procedure affrep(date:tdate);
@@ -276,7 +276,7 @@ case date.mois of
         11: write(' thermidor ');
         12: write(' fructidor ');
         13: write(' sans-culottide ');
-	end;
+        end;
 writeln(date.an:3);
 end;
 
@@ -305,13 +305,13 @@ case date.mois of
         10: write(' octobre ');
         11: write(' novembre ');
         12: write(' décembre ');
-	end;
+        end;
 writeln(date.an:4)
 end;
 
 function menu(demo:boolean):integer;
 var
-	n:integer;
+        n:integer;
 begin
 repeat
         writeln('0 : fin');
@@ -319,9 +319,9 @@ repeat
         writeln('2 : conversion de républicain en grégorien');
         writeln('3 : conversion de grégorien en républicain');
         writeln('4 : affichage du calendrier pour une année entière');
-	if demo
-	then	n:=1
-	else	read(n)
+        if demo
+        then    n:=1
+        else    read(n)
 until (n>=0) and (n<=4);
 menu:=n;
 end;
@@ -332,23 +332,23 @@ writeln;
 writeln('               DÉMONSTRATION');
 writeln('{ Tout ce qui est entre accolades est un commentaire du programme');
 writeln('de démonstration. Le menu s''affiche : }');
-if menu(true)=20	then writeln;
+if menu(true)=20        then writeln;
 writeln('{ Vous répondez : }');
-writeln('	3');
+writeln('       3');
 writeln('{ On affiche alors }');
-writeln('	Date (j m a) ?');
+writeln('       Date (j m a) ?');
 writeln('{ Vous répondez }');
-writeln('	22 9 1983');
+writeln('       22 9 1983');
 writeln('{ La date est correcte, il n''y a donc pas de message d''erreur');
 writeln('Le programme répond alors }');
 writeln('       jeudi 22 septembre 1983');
 writeln('{ puis }');
-writeln('	5 sans-culottide 191');
+writeln('       5 sans-culottide 191');
 writeln('{ Les jours complémentaires s''appelaient en effet sans-culottides');
 writeln('de nouveau, voici le menu : }');
 if menu(true)=20 then writeln;
 writeln('{ Vous répondez : }');
-writeln('	4');
+writeln('       4');
 writeln('{ Le programme demande }');
 writeln('       année ?');
 writeln('{ Vous répondez par l''année de votre choix, puis,');
@@ -360,107 +360,107 @@ end;
 
 procedure convrepgreg;
 var
-	daterep,dategreg:tdate;
+        daterep,dategreg:tdate;
 begin
 write('Date (j m a) ');
 readln(daterep.jour,daterep.mois,daterep.an);
 if verifrep(daterep)
-then	begin
-	repgreg(daterep,dategreg);
-	affrep(daterep);
-	affgreg(dategreg);
-	end
-else	writeln('La date est incorrecte');
+then    begin
+        repgreg(daterep,dategreg);
+        affrep(daterep);
+        affgreg(dategreg);
+        end
+else    writeln('La date est incorrecte');
 end;
 
 procedure convgregrep;
 var
-	dategreg,daterep:tdate;
+        dategreg,daterep:tdate;
 begin
 write('Date (j m a) ');
 readln(dategreg.jour,dategreg.mois,dategreg.an);
 if verifgreg(dategreg)
-then	begin
-	gregrep(dategreg,daterep);
-	affgreg(dategreg);
-	affrep(daterep);
-	end
-else	writeln('La date est incorrecte');
+then    begin
+        gregrep(dategreg,daterep);
+        affgreg(dategreg);
+        affrep(daterep);
+        end
+else    writeln('La date est incorrecte');
 end;
 
 procedure inittab(var tab:ttab);
 {initialise le tableau qui donnera le calendrier. }
 var
-	n,l,c:integer;
-	ch:alpha6;
+        n,l,c:integer;
+        ch:alpha6;
 begin
 for l:=2 to diml-1 do
-	for c:=2 to dimc-1 do tab[l,c]:=' ';
+        for c:=2 to dimc-1 do tab[l,c]:=' ';
 for c:=1 to dimc do
-	begin
+        begin
         tab[1,        c] := '-';
         tab[ltitre-1, c] := '-';
         tab[lmois-1,  c] := '-';
         tab[diml,     c] := '-';
-	end;
+        end;
 tab[2,1]:='|';
 tab[3,1]:='|';
 tab[2,dimc]:='|';
 tab[3,dimc]:='|';
 for n:=0 to 13 do
-	begin
-	c:=n*10+1;
-	tab[5,c]:='|';
-	tab[6,c]:='|';
-	for l:=lmois to diml-1 do tab[l,c]:='|';
-	end;
+        begin
+        c:=n*10+1;
+        tab[5,c]:='|';
+        tab[6,c]:='|';
+        for l:=lmois to diml-1 do tab[l,c]:='|';
+        end;
 for n:=0 to 11 do
-	for l:=lmois to diml-1 do
-		begin
-		tab[l,10*n+5]:='(';
-		tab[l,10*n+9]:=')'
-		end;
+        for l:=lmois to diml-1 do
+                begin
+                tab[l,10*n+5]:='(';
+                tab[l,10*n+9]:=')'
+                end;
 for l:=1 to 30 do
-	begin
-	convalpha(l,ch);
-	for n:=0 to 11 do
-		begin
-		tab[l+lmois-1,10*n+3]:=ch[5];
-		tab[l+lmois-1,10*n+4]:=ch[6];
-		end;
-	end;
+        begin
+        convalpha(l,ch);
+        for n:=0 to 11 do
+                begin
+                tab[l+lmois-1,10*n+3]:=ch[5];
+                tab[l+lmois-1,10*n+4]:=ch[6];
+                end;
+        end;
 end;
 
 procedure affichage(tab:ttab);
 var
-	l,c:integer;
+        l,c:integer;
 begin
 for l:=1 to diml do
-	begin
-	writeln;
-	for c:=1 to dimc do
-		write(tab[l,c]);
-	end;
+        begin
+        writeln;
+        for c:=1 to dimc do
+                write(tab[l,c]);
+        end;
 end;
 
 procedure remplmois(n,long:integer;nom:alpha18;
-			var tab:ttab;var njour,sjour:integer);
+                        var tab:ttab;var njour,sjour:integer);
 { remplit la colonne correspondant au n-ième mois. }
 var
-	l,c:integer;
-	ch:alpha6;
+        l,c:integer;
+        ch:alpha6;
 begin
 for c:=1 to 9 do
-	begin
-	tab[ltitre,10*n-9+c]:=nom[c];
-	tab[ltitre+1,10*n-9+c]:=nom[c+9];
-	end;
+        begin
+        tab[ltitre,10*n-9+c]:=nom[c];
+        tab[ltitre+1,10*n-9+c]:=nom[c+9];
+        end;
 if n=13
-then	l:=lmois+11
-else	l:=lmois-1;
+then    l:=lmois+11
+else    l:=lmois-1;
 repeat
-	convalpha(njour,ch);
-	case sjour of
+        convalpha(njour,ch);
+        case sjour of
                 0: ch[4] := 'L';
                 1: ch[4] := 'M';
                 2: ch[4] := 'M';
@@ -468,33 +468,33 @@ repeat
                 4: ch[4] := 'V';
                 5: ch[4] := 'S';
                 6: ch[4] := 'D';
-		end;
-	l:=l+1;
-	tab[l,n*10-4]:=ch[4];
-	tab[l,n*10-3]:=ch[5];
-	tab[l,n*10-2]:=ch[6];
-	if njour=long
-	then	njour:=1
-	else	njour:=njour+1;
-	if sjour=6
-	then	sjour:=0
-	else	sjour:=sjour+1;
-	if n=13
-	then	begin
-		tab[l,124]:=chr(ord('0')+l-lmois-11);
-		tab[l,125]:='(';
-		tab[l,129]:=')';
-		end;
+                end;
+        l:=l+1;
+        tab[l,n*10-4]:=ch[4];
+        tab[l,n*10-3]:=ch[5];
+        tab[l,n*10-2]:=ch[6];
+        if njour=long
+        then    njour:=1
+        else    njour:=njour+1;
+        if sjour=6
+        then    sjour:=0
+        else    sjour:=sjour+1;
+        if n=13
+        then    begin
+                tab[l,124]:=chr(ord('0')+l-lmois-11);
+                tab[l,125]:='(';
+                tab[l,129]:=')';
+                end;
 until (l=lmois+29) or ((n=13) and (njour=long));
 end;
 
 procedure calend;
 { construit le tableau de caracteres qui donnera le calendrier. }
 var
-	cal:ttab;
-	i,annee,debut,fin,sem:integer;
-	eq:tdate;
-	ch:alpha6;
+        cal:ttab;
+        i,annee,debut,fin,sem:integer;
+        eq:tdate;
+        ch:alpha6;
 begin
 write('année ? (n''oubliez pas de positionner le papier en début de page) ');
 readln(annee);
@@ -524,27 +524,27 @@ cal[3,66]:='-';
 cal[3,67]:='-';
 convalpha(annee,ch);
 for i:=1 to 4 do
-	cal[3,60+i]:=ch[2+i];
+        cal[3,60+i]:=ch[2+i];
 convalpha(annee+1,ch);
 for i:=1 to 4 do
-	cal[3,67+i]:=ch[2+i];
+        cal[3,67+i]:=ch[2+i];
 convalpha(annee-1791,ch);
 for i:=1 to 3 do
-	cal[2,64+i]:=ch[3+i];
+        cal[2,64+i]:=ch[3+i];
 affichage(cal);
 for i:=1 to 30 do
-	writeln;
+        writeln;
 end;
 
 begin
 repeat
-	action:=menu(false);
-	if action>0
-	then	case action of
+        action:=menu(false);
+        if action>0
+        then    case action of
                         1: demonstration;
                         2: convrepgreg;
                         3: convgregrep;
                         4: calend;
-			end;
+                        end;
 until action=0
 end.
