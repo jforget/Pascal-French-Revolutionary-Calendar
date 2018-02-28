@@ -132,19 +132,19 @@ function gregnum(date:tdate):integer;
 { donne le nombre de jours entre date et le 0 janvier de l'année }
 begin
 case date.mois of
-	1:gregnum:=date.jour;
-	2:gregnum:=date.jour+31;
-	3:gregnum:=date.jour+59+bissex(date.an);
-	4:gregnum:=date.jour+90+bissex(date.an);
-	5:gregnum:=date.jour+120+bissex(date.an);
-	6:gregnum:=date.jour+151+bissex(date.an);
-	7:gregnum:=date.jour+181+bissex(date.an);
-	8:gregnum:=date.jour+212+bissex(date.an);
-	9:gregnum:=date.jour+243+bissex(date.an);
-	10:gregnum:=date.jour+273+bissex(date.an);
-	11:gregnum:=date.jour+304+bissex(date.an);
-	12:gregnum:=date.jour+334+bissex(date.an);
-	end;
+         1: gregnum := date.jour;
+         2: gregnum := date.jour +  31;
+         3: gregnum := date.jour +  59 + bissex(date.an);
+         4: gregnum := date.jour +  90 + bissex(date.an);
+         5: gregnum := date.jour + 120 + bissex(date.an);
+         6: gregnum := date.jour + 151 + bissex(date.an);
+         7: gregnum := date.jour + 181 + bissex(date.an);
+         8: gregnum := date.jour + 212 + bissex(date.an);
+         9: gregnum := date.jour + 243 + bissex(date.an);
+        10: gregnum := date.jour + 273 + bissex(date.an);
+        11: gregnum := date.jour + 304 + bissex(date.an);
+        12: gregnum := date.jour + 334 + bissex(date.an);
+        end;
 end;
 
 function repnum(date:tdate):integer;
@@ -263,19 +263,19 @@ procedure affrep(date:tdate);
 begin
 write(date.jour:2);
 case date.mois of
-        1:write(' vendémiaire ');
-	2:write(' brumaire ');
-	3:write(' frimaire ');
-        4:write(' nivôse ');
-        5:write(' pluviôse ');
-        6:write(' ventôse ');
-	7:write(' germinal ');
-        8:write(' floréal ');
-	9:write(' prairial ');
-	10:write(' messidor ');
-	11:write(' thermidor ');
-	12:write(' fructidor ');
-	13:write(' sans-culottide ');
+         1: write(' vendémiaire ');
+         2: write(' brumaire ');
+         3: write(' frimaire ');
+         4: write(' nivôse ');
+         5: write(' pluviôse ');
+         6: write(' ventôse ');
+         7: write(' germinal ');
+         8: write(' floréal ');
+         9: write(' prairial ');
+        10: write(' messidor ');
+        11: write(' thermidor ');
+        12: write(' fructidor ');
+        13: write(' sans-culottide ');
 	end;
 writeln(date.an:3);
 end;
@@ -283,28 +283,28 @@ end;
 procedure affgreg(date:tdate);
 begin
 case joursem(date) of
-	0:write('lundi ');
-	1:write('mardi ');
-	2:write('mercredi ');
-	3:write('jeudi ');
-	4:write('vendredi ');
-	5:write('samedi ');
-	6:write('dimanche ');
-	end;
+        0: write('lundi ');
+        1: write('mardi ');
+        2: write('mercredi ');
+        3: write('jeudi ');
+        4: write('vendredi ');
+        5: write('samedi ');
+        6: write('dimanche ');
+        end;
 write(date.jour:2);
 case date.mois of
-	1:write(' janvier ');
-        2:write(' février ');
-	3:write(' mars ');
-	4:write(' avril ');
-	5:write(' mai ');
-	6:write(' juin ');
-	7:write(' juillet ');
-        8:write(' août ');
-	9:write(' septembre ');
-	10:write(' octobre ');
-	11:write(' novembre ');
-        12:write(' décembre ');
+         1: write(' janvier ');
+         2: write(' février ');
+         3: write(' mars ');
+         4: write(' avril ');
+         5: write(' mai ');
+         6: write(' juin ');
+         7: write(' juillet ');
+         8: write(' août ');
+         9: write(' septembre ');
+        10: write(' octobre ');
+        11: write(' novembre ');
+        12: write(' décembre ');
 	end;
 writeln(date.an:4)
 end;
@@ -314,11 +314,11 @@ var
 	n:integer;
 begin
 repeat
-	writeln('0:fin');
-        writeln('1:démonstration');
-        writeln('2:conversion de républicain en grégorien');
-        writeln('3:conversion de grégorien en républicain');
-        writeln('4:affichage du calendrier pour une année entière');
+        writeln('0 : fin');
+        writeln('1 : démonstration');
+        writeln('2 : conversion de républicain en grégorien');
+        writeln('3 : conversion de grégorien en républicain');
+        writeln('4 : affichage du calendrier pour une année entière');
 	if demo
 	then	n:=1
 	else	read(n)
@@ -398,10 +398,10 @@ for l:=2 to diml-1 do
 	for c:=2 to dimc-1 do tab[l,c]:=' ';
 for c:=1 to dimc do
 	begin
-	tab[1,c]:='-';
-	tab[ltitre-1,c]:='-';
-	tab[lmois-1,c]:='-';
-	tab[diml,c]:='-';
+        tab[1,        c] := '-';
+        tab[ltitre-1, c] := '-';
+        tab[lmois-1,  c] := '-';
+        tab[diml,     c] := '-';
 	end;
 tab[2,1]:='|';
 tab[3,1]:='|';
@@ -461,13 +461,13 @@ else	l:=lmois-1;
 repeat
 	convalpha(njour,ch);
 	case sjour of
-		0:ch[4]:='L';
-		1:ch[4]:='M';
-		2:ch[4]:='M';
-		3:ch[4]:='J';
-		4:ch[4]:='V';
-		5:ch[4]:='S';
-		6:ch[4]:='D';
+                0: ch[4] := 'L';
+                1: ch[4] := 'M';
+                2: ch[4] := 'M';
+                3: ch[4] := 'J';
+                4: ch[4] := 'V';
+                5: ch[4] := 'S';
+                6: ch[4] := 'D';
 		end;
 	l:=l+1;
 	tab[l,n*10-4]:=ch[4];
@@ -505,19 +505,20 @@ eq.an:=annee;
 eq.mois:=9;
 eq.jour:=debut;
 sem:=joursem(eq);
-remplmois(1,30,'VENDEMIAI SEP-OCT ',cal,debut,sem);
-remplmois(2,31,'BRUMAIRE  OCT-NOV ',cal,debut,sem);
-remplmois(3,30,'FRIMAIRE  NOV-DEC ',cal,debut,sem);
-remplmois(4,31,' NIVOSE	  DEC-JAN ',cal,debut,sem);
-remplmois(5,31,'PLUVIOSE  JAN-FEV ',cal,debut,sem);
-remplmois(6,28+bissex(annee+1),' VENTOSE  FEV-MAR ',cal,debut,sem);
-remplmois(7,31,'GERMINAL  MAR-AVR ',cal,debut,sem);
-remplmois(8,30,' FLOREAL  AVR-MAI ',cal,debut,sem);
-remplmois(9,31,'PRAIRIAL  MAI-JUN ',cal,debut,sem);
-remplmois(10,30,'MESSIDOR  JUN-JUL ',cal,debut,sem);
-remplmois(11,31,'THERMIDOR JUL-AOU ',cal,debut,sem);
-remplmois(12,31,'FRUCTIDOR AOU-SEP ',cal,debut,sem);
-remplmois(13,fin,'SS-CULOTT   SEP   ',cal,debut,sem);
+remplmois( 1, 30,  'VENDEMIAI SEP-OCT ', cal, debut, sem);
+remplmois( 2, 31,  'BRUMAIRE  OCT-NOV ', cal, debut, sem);
+remplmois( 3, 30,  'FRIMAIRE  NOV-DEC ', cal, debut, sem);
+remplmois( 4, 31,  ' NIVOSE   DEC-JAN ', cal, debut, sem);
+remplmois( 5, 31,  'PLUVIOSE  JAN-FEV ', cal, debut, sem);
+remplmois( 6, 28 + bissex(annee + 1),
+                   ' VENTOSE  FEV-MAR ', cal, debut, sem);
+remplmois( 7, 31,  'GERMINAL  MAR-AVR ', cal, debut, sem);
+remplmois( 8, 30,  ' FLOREAL  AVR-MAI ', cal, debut, sem);
+remplmois( 9, 31,  'PRAIRIAL  MAI-JUN ', cal, debut, sem);
+remplmois(10, 30,  'MESSIDOR  JUN-JUL ', cal, debut, sem);
+remplmois(11, 31,  'THERMIDOR JUL-AOU ', cal, debut, sem);
+remplmois(12, 31,  'FRUCTIDOR AOU-SEP ', cal, debut, sem);
+remplmois(13, fin, 'SS-CULOTT   SEP   ', cal, debut, sem);
 cal[3,65]:='-';
 cal[3,66]:='-';
 cal[3,67]:='-';
@@ -540,10 +541,10 @@ repeat
 	action:=menu(false);
 	if action>0
 	then	case action of
-			1:demonstration;
-			2:convrepgreg;
-			3:convgregrep;
-			4:calend;
+                        1: demonstration;
+                        2: convrepgreg;
+                        3: convgregrep;
+                        4: calend;
 			end;
 until action=0
 end.
