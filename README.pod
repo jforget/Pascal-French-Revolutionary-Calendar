@@ -1,0 +1,29 @@
+-*- encoding: utf-8; indent-tabs-mode: nil -*-
+
+=encoding utf8
+
+=head1 FRENCH REVOLUTIONARY CALENDAR
+
+=head2 PURPOSE
+
+This repository hosts a Pascal program which allows you to convert dates from
+the Gregorian calendar to the French Revolutionary Calendar or in the other
+way.
+
+For the moment, the program works in dialog mode. It halts from time to time to
+allow the user to type a choice or a parameter, then it restarts to execute the
+request. There is a french-language demo (choice 1).
+
+Later, the program will interpret command line parameters to allow an alternate
+parameter entry method.
+
+=head2 PASCAL
+
+The compiler used is B<Free Pascal> version 3.0.4.
+
+See L<https://www.freepascal.org/>.
+
+=head2 LICENSE
+
+The program is licensed under the same terms as Perl 5: GPL and Artistic
+License. For more details, please read the F<LICENSE> file in this repository.

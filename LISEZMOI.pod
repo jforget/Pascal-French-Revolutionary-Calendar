@@ -1,0 +1,28 @@
+-*- encoding: utf-8; indent-tabs-mode: nil -*-
+
+=encoding utf8
+
+=head1 CALENDRIER RÉPUBLICAIN
+
+=head2 DESCRIPTION
+
+Le programme de ce dépôt est un programme Pascal permettant de convertir des dates du
+calendrier grégorien en calendrier républicain ou vice-versa.
+
+Pour le moment, le programme fonctionne en mode dialogue.  Le programme s'interrompt
+de temps à autre pour permettre à l'utilisateur de saisir un choix ou un paramètre,
+puis il reprend pour exécuter l'action demandée. Il existe une démonstration
+incorporée (choix 1).
+
+Ultérieurement, il sera possible de renseigner les paramètres sur la ligne de commande.
+
+=head2 PASCAL
+
+Le compilateur utilisé est B<Free Pascal> version 3.0.4.
+
+Cf. L<https://www.freepascal.org/>.
+
+=head2 LICENCE
+
+Les programmes de ce dépôt sont sous la même licence que S<Perl :> GPL et licence
+artistique. Voir le texte (en anglais) dans le fichier F<LICENSE>.

@@ -2,7 +2,42 @@ program calendrier(input,output);
 { sur une idee originale de Fabre d'Eglantine,
  voici une realisation de Jean Forget,
 un programme de conversion entre calendriers republicain & gregorien
- version 2.3 du 19/01/1984 }
+Program to convert Gregorian dates into French Revolutionary dates or the other way.
+Copyright (C) 1983, 1984, 2018 Jean Forget
+
+Ce programme est distribué sous les mêmes termes que Perl 5.16.3 :
+Licence publique GPL version 1 ou ultérieure et Licence Artistique Perl.
+
+This program is distributed under the same terms as Perl 5.16.3:
+GNU Public License version 1 or later and Perl Artistic License
+
+Vous pouvez trouver le texte des licences en anglais dans le fichier LICENSE 
+ou aux adresses http://www.perlfoundation.org/artistic_license_1_0
+et http://www.gnu.org/licenses/gpl-1.0.html.
+
+You can find the text of the licenses in the LICENSE file or at
+http://www.perlfoundation.org/artistic_license_1_0
+and http://www.gnu.org/licenses/gpl-1.0.html.
+
+Voici le résumé de la GPL (en anglais) :
+
+Here is the summary of GPL:
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 1, or (at your option)
+any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software Foundation,
+Inc., http://www.fsf.org/.
+}
+
 const
 	diml=38;
 	dimc=131;
