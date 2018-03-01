@@ -39,6 +39,8 @@ along with this program; if not, write to the Free Software Foundation,
 Inc., http://www.fsf.org/.
 }
 
+uses getopts, strutils;
+
 const
         diml=38;
         dimc=131;
@@ -54,7 +56,11 @@ type
         alpha6=array[1..6] of char;
         alpha18=packed array[1..18] of char;
 var
-        action:integer;
+   action      : integer;
+   c           : char;
+   optionindex : Longint;
+   theopts     : array [1..6] of TOption;
+   mode_dial   : boolean;
 
 procedure convalpha(n:integer;var ch:alpha6);
 { conversion d'un nombre entier à 6 chiffres en chaîne alphanumérique (ou 5 chiffres si négatif) }
@@ -237,6 +243,67 @@ n:=n+ans+ans div 4;
 joursem:=(n+gregnum(date)) mod 7;
 end;
 
+{ Fonction demandant une année à l'utilisateur }
+function demande_annee(annonce : String) : integer;
+begin
+   write(annonce);
+   readln(demande_annee);
+end; { demande_annee }
+
+{ Fonction demandant une date à l'utilisateur }
+function demande_date: tdate;
+var
+   date : Tdate;
+begin
+   write('Date (j m a) ');
+   readln(date.jour, date.mois, date.an);
+   demande_date := date;
+end; { demande_date }
+
+{ Fonction décodant une chaîne de caractères et en extrayant l'année, le jour et le mois.
+
+  Pas de contrôle de cohérence de la date. D'autant plus que cela sert aussi bien pour les
+  dates grégoriennes (avec jusqu'à 31 jours par mois, mais seulement 12 mois) que pour les
+  dates républicaines (jamais plus de 30 jours par mois, mais il existe un pseudo-mois 13,
+  les jours complémentaires.
+}
+function decode_aaaammjj(ch: string): Tdate;
+var
+   date : Tdate;
+   i, n : integer;
+begin
+
+   { recherche de la longueur utile de la chaîne }
+   n := 1;
+   while (ord(ch[n]) >= ord('0')) and (ord(ch[n]) <= ord('9')) do
+      n := n + 1;
+   n := n - 1; { pour pointer sur le dernier élément correct et non pas sur le premier élément incorrect }
+
+   { extraction des nombres contenus dans la chaîne }
+   if n >= 2 then
+      date.jour := 10 * (ord(ch[n-1]) - ord('0')) + ord(ch[n]) - ord('0')
+   else if n = 1 then
+      date.jour := ord(ch[n]) - ord('0')
+   else
+      date.jour := 1;
+
+   if n >= 4 then
+      date.mois := 10 * (ord(ch[n-3]) - ord('0')) + ord(ch[n-2]) - ord('0')
+   else if n = 3 then
+      date.mois := ord(ch[n-2]) - ord('0')
+   else
+      date.mois := 1;
+
+   date.an   := 0;
+   for i := 1 to n - 4 do
+      date.an := 10 * date.an + ord(ch[i]) - ord('0');
+   if date.an = 0 then
+      date.an := 1;
+
+   decode_aaaammjj := date;
+end; { decode_aaaammjj }
+
+
 function verifrep(date:tdate):boolean;
 var
         ver:boolean;
@@ -358,34 +425,34 @@ writeln('Et revoilà le menu. À vous de jouer ! }');
 writeln;
 end;
 
-procedure convrepgreg;
+procedure convrepgreg(daterep : Tdate);
 var
-        daterep,dategreg:tdate;
+   dategreg : Tdate;
 begin
-write('Date (j m a) ');
-readln(daterep.jour,daterep.mois,daterep.an);
-if verifrep(daterep)
-then    begin
-        repgreg(daterep,dategreg);
-        affrep(daterep);
-        affgreg(dategreg);
-        end
-else    writeln('La date est incorrecte');
+   mode_dial := false;
+   if verifrep(daterep)
+      then    begin
+         repgreg(daterep, dategreg);
+         affrep(daterep);
+         affgreg(dategreg);
+      end
+      else
+         writeln('La date est incorrecte');
 end;
 
-procedure convgregrep;
+procedure convgregrep(dategreg : Tdate);
 var
-        dategreg,daterep:tdate;
+   daterep : tdate;
 begin
-write('Date (j m a) ');
-readln(dategreg.jour,dategreg.mois,dategreg.an);
-if verifgreg(dategreg)
-then    begin
-        gregrep(dategreg,daterep);
-        affgreg(dategreg);
-        affrep(daterep);
-        end
-else    writeln('La date est incorrecte');
+   mode_dial := false;
+   if verifgreg(dategreg)
+      then    begin
+         gregrep(dategreg, daterep);
+         affgreg(dategreg);
+         affrep(daterep);
+      end
+      else
+         writeln('La date est incorrecte');
 end;
 
 procedure inittab(var tab:ttab);
@@ -488,23 +555,22 @@ repeat
 until (l=lmois+29) or ((n=13) and (njour=long));
 end;
 
-procedure calend;
+procedure calend(annee : integer );
 { construit le tableau de caracteres qui donnera le calendrier. }
 var
-        cal:ttab;
-        i,annee,debut,fin,sem:integer;
-        eq:tdate;
-        ch:alpha6;
+   cal                : ttab;
+   i, debut, fin, sem : integer;
+   eq                 : Tdate;
+   ch                 : alpha6;
 begin
-write('année ? (n''oubliez pas de positionner le papier en début de page) ');
-readln(annee);
-debut:=equinoxe(annee);
-fin:=equinoxe(annee+1);
-inittab(cal);
-eq.an:=annee;
-eq.mois:=9;
-eq.jour:=debut;
-sem:=joursem(eq);
+   mode_dial := false;
+   debut := equinoxe(annee);
+   fin   := equinoxe(annee+1);
+   inittab(cal);
+   eq.an   := annee;
+   eq.mois := 9;
+   eq.jour := debut;
+   sem := joursem(eq);
 remplmois( 1, 30,  'VENDEMIAI SEP-OCT ', cal, debut, sem);
 remplmois( 2, 31,  'BRUMAIRE  OCT-NOV ', cal, debut, sem);
 remplmois( 3, 30,  'FRIMAIRE  NOV-DEC ', cal, debut, sem);
@@ -537,14 +603,80 @@ for i:=1 to 30 do
 end;
 
 begin
-repeat
-        action:=menu(false);
-        if action>0
-        then    case action of
-                        1: demonstration;
-                        2: convrepgreg;
-                        3: convgregrep;
-                        4: calend;
-                        end;
-until action=0
+
+   { spécification des arguments de ligne de commande }
+   with theopts[1] do
+   begin
+      name    := 'repub';
+      has_arg := 1;
+      flag    := nil;
+      value   := #0;
+   end ;
+   with theopts[2] do
+   begin
+      name    := 'greg';
+      has_arg := 1;
+      flag    := nil;
+      value   := #0;
+   end ;
+   with theopts[3] do
+   begin
+      name    := 'calend';
+      has_arg := 1;
+      flag    := nil;
+      value   := #0;
+   end ;
+   with theopts[4] do
+   begin
+      name    := 'equinox';
+      has_arg := 0;
+      flag    := nil;
+      value   := #0;
+   end ;
+   with theopts [5] do
+   begin
+      name    := 'arithm';
+      has_arg := 0;
+      flag    := nil;
+      value   := #0;
+   end ;
+   with theopts [6] do
+   begin
+      name    := '' ;
+      has_arg := 0 ;
+      flag    := nil ;
+   end ;
+ 
+   { analyse et traitement des arguments de ligne de commande }
+   mode_dial := true;
+   c := #0;
+   repeat
+      c := getlongopts('r:g:c:ea' , @theopts[1], optionindex);
+      case c of
+        #0 : begin
+           case optionindex of
+             1: convrepgreg(decode_aaaammjj(optarg)) ;
+             2: convgregrep(decode_aaaammjj(optarg)) ;
+             3: calend(Numb2Dec(optarg, 10));
+           end;
+        end;   
+        'r': convrepgreg(decode_aaaammjj(optarg)) ;
+        'g': convgregrep(decode_aaaammjj(optarg)) ;
+        'c': calend(Numb2Dec(optarg, 10));
+        'e': writeln( 'Option e 	. ' );
+        'a': writeln( 'Option a . 	' );
+        '?' , ':' : writeln( ' Error with opt : ' , optopt );
+      end ; { case }
+   until c = endofoptions;
+   if mode_dial then
+      repeat
+         action := menu(false);
+         if action > 0
+            then case action of
+              1 : demonstration;
+              2 : convrepgreg(demande_date);
+              3 : convgregrep(demande_date);
+              4 : calend(demande_annee('année ? (n''oubliez pas de positionner le papier en début de page) '));
+            end;
+      until action=0;
 end.
