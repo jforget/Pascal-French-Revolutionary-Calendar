@@ -313,17 +313,48 @@ ver := ver and ((date.mois <= 12) or (date.jour <= 6));
 verifrep:=ver and (date.an >= 0) and (date.an <= 407);
 end;
 
-function verifgreg(date:tdate):boolean;
+function verif_greg(date : Tdate; var erreur: string): boolean;
 var
-        ver:boolean;
+   ver : boolean;
 begin
-ver:=(date.mois>=1) and (date.mois<=12) and (date.jour>=1);
-ver := ver and (date.an >= 1792) and (date.an <= 2199);
-if  date.mois in [4,6,9,11]
-then    verifgreg:=ver and (date.jour<=30)
-else    if date.mois=2
-        then    verifgreg:=ver and (date.jour<=28+bissex(date.an))
-        else    verifgreg:=ver and (date.jour<=31);
+   ver    := true;
+   erreur := '';
+   if (date.mois < 1)
+      then begin
+         ver    := false;
+         erreur := 'mois zéro incorrect';
+      end
+   else if (date.mois > 12)
+      then begin
+         ver    := false;
+         erreur := 'mois 13 ou plus incorrect';
+      end
+   else if (date.jour < 1)
+      then begin
+         ver    := false;
+         erreur := 'jour zéro incorrect';
+      end
+   else if (date.an < 1792) or (date.an > 2199)
+      then begin
+         ver    := false;
+         erreur := 'année en dehors de la plage autorisée';
+      end
+   else if (date.mois in [4, 6, 9, 11]) and (date.jour > 30)
+      then begin
+         ver    := false;
+         erreur := 'jour incorrect pour un mois à 30 jours';
+      end
+   else if (date.mois <> 2) and (date.jour > 31)
+      then begin
+         ver    := false;
+         erreur := 'jour incorrect pour un mois à 31 jours';
+      end
+   else if (date.mois = 2) and  (date.jour > 28 + bissex(date.an))
+      then begin
+         ver    := false;
+         erreur := 'jour incorrect pour février';
+      end;
+   verif_greg := ver;
 end;
 
 procedure affrep(date:tdate);
@@ -457,16 +488,19 @@ end;
 procedure convgregrep(dategreg : Tdate);
 var
    daterep : tdate;
+   erreur  : string;
 begin
    mode_dial := false;
-   if verifgreg(dategreg)
-      then    begin
+   if verif_greg(dategreg, erreur)
+      then begin
          gregrep(dategreg, daterep);
          affgreg(dategreg);
          affrep(daterep);
       end
-      else
+      else begin
          writeln('La date est incorrecte');
+         writeln(erreur);
+      end
 end;
 
 procedure inittab(var tab:ttab);
