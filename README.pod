@@ -6,16 +6,19 @@
 
 =head2 PURPOSE
 
-This repository hosts a Pascal program which allows you to convert dates from
-the Gregorian calendar to the French Revolutionary Calendar or in the other
+This repository hosts  a Pascal program which allows you  to convert dates from
+the Gregorian  calendar to  the French Revolutionary  Calendar or in  the other
 way.
 
-For the moment, the program works in dialog mode. It halts from time to time to
-allow the user to type a choice or a parameter, then it restarts to execute the
-request. There is a french-language demo (choice 1).
+User documentation can be read with:
 
-Later, the program will interpret command line parameters to allow an alternate
-parameter entry method.
+  perldoc calfr.p
+
+(yes! It works!  Provided the source code file is  available. If the executable
+is shipped without the source code file, you are out of luck.)
+
+French  speaking user  documentation can  be read  by running  the  program and
+asking C<1> for the embedded demo.
 
 =head2 PASCAL
 

@@ -397,6 +397,19 @@ procedure demonstration;
 begin
 writeln;
 writeln('               DÉMONSTRATION');
+writeln;
+writeln('               Mode Ligne de commande');
+writeln('Vous pouvez spécifier les dates à convertir lors de l''appel en ligne');
+writeln('de commande. Par exemple, pour convertir le 9 novembre 1799, tapez');
+writeln('       calfr --greg=17991109');
+writeln('ou plus brièvement :');
+writeln('       calfr -g17991109');
+writeln('Pour la conversion dans l''autre sens, avec l''exemple du 9 Thermidor an II :');
+writeln('       calfr --rep=21109');
+writeln('(Thermidor étant le 11e mois du calendrier républicain). Ou plus simplement :');
+writeln('       calfr -r21109');
+writeln;
+writeln('               Mode Dialogue');
 writeln('{ Tout ce qui est entre accolades est un commentaire du programme');
 writeln('de démonstration. Le menu s''affiche : }');
 if menu(true)=20        then writeln;
@@ -420,8 +433,9 @@ writeln('{ Le programme demande }');
 writeln('       année ?');
 writeln('{ Vous répondez par l''année de votre choix, puis,');
 writeln('avant de presser retour-chariot, vous vous placez au');
-writeln('début de la feuille suivante.');
-writeln('Et revoilà le menu. À vous de jouer ! }');
+writeln('début de la feuille suivante. }');
+writeln;
+writeln('{ Et revoilà le menu. À vous de jouer ! }');
 writeln;
 end;
 
@@ -663,9 +677,9 @@ begin
         'r': convrepgreg(decode_aaaammjj(optarg)) ;
         'g': convgregrep(decode_aaaammjj(optarg)) ;
         'c': calend(Numb2Dec(optarg, 10));
-        'e': writeln( 'Option e 	. ' );
-        'a': writeln( 'Option a . 	' );
-        '?' , ':' : writeln( ' Error with opt : ' , optopt );
+        'e': writeln( 'Option e ' );
+        'a': writeln( 'Option a ' );
+        '?' , ':' : writeln('Erreur avec l''option : ', optopt);
       end ; { case }
    until c = endofoptions;
    if mode_dial then
@@ -680,3 +694,242 @@ begin
             end;
       until action=0;
 end.
+
+=encoding utf8
+
+=head1 NAME
+
+calfr -- program to convert Gregorian dates to French Revolutionary or the other way.
+
+=head1 USAGE
+
+Converting 9th november 1799 to French Revolutionary
+
+  calfr --greg=17991109
+  calfr -g17991109
+
+Converting 9th Thermidor II to Gregorian (Thermidor is the 11th month)
+
+  calfr --rep=21109
+  calfr --rep=00021109
+  calfr -r21109
+
+=head1 OPTIONS AND PARAMETERS
+
+=over 4
+
+=item repub
+
+Input  date given  in  the French  Revolutionary calendar  (calendrier
+I<répub>licain).
+
+Use a YYYYMMDD format, optionally stripping the leading zeros.
+
+=item gregor
+
+Input date given in the Gregorian calendar. Use a YYYYMMDD format.
+
+=item calend
+
+Print  the calendar  for  a whole  year.  The input  parameter is  the
+Gregorian  date  corresponding  to   the  first  part  of  the  French
+Revolutionary yer.  For example use  C<--calend=1792> for year  I, use
+C<--calend=2017> for year CCXXVI.
+
+=item equinox
+
+Option without value. Use the equinox rule: the 1st Vendémiaire (first
+day of the year) must coincide with the automn equinox.
+
+=item arithm
+
+Option without value. Use the  arithmetic rule: starting with year 20,
+leap years in the French  Revolutionary calendar are determined with a
+set of modulo rules similar to the Gregorian calendar.
+
+Yet, before year 20, the equinox rule is in effect.
+
+=back
+
+=head1 DESCRIPTION
+
+This  program allows  the user  to  convert dates  from the  Gregorian
+calendar to the French Revolutionary calendar or the other way.
+
+A first  way to use  the program is  to enter the dates  with commmand
+line  parameters.  Each C<repub>  date will  be converted  from French
+Revolutionary  to Gregorian  and printed,  each C<greg>  date  will be
+converted from  Gregorian to French Revolutionary and  printed. Or you
+can  print the  calendar  for a  whole  year by  entering a  C<calend>
+parameter.
+
+Interspersed  with   these  parameters  are   options  C<equinox>  and
+C<arithm>  to  select  which   algorithm  will  determine  the  French
+Revolutionary leap years. Each option is in effect until overridden by
+another option.
+
+If no C<repub>, C<greg> or C<calend> parameters are given, the program
+use the  second way of getting the  input dates, by a  dialog with the
+user.  The program asks  for a  numerical command,  and then  an input
+parameter.
+
+Numerical options are:
+
+=over 4
+
+=item 0
+
+Quit the program
+
+=item 1
+
+Demo (in French)
+
+=item 2
+
+Translate a  French Revolutionary date  into Gregorian and  print both
+values.  The date is entered in C<DD MM YYYY> format.
+
+=item 3
+
+Translate a  Gregorian date into  French Revolutionary and  print both
+values.  The date is entered in C<DD MM YYYY> format.
+
+=item 4
+
+Asks  for a  Gregorian year  and print  the French  Revolutionary year
+beginning in the corresponding September.
+
+=item 5
+
+Select the equinox rule.
+
+=item 6
+
+Select the arithmetic (Romme) rule. Not coded yet.
+
+=back
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+None.
+
+=head1 DEPENDENCIES
+
+None.
+
+=head1 INCOMPATIBILITIES
+
+No known incompatibilities.
+
+=head1 BUGS AND LIMITS
+
+Bad  support of  UTF-8:  dates  may be  printed  as C<Vendémiaire>  or
+C<Décadi>  on  a UTF-8-configured  console,  but  internally they  are
+processed  by the program  as C<VendÂ©miaire>  and C<DÂ©cadi>.   For a
+end-user it seems fine, but if  you want to dig within the program you
+will not be able to do proper string processing.
+
+The arithmetic rule is not coded yet.
+
+The equinox rule has not been  compared with a reliable source such as
+Reingold and Dershowitz's I<Calendar Calculations>.
+
+=head1 AUTHOR
+
+Jean Forget, JFORGET (à) cpan.org
+
+=head1 SEE ALSO
+
+=head2 Software
+
+=head3 By me
+
+L<DateTime::Calendar::FrenchRevolutionary> or L<https://github.com/jforget/DateTime-Calendar-FrenchRevolutionary>
+
+L<Date::Convert::French_Rev> or L<https://github.com/jforget/Date-Convert-French_Rev>
+
+L<https://www.gnu.org/software/apl/Bits_and_Pieces/calfr.apl.html> or L<https://github.com/jforget/apl-calendar-french>
+
+L<https://www.hpcalc.org/details/7309> or L<https://github.com/jforget/hp48-hp50-French-Revolutionary-calendar>
+
+L<https://github.com/jforget/hp41-calfr>
+
+=head3 Only partly by me
+
+L<https://github.com/jforget/emacs-lisp-cal-french>, a fork of F<calendar/cal-french.el> in Emacs
+
+=head3 Not by me
+
+CALENDRICA 3.0 -- Common Lisp, which can be download in the "Resources" section of
+L<http://www.cambridge.org/us/academic/subjects/computer-science/computing-general-interest/calendrical-calculations-3rd-edition?format=PB&isbn=9780521702386>
+
+French Calendar for Android at
+L<https://f-droid.org/packages/ca.rmen.android.frenchcalendar/>
+or L<https://github.com/caarmen/FRCAndroidWidget>
+and L<https://github.com/caarmen/french-revolutionary-calendar>
+
+Thermidor for Android at L<https://github.com/jhbadger/Thermidor-Android>
+
+A Ruby program at L<https://github.com/jhbadger/FrenchRevCal-ruby>
+
+=head2 Books
+
+Quid 2001, M and D Frémy, publ. Robert Laffont
+
+Agenda Républicain 197 (1988/89), publ. Syros Alternatives
+
+Any French schoolbook about the French Revolution
+
+The French Revolution, Thomas Carlyle, Oxford University Press
+
+Calendrier Militaire, anonymous
+
+Calendrical Calculations (Third Edition) by Nachum Dershowitz and
+Edward M. Reingold, Cambridge University Press, see
+L<http://www.calendarists.com>
+or L<http://www.cambridge.org/us/academic/subjects/computer-science/computing-general-interest/calendrical-calculations-3rd-edition?format=PB&isbn=9780521702386>.
+
+=head2 Internet
+
+L<http://www.faqs.org/faqs/calendars/faq/part3/>
+
+L<http://datetime.mongueurs.net/>
+
+L<http://www.allhotelscalifornia.com/kokogiakcom/frc/default.asp>
+
+L<https://en.wikipedia.org/wiki/French_Republican_Calendar>
+
+L<http://prairial.free.fr/calendrier/calendrier.php?lien=sommairefr> (in French)
+
+=head1 LICENSE AND COPYRIGHT
+
+(C) Jean Forget,  1983, 1984, 2018 all rights  reserved.  This program
+is  free software. You  can distribute,  modify, and  otherwise mangle
+this program under the same terms as perl 5.16.3.
+
+This program is  distributed under the same terms  as Perl 5.16.3: GNU
+Public License version 1 or later and Perl Artistic License
+
+You can find the text of the licenses in the F<LICENSE> file or at
+L<http://www.perlfoundation.org/artistic_license_1_0> and
+L<http://www.gnu.org/licenses/gpl-1.0.html>.
+
+Here is the summary of GPL:
+
+This program is  free software; you can redistribute  it and/or modify
+it under the  terms of the GNU General Public  License as published by
+the Free  Software Foundation; either  version 1, or (at  your option)
+any later version.
+
+This program  is distributed in the  hope that it will  be useful, but
+WITHOUT   ANY  WARRANTY;   without  even   the  implied   warranty  of
+MERCHANTABILITY  or FITNESS  FOR A  PARTICULAR PURPOSE.   See  the GNU
+General Public License for more details.
+
+You  should have received  a copy  of the  GNU General  Public License
+along with this program; if not, see <http://www.gnu.org/licenses/> or
+write to the Free Software Foundation, Inc., L<http://fsf.org>.
+
+
+=cut

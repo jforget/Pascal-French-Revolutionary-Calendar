@@ -6,15 +6,25 @@
 
 =head2 DESCRIPTION
 
-Le programme de ce dépôt est un programme Pascal permettant de convertir des dates du
-calendrier grégorien en calendrier républicain ou vice-versa.
+Le programme  de ce dépôt  est un programme  Pascal permettant de  convertir des
+dates du calendrier grégorien en calendrier républicain ou vice-versa.
 
-Pour le moment, le programme fonctionne en mode dialogue.  Le programme s'interrompt
-de temps à autre pour permettre à l'utilisateur de saisir un choix ou un paramètre,
-puis il reprend pour exécuter l'action demandée. Il existe une démonstration
-incorporée (choix 1).
+Le programme fonctionne au choix en  mode ligne de commande ou en mode dialogue.
+Si, parmi  les paramètres de ligne de  commande, figure une date  à convertir ou
+une année  à imprimer, alors le programme  traite les paramètres de  la ligne de
+commande puis il  s'arrête. Si aucun paramètre de ligne  de commande ne comporte
+une date ou une année, alors  le programme adopte un fonctionnement en dialogue.
+Le programme  s'interrompt de  temps à autre  pour permettre à  l'utilisateur de
+saisir  un  choix  ou un  paramètre,  puis  il  reprend pour  exécuter  l'action
+demandée. Il existe une démonstration incorporée (choix 1).
 
-Ultérieurement, il sera possible de renseigner les paramètres sur la ligne de commande.
+Et si vous comprenez l'anglais, il existe également une documentation en 
+anglais lisible par :
+
+  perldoc calfr.p
+
+Si si, ça fonctionne  ! À condition d'avoir le fichier source  à portée de main.
+Si vous avez reçu l'exécutable sans le fichier source, pas de chance.
 
 =head2 PASCAL
 
