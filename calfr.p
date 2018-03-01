@@ -303,16 +303,53 @@ begin
    decode_aaaammjj := date;
 end; { decode_aaaammjj }
 
+{ Contrôle de cohérence des éléments de la date républicaine.
 
-function verifrep(date:tdate):boolean;
+  En faisant l'impasse sur le 6e jour complémentaire pour les années normales !
+}
+function verif_rep(date : Tdate; var erreur: string): boolean;
 var
-        ver:boolean;
+   ver : boolean;
 begin
-ver:=(date.mois>=1) and (date.mois<=13) and (date.jour>=1) and (date.jour<=30);
-ver := ver and ((date.mois <= 12) or (date.jour <= 6));
-verifrep:=ver and (date.an >= 0) and (date.an <= 407);
+   ver    := true;
+   erreur := '';
+   if (date.mois < 1)
+      then begin
+         ver    := false;
+         erreur := 'mois zéro incorrect';
+      end
+   else if (date.mois > 13)
+      then begin
+         ver    := false;
+         erreur := 'mois 14 ou plus incorrect';
+      end
+   else if (date.jour < 1)
+      then begin
+         ver    := false;
+         erreur := 'jour zéro incorrect';
+      end
+   else if ((date.jour > 30) and (date.mois < 13))
+      then begin
+         ver    := false;
+         erreur := 'jour 31 ou plus incorrect';
+      end
+   else if ((date.jour > 6) and (date.mois = 13))
+      then begin
+         ver    := false;
+         erreur := 'jour complémentaire 7 ou plus incorrect';
+      end
+   else if (date.an < 1) or (date.an > 407)
+      then begin
+         ver    := false;
+         erreur := 'année en dehors de la plage autorisée';
+      end;
+   verif_rep:=ver;
 end;
 
+{ Contrôle de cohérence des éléments de la date républicaine.
+
+  En faisant l'impasse sur les jours antérieurs au 22 septembre 1792.
+}
 function verif_greg(date : Tdate; var erreur: string): boolean;
 var
    ver : boolean;
@@ -473,16 +510,19 @@ end;
 procedure convrepgreg(daterep : Tdate);
 var
    dategreg : Tdate;
+   erreur   : string;
 begin
    mode_dial := false;
-   if verifrep(daterep)
-      then    begin
+   if verif_rep(daterep, erreur)
+      then begin
          repgreg(daterep, dategreg);
          affrep(daterep);
          affgreg(dategreg);
       end
-      else
+      else begin
          writeln('La date est incorrecte');
+         writeln(erreur);
+      end
 end;
 
 procedure convgregrep(dategreg : Tdate);
