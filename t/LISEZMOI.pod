@@ -1,0 +1,66 @@
+-*- encoding: utf-8; indent-tabs-mode: nil -*-
+
+=encoding utf8
+
+=head1 TESTS DU CALENDRIER RÉPUBLICAIN
+
+=head2 DESCRIPTION
+
+Le programme de conversion fonctionne, entre autres, en mode dialogue.  En fait,
+en  1983  et  1984,  ma   compréhension  de  l'architecture  Unix  était  encore
+rudimentaire  et  je  n'avais  pas  compris notamment  les  concepts  d'I<entrée
+standard> et  de I<sortie standard>. Depuis,  j'ai compris et  j'en profite pour
+utiliser ces concepts pour des jeux de tests en masse.
+
+=head2 FICHIERS
+
+Pour  la conversion  du  calendrier républicain  vers  le calendrier  grégorien,
+S<j'utilise :>
+
+=over 4
+
+=item *
+
+F<ent-rep> suite de commandes C<2> et de dates C<18 2 8> (pour 18 Brumaire VIII)
+
+=item *
+
+F<sort-greg-arith>  le résultat attendu  des conversions,  en utilisant  la règle
+arithmétique de Romme
+
+=item *
+
+F<sort-greg-equi>  le résultat  attendu des  conversions, en  utilisant  la règle
+astronomique de l'équinoxe d'automne.
+
+=back
+
+Pour la  conversion en sens inverse  du calendrier grégorien  vers le calendrier
+républicain, S<j'utilise :>
+
+=over 4
+
+=item *
+
+F<ent-greg> suite de commandes C<3> et de dates C<22 9 1792>
+
+=item *
+
+F<sort-rep-arith>  le résultat attendu  des conversions,  en utilisant  la règle
+arithmétique de Romme
+
+=item *
+
+F<sort-rep-equi>  le résultat  attendu des  conversions, en  utilisant  la règle
+astronomique de l'équinoxe d'automne.
+
+=back
+
+Les fichiers en sortie contiennent les données calculées, plus les messages
+d'invite du mode dialogue.
+
+=head2 ORIGINE
+
+Dans un premier temps, les fichiers sont tapés S<« à la main »>. Ensuite, il seront
+générés par le programme C<gen-tests> du L<dépôt de programmes utilitaires|https://github.com/jforget/French-Revolution-calendar-utilities>.
+

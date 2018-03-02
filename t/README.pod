@@ -1,0 +1,66 @@
+-*- encoding: utf-8; indent-tabs-mode: nil -*-
+
+=encoding utf8
+
+=head1 CHECKING THE FRENCH REVOLUTIONARY CALENDAR
+
+=head2 PURPOSE
+
+The  C<calfr> program  may run  in I<dialog>  mode. Actually,  back in
+1983-1984,  I  did  not   understand  the  concepts  of  C<stdin>  and
+C<stdout>. Since then  I have understood them and I  use them for bulk
+testing the conversion program.
+
+=head2 FILES
+
+To  check  the  conversions  from  French  Revolutionary  calendar  to
+Gregorian, I use the following files:
+
+=over 4
+
+=item *
+
+F<ent-rep> a series of C<2>  conversion commandes and of dates such as
+C<18 2 8> (for 18 Brumaire VIII)
+
+=item *
+
+F<sort-greg-arith>  the  expected  result  of the  conversions,  using
+Romme's arithmetic rule.
+
+=item *
+
+F<sort-greg-equi> the  expected result  of the conversions,  using the
+astronomical rule with autumn equinoxes.
+
+=back
+
+For the backward conversion from Gregorian to French Revolutionary, I use:
+
+=over 4
+
+=item *
+
+F<ent-greg> a series of C<3>  conversion commands and of dates such as
+C<22 9 1792>
+
+=item *
+
+F<sort-rep-arith>  the  expected  result  of the  conversions,  using
+Romme's arithmetic rule.
+
+=item *
+
+F<sort-rep-equi> the  expected result  of the conversions,  using the
+astronomical rule with autumn equinoxes.
+
+=back
+
+In addition to the date results, the expected output files contain the
+prompt messages from the dialog mode.
+
+=head2 ORIGIN
+
+At first, the files will be "hand-typed". Then they will be generated
+by the C<gen-tests> program from the L<utility repository|https://github.com/jforget/French-Revolution-calendar-utilities>.
+
