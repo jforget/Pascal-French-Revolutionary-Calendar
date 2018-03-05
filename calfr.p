@@ -812,6 +812,69 @@ Converting 9th Thermidor II to Gregorian (Thermidor is the 11th month)
 This  program allows  the user  to  convert dates  from the  Gregorian
 calendar to the French Revolutionary calendar or the other way.
 
+=head2 Preliminary Note
+
+The documentation  uses the  word I<décade> (the  first "e"  having an
+acute  accent). This  French word  is  I<not> the  translation of  the
+English  word  "decade"  (ten-year  period).  It  means  a  ten-I<day>
+period.
+
+For  your  information, the  French  word  for  a ten-year  period  is
+I<décennie>.
+
+=head2 Historical Description
+
+The Revolutionary calendar was in  use in France from 24 November 1793
+(4 Frimaire  II) to 31  December 1805 (10  Nivôse XIV). An  attempt to
+apply  the  decimal rule  (the  basis of  the  metric  system) to  the
+calendar. Therefore, the week  disappeared, replaced by the décade. In
+addition, all months have exactly 3 decades, no more, no less.
+
+At first,  the year was  beginning on the  equinox of autumn,  for two
+reasons.  First, the  republic had  been established  on  22 September
+1792, which  happened to be the  equinox, and second,  the equinox was
+the symbol of equality, the day and the night lasting exactly 12 hours
+each. It  was therefore  in tune with  the republic's  motto "Liberty,
+Equality, Fraternity". But  it was not practical, so  Romme proposed a
+leap year rule similar to the Gregorian calendar rule.
+
+In his book I<The French Revolution>, the XIXth century writer Thomas
+Carlyle proposes these translations for the month names:
+
+=over 4
+
+=item Vendémiaire -> Vintagearious
+
+=item Brumaire -> Fogarious
+
+=item Frimaire -> Frostarious
+
+=item Nivôse -> Snowous
+
+=item Pluviôse -> Rainous
+
+=item Ventôse -> Windous
+
+=item Germinal -> Buddal
+
+=item Floréal -> Floweral
+
+=item Prairial -> Meadowal
+
+=item Messidor -> Reapidor
+
+=item Thermidor -> Heatidor
+
+=item Fructidor -> Fruitidor
+
+=back
+
+Each month has  a duration of 30 days. Since a  year lasts 365.25 days
+(or so), five  additional days (or six on leap  years) are added after
+Fructidor. These days  are called I<Sans-Culottides>.  For programming
+purposes, they are  considered as a 13th month  (much shorter than the
+12 others).
+
 =head1 OPTIONS AND PARAMETERS
 
 A first  way to use  the program is  to enter the dates  with commmand
@@ -855,11 +918,11 @@ day of the year) must coincide with the automn equinox.
 
 =item arithm
 
-Option without value. Use the  arithmetic rule: starting with year 20,
+Option without value. Use the  arithmetic rule: starting with year XX,
 leap years in the French  Revolutionary calendar are determined with a
 set of modulo rules similar to the Gregorian calendar.
 
-Yet, before year 20, the equinox rule is in effect.
+Yet, before year XX, the equinox rule is in effect.
 
 =back
 
