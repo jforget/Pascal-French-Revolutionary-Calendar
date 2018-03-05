@@ -59,8 +59,9 @@ var
    action      : integer;
    c           : char;
    optionindex : Longint;
-   theopts     : array [1..6] of TOption;
+   theopts     : array [1..7] of TOption;
    mode_dial   : boolean;
+   verbeux     : boolean;
 
 procedure convalpha(n:integer;var ch:alpha6);
 { conversion d'un nombre entier à 6 chiffres en chaîne alphanumérique (ou 5 chiffres si négatif) }
@@ -244,18 +245,20 @@ joursem:=(n+gregnum(date)) mod 7;
 end;
 
 { Fonction demandant une année à l'utilisateur }
-function demande_annee(annonce : String) : integer;
+function demande_annee(annonce : String; verbeux : boolean) : integer;
 begin
-   write(annonce);
+   if verbeux then
+      write(annonce);
    readln(demande_annee);
 end; { demande_annee }
 
 { Fonction demandant une date à l'utilisateur }
-function demande_date: tdate;
+function demande_date(verbeux : boolean) : Tdate;
 var
    date : Tdate;
 begin
-   write('Date (j m a) ');
+   if verbeux then
+      write('Date (j m a) ');
    readln(date.jour, date.mois, date.an);
    demande_date := date;
 end; { demande_date }
@@ -444,21 +447,23 @@ case date.mois of
 writeln(date.an:4)
 end;
 
-function menu(demo:boolean):integer;
+function menu(demo : boolean; verbeux : boolean) : integer;
 var
-        n:integer;
+   n : integer;
 begin
 repeat
-        writeln('0 : fin');
-        writeln('1 : démonstration');
-        writeln('2 : conversion de républicain en grégorien');
-        writeln('3 : conversion de grégorien en républicain');
-        writeln('4 : affichage du calendrier pour une année entière');
-        if demo
-        then    n:=1
-        else    read(n)
-until (n>=0) and (n<=4);
-menu:=n;
+   if verbeux then begin
+      writeln('0 : fin');
+      writeln('1 : démonstration');
+      writeln('2 : conversion de républicain en grégorien');
+      writeln('3 : conversion de grégorien en républicain');
+      writeln('4 : affichage du calendrier pour une année entière');
+   end;
+   if demo
+      then    n := 1
+      else    read(n)
+         until (n >= 0) and (n <= 4);
+   menu := n;
 end;
 
 procedure demonstration;
@@ -480,7 +485,7 @@ writeln;
 writeln('               Mode Dialogue');
 writeln('{ Tout ce qui est entre accolades est un commentaire du programme');
 writeln('de démonstration. Le menu s''affiche : }');
-if menu(true)=20        then writeln;
+if menu(true, true) = 20 then writeln;
 writeln('{ Vous répondez : }');
 writeln('       3');
 writeln('{ On affiche alors }');
@@ -494,7 +499,7 @@ writeln('{ puis }');
 writeln('       5 sans-culottide 191');
 writeln('{ Les jours complémentaires s''appelaient en effet sans-culottides');
 writeln('de nouveau, voici le menu : }');
-if menu(true)=20 then writeln;
+if menu(true, true) = 20 then writeln;
 writeln('{ Vous répondez : }');
 writeln('       4');
 writeln('{ Le programme demande }');
@@ -502,6 +507,10 @@ writeln('       année ?');
 writeln('{ Vous répondez par l''année de votre choix, puis,');
 writeln('avant de presser retour-chariot, vous vous placez au');
 writeln('début de la feuille suivante. }');
+writeln;
+writeln('               Mode Laconique');
+writeln('Le mode laconique est semblable au mode dialogue, sauf que le programme');
+writeln('n''affiche pas le menu ni l''invite pour une date ou une année.');
 writeln;
 writeln('{ Et revoilà le menu. À vous de jouer ! }');
 writeln;
@@ -730,6 +739,13 @@ begin
    end ;
    with theopts [6] do
    begin
+      name    := 'laconique';
+      has_arg := 0;
+      flag    := nil;
+      value   := #0;
+   end ;
+   with theopts [7] do
+   begin
       name    := '' ;
       has_arg := 0 ;
       flag    := nil ;
@@ -737,15 +753,17 @@ begin
  
    { analyse et traitement des arguments de ligne de commande }
    mode_dial := true;
+   verbeux   := false;
    c := #0;
    repeat
-      c := getlongopts('r:g:c:ea' , @theopts[1], optionindex);
+      c := getlongopts('r:g:c:eal' , @theopts[1], optionindex);
       case c of
         #0 : begin
            case optionindex of
              1: convrepgreg(decode_aaaammjj(optarg)) ;
              2: convgregrep(decode_aaaammjj(optarg)) ;
              3: calend(Numb2Dec(optarg, 10));
+             6: verbeux := false;
            end;
         end;   
         'r': convrepgreg(decode_aaaammjj(optarg)) ;
@@ -753,18 +771,19 @@ begin
         'c': calend(Numb2Dec(optarg, 10));
         'e': writeln( 'Option e ' );
         'a': writeln( 'Option a ' );
+        'l': verbeux := false;
         '?' , ':' : writeln('Erreur avec l''option : ', optopt);
       end ; { case }
    until c = endofoptions;
    if mode_dial then
       repeat
-         action := menu(false);
+         action := menu(false, verbeux);
          if action > 0
             then case action of
               1 : demonstration;
-              2 : convrepgreg(demande_date);
-              3 : convgregrep(demande_date);
-              4 : calend(demande_annee('année ? (n''oubliez pas de positionner le papier en début de page) '));
+              2 : convrepgreg(demande_date(verbeux));
+              3 : convgregrep(demande_date(verbeux));
+              4 : calend(demande_annee('année ? (n''oubliez pas de positionner le papier en début de page) ', verbeux));
             end;
       until action=0;
 end.
@@ -788,7 +807,26 @@ Converting 9th Thermidor II to Gregorian (Thermidor is the 11th month)
   calfr --rep=00021109
   calfr -r21109
 
+=head1 DESCRIPTION
+
+This  program allows  the user  to  convert dates  from the  Gregorian
+calendar to the French Revolutionary calendar or the other way.
+
 =head1 OPTIONS AND PARAMETERS
+
+A first  way to use  the program is  to enter the dates  with commmand
+line  parameters.  Each C<repub>  date will  be converted  from French
+Revolutionary  to Gregorian  and printed,  each C<greg>  date  will be
+converted from  Gregorian to French Revolutionary and  printed. Or you
+can  print the  calendar  for a  whole  year by  entering a  C<calend>
+parameter.
+
+Interspersed  with   these  parameters  are   options  C<equinox>  and
+C<arithm>  to  select  which   algorithm  will  determine  the  French
+Revolutionary leap years. Each option is in effect until overridden by
+another option.
+
+=head2 COMMAND-LINE OPTIONS AND PARAMETERS
 
 =over 4
 
@@ -825,22 +863,7 @@ Yet, before year 20, the equinox rule is in effect.
 
 =back
 
-=head1 DESCRIPTION
-
-This  program allows  the user  to  convert dates  from the  Gregorian
-calendar to the French Revolutionary calendar or the other way.
-
-A first  way to use  the program is  to enter the dates  with commmand
-line  parameters.  Each C<repub>  date will  be converted  from French
-Revolutionary  to Gregorian  and printed,  each C<greg>  date  will be
-converted from  Gregorian to French Revolutionary and  printed. Or you
-can  print the  calendar  for a  whole  year by  entering a  C<calend>
-parameter.
-
-Interspersed  with   these  parameters  are   options  C<equinox>  and
-C<arithm>  to  select  which   algorithm  will  determine  the  French
-Revolutionary leap years. Each option is in effect until overridden by
-another option.
+=head2 DIALOG MODE PARAMETERS
 
 If no C<repub>, C<greg> or C<calend> parameters are given, the program
 use the  second way of getting the  input dates, by a  dialog with the
@@ -883,6 +906,15 @@ Select the equinox rule.
 Select the arithmetic (Romme) rule. Not coded yet.
 
 =back
+
+=head2 UNIX PIPELINE MODE
+
+Unix pipeline mode is similar  to dialog mode, except that the program
+does not prompt  for an action or a date. The  user must remember what
+must be entered next.
+
+Unix  pipeline mode  is triggered  by the  C<--laconique> command-line
+option.
 
 =head1 CONFIGURATION AND ENVIRONMENT
 

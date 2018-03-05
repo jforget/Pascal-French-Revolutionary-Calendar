@@ -24,7 +24,7 @@
 # GNU General Public License for more details.
 #
 
-../calfr --equi < ent-rep | diff - sort-greg-equi
+../calfr --laconique --equi < ent-rep | diff - sort-greg-equi
 
 exit
 
