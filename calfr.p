@@ -244,6 +244,24 @@ n:=n+ans+ans div 4;
 joursem:=(n+gregnum(date)) mod 7;
 end;
 
+{ Jour de la décade (au lieu de la semaine) }
+function jour_decade(date :  Tdate) : string;
+begin
+   case date.jour mod 10 of
+      0 : jour_decade := 'Décadi'; { éh oui, c'est la différence entre le modulo
+                                     mathématique et le modulo calendaire }
+      1 : jour_decade := 'Primidi';
+      2 : jour_decade := 'Duodi';
+      3 : jour_decade := 'Tridi';
+      4 : jour_decade := 'Quartidi';
+      5 : jour_decade := 'Quintidi';
+      6 : jour_decade := 'Sextidi';
+      7 : jour_decade := 'Septidi';
+      8 : jour_decade := 'Octidi';
+      9 : jour_decade := 'Nonidi';
+   end; { case }
+end;
+
 { Fonction demandant une année à l'utilisateur }
 function demande_annee(annonce : String; verbeux : boolean) : integer;
 begin
@@ -397,25 +415,29 @@ begin
    verif_greg := ver;
 end;
 
-procedure affrep(date:tdate);
+procedure aff_rep(date:tdate);
 begin
-write(date.jour:2);
-case date.mois of
-         1: write(' vendémiaire ');
-         2: write(' brumaire ');
-         3: write(' frimaire ');
-         4: write(' nivôse ');
-         5: write(' pluviôse ');
-         6: write(' ventôse ');
-         7: write(' germinal ');
-         8: write(' floréal ');
-         9: write(' prairial ');
-        10: write(' messidor ');
-        11: write(' thermidor ');
-        12: write(' fructidor ');
-        13: write(' sans-culottide ');
-        end;
-writeln(date.an:3);
+   write(jour_decade(date), ' ', date.jour:2);
+   case date.mois of
+      1 : write(' Vendémiaire ');
+      2 : write(' Brumaire ');
+      3 : write(' Frimaire ');
+      4 : write(' Nivôse ');
+      5 : write(' Pluviôse ');
+      6 : write(' Ventôse ');
+      7 : write(' Germinal ');
+      8 : write(' Floréal ');
+      9 : write(' Prairial ');
+     10 : write(' Messidor ');
+     11 : write(' Thermidor ');
+     12 : write(' Fructidor ');
+     13 : write(' jour complémentaire ');
+   end; 
+   if date.an < 4000 then
+      write(IntToRoman(date.an))
+   else
+      write(date.an:4);
+   writeln;
 end;
 
 procedure affgreg(date:tdate);
@@ -496,9 +518,8 @@ writeln('{ La date est correcte, il n''y a donc pas de message d''erreur');
 writeln('Le programme répond alors }');
 writeln('       jeudi 22 septembre 1983');
 writeln('{ puis }');
-writeln('       5 sans-culottide 191');
-writeln('{ Les jours complémentaires s''appelaient en effet sans-culottides');
-writeln('de nouveau, voici le menu : }');
+writeln('       quintidi 5 jour complémentaire CXCI');
+writeln('{ De nouveau, voici le menu : }');
 if menu(true, true) = 20 then writeln;
 writeln('{ Vous répondez : }');
 writeln('       4');
@@ -525,7 +546,7 @@ begin
    if verif_rep(daterep, erreur)
       then begin
          repgreg(daterep, dategreg);
-         affrep(daterep);
+         aff_rep(daterep);
          affgreg(dategreg);
       end
       else begin
@@ -544,7 +565,7 @@ begin
       then begin
          gregrep(dategreg, daterep);
          affgreg(dategreg);
-         affrep(daterep);
+         aff_rep(daterep);
       end
       else begin
          writeln('La date est incorrecte');
