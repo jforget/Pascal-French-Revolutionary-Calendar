@@ -37,3 +37,15 @@ listing/c008_nb.png
 listing/c009_nb.png
 listing/LISEZMOI.pod
 listing/README.pod
+t/LISEZMOI.pod
+t/README.pod
+t/entree-greg
+t/entree-rep
+t/sortie-greg-arith
+t/sortie-greg-equi
+t/sortie-rep-arith
+t/sortie-rep-equi
+t/verif-greg-rep-ar
+t/verif-greg-rep-eq
+t/verif-rep-ar-greg
+t/verif-rep-eq-greg

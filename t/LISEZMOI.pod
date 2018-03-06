@@ -21,16 +21,16 @@ S<j'utilise :>
 
 =item *
 
-F<ent-rep> suite de commandes C<2> et de dates C<18 2 8> (pour 18 Brumaire VIII)
+F<entree-rep> suite de commandes C<2> et de dates C<18 2 8> (pour 18 Brumaire VIII)
 
 =item *
 
-F<sort-greg-arith>  le résultat attendu  des conversions,  en utilisant  la règle
+F<sortie-greg-arith>  le résultat attendu  des conversions,  en utilisant  la règle
 arithmétique de Romme
 
 =item *
 
-F<sort-greg-equi>  le résultat  attendu des  conversions, en  utilisant  la règle
+F<sortie-greg-equi>  le résultat  attendu des  conversions, en  utilisant  la règle
 astronomique de l'équinoxe d'automne.
 
 =back
@@ -42,16 +42,16 @@ républicain, S<j'utilise :>
 
 =item *
 
-F<ent-greg> suite de commandes C<3> et de dates C<22 9 1792>
+F<entree-greg> suite de commandes C<3> et de dates C<22 9 1792>
 
 =item *
 
-F<sort-rep-arith>  le résultat attendu  des conversions,  en utilisant  la règle
+F<sortie-rep-arith>  le résultat attendu  des conversions,  en utilisant  la règle
 arithmétique de Romme
 
 =item *
 
-F<sort-rep-equi>  le résultat  attendu des  conversions, en  utilisant  la règle
+F<sortie-rep-equi>  le résultat  attendu des  conversions, en  utilisant  la règle
 astronomique de l'équinoxe d'automne.
 
 =back

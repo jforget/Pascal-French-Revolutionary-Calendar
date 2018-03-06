@@ -24,7 +24,7 @@
 # GNU General Public License for more details.
 #
 
-../calfr --laconique --arith < ent-rep | diff - sort-greg-arith
+../calfr --laconique --arith < entree-rep | diff - sortie-greg-arith
 
 exit
 
