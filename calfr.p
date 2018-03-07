@@ -47,14 +47,15 @@ const
         ltitre=5;
         lmois=8;
 type
-        tdate=record
-                an:integer;
-                mois:integer;
-                jour:integer;
-                end;
-        ttab=array[1..diml,1..dimc] of char;
-        alpha6=array[1..6] of char;
-        alpha18=packed array[1..18] of char;
+   Tdate   = record
+                an   : integer;
+                mois : integer;
+                jour : integer;
+             end;    
+   ttab    = array[1..diml,1..dimc] of char;
+   alpha6  = array[1..6] of char;
+   alpha18 = packed array[1..18] of char;
+   Tvnd1   = function(an : integer) : integer;
 var
    action      : integer;
    c           : char;
@@ -62,6 +63,7 @@ var
    theopts     : array [1..7] of TOption;
    mode_dial   : boolean;
    verbeux     : boolean;
+   vnd1        : Tvnd1; { calcul du 1er vendémiaire }
 
 procedure convalpha(n:integer;var ch:alpha6);
 { conversion d'un nombre entier à 6 chiffres en chaîne alphanumérique (ou 5 chiffres si négatif) }
@@ -100,7 +102,10 @@ begin
       bissex := 1
 end;
 
-function equinoxe(annee:integer):integer;
+{ Calcul du 1er Vendémiaire avec la règle des équinoxes
+  (règle approximative, en attendant la règle définie par Reingold et Dershowitz)
+}
+function equinoxe(annee : integer) : integer;
 begin
 case annee mod 4 of
         0:      begin
@@ -134,6 +139,15 @@ case annee mod 4 of
                 then    equinoxe:=22;
                 end;
         end;
+end;
+
+{ Calcul du 1er Vendémiaire avec la règle arithmétique de Gilbert Romme }
+function regle_Romme(annee : integer) : integer;
+begin
+   if annee < 20 then
+      regle_Romme := equinoxe(annee)
+   else
+      regle_Romme := equinoxe(annee) { en attendant }
 end;
 
 function gregnum(date:tdate):integer;
@@ -181,50 +195,50 @@ date.mois:=(n-1) div 30 +1;
 date.jour:=1+(n-1) mod 30
 end;
 
-procedure gregrep(dategreg:tdate;var daterep:tdate);
 { convertit dategreg en daterep. }
+procedure gregrep(dategreg : Tdate; var daterep : Tdate);
 var
-        numero,eq:integer;{ écart entre date ou équinoxe, et le 0 janvier }
-        dateeq:tdate;
+   numero, eq : integer;{ écart entre date ou équinoxe, et le 0 janvier }
+   dateeq     : Tdate;
 begin
-numero:=gregnum(dategreg);
-dateeq.mois:=9;
-if numero>=265 { 21/09 bissextile, ou 22/09 normal }
-then    dateeq.an:=dategreg.an
-else    begin
-        dateeq.an:=dategreg.an-1;
-        numero:=numero+365+bissex(dateeq.an)
-        end;
-dateeq.jour:=equinoxe(dateeq.an);
-eq:=gregnum(dateeq);
-if eq>numero
-then    begin
-        dateeq.an:=dateeq.an-1;
-        dateeq.jour:=equinoxe(dateeq.an);
-        eq:=gregnum(dateeq);
-        numero:=numero+365+bissex(dateeq.an)
-        end;
-numrep(numero-eq+1,dateeq.an-1791,daterep)
+   numero := gregnum(dategreg);
+   dateeq.mois := 9;
+   if numero>=265 { 21/09 bissextile, ou 22/09 normal }
+   then
+      dateeq.an := dategreg.an
+   else begin
+      dateeq.an := dategreg.an - 1;
+      numero    := numero + 365 + bissex(dateeq.an)
+   end;
+   dateeq.jour := vnd1(dateeq.an);
+   eq := gregnum(dateeq);
+   if eq > numero then begin
+      dateeq.an   := dateeq.an - 1;
+      dateeq.jour := vnd1(dateeq.an);
+      eq     := gregnum(dateeq);
+      numero := numero + 365 + bissex(dateeq.an)
+   end;
+   numrep(numero - eq + 1, dateeq.an - 1791, daterep)
 end;
 
 procedure repgreg(daterep:tdate;var dategreg:tdate);
 var
-        dateeq:tdate;
-        annee,numero,eq:integer;
+   dateeq            : Tdate;
+   annee, numero, eq : integer;
 begin
-numero:=repnum(daterep);
-dateeq.an:=daterep.an+1791;
-dateeq.mois:=9;
-dateeq.jour:=equinoxe(dateeq.an);
-eq:=gregnum(dateeq);
-numero:=numero+eq-1;
-if numero>365+bissex(dateeq.an)
-then    begin
-        annee:=daterep.an+1792;
-        numero:=numero-365-bissex(dateeq.an);
-        end
-else    annee:=daterep.an+1791;
-numgreg(numero,annee,dategreg);
+   numero      := repnum(daterep);
+   dateeq.an   := daterep.an + 1791;
+   dateeq.mois := 9;
+   dateeq.jour := vnd1(dateeq.an);
+   eq := gregnum(dateeq);
+   numero := numero + eq - 1;
+   if numero > 365 + bissex(dateeq.an) then begin
+      annee  := daterep.an + 1792;
+      numero := numero - 365 - bissex(dateeq.an);
+   end
+   else
+      annee := daterep.an + 1791;
+   numgreg(numero, annee, dategreg);
 end;
 
 function joursem(date:tdate):integer;
@@ -872,11 +886,13 @@ repeat
       writeln('2 : conversion de républicain en grégorien');
       writeln('3 : conversion de grégorien en républicain');
       writeln('4 : affichage du calendrier pour une année entière');
+      writeln('5 : utilisation de la règle astronomique des équinoxes');
+      writeln('6 : utilisation de la règle arithmétique de Romme');
    end;
    if demo
       then    n := 1
       else    read(n)
-         until (n >= 0) and (n <= 4);
+         until (n >= 0) and (n <= 6);
    menu := n;
 end;
 
@@ -910,7 +926,7 @@ writeln('{ La date est correcte, il n''y a donc pas de message d''erreur');
 writeln('Le programme répond alors }');
 writeln('       jeudi 22 septembre 1983');
 writeln('{ puis }');
-writeln('       quintidi 5 jour complémentaire CXCI');
+writeln('       quintidi 5 jour complémentaire CXCI, jour des récompenses');
 writeln('{ De nouveau, voici le menu : }');
 if menu(true, true) = 20 then writeln;
 writeln('{ Vous répondez : }');
@@ -1074,8 +1090,8 @@ var
    ch                 : alpha6;
 begin
    mode_dial := false;
-   debut := equinoxe(annee);
-   fin   := equinoxe(annee+1);
+   debut := vnd1(annee);
+   fin   := vnd1(annee+1);
    inittab(cal);
    eq.an   := annee;
    eq.mois := 9;
@@ -1114,6 +1130,7 @@ end;
 
 begin
 
+   vnd1 := @equinoxe;
    { spécification des arguments de ligne de commande }
    with theopts[1] do
    begin
@@ -1166,24 +1183,26 @@ begin
  
    { analyse et traitement des arguments de ligne de commande }
    mode_dial := true;
-   verbeux   := false;
+   verbeux   := true;
    c := #0;
    repeat
       c := getlongopts('r:g:c:eal' , @theopts[1], optionindex);
       case c of
         #0 : begin
            case optionindex of
-             1: convrepgreg(decode_aaaammjj(optarg)) ;
-             2: convgregrep(decode_aaaammjj(optarg)) ;
-             3: calend(Numb2Dec(optarg, 10));
-             6: verbeux := false;
+             1 : convrepgreg(decode_aaaammjj(optarg)) ;
+             2 : convgregrep(decode_aaaammjj(optarg)) ;
+             3 : calend(Numb2Dec(optarg, 10));
+             4 : vnd1 := @equinoxe;
+             5 : vnd1 := @regle_Romme;
+             6 : verbeux := false;
            end;
         end;   
         'r': convrepgreg(decode_aaaammjj(optarg)) ;
         'g': convgregrep(decode_aaaammjj(optarg)) ;
         'c': calend(Numb2Dec(optarg, 10));
-        'e': writeln( 'Option e ' );
-        'a': writeln( 'Option a ' );
+        'e': vnd1 := @equinoxe;
+        'a': vnd1 := @regle_Romme;
         'l': verbeux := false;
         '?' , ':' : writeln('Erreur avec l''option : ', optopt);
       end ; { case }
@@ -1193,10 +1212,20 @@ begin
          action := menu(false, verbeux);
          if action > 0
             then case action of
-              1 : demonstration;
-              2 : convrepgreg(demande_date(verbeux));
-              3 : convgregrep(demande_date(verbeux));
-              4 : calend(demande_annee('année ? (n''oubliez pas de positionner le papier en début de page) ', verbeux));
+              1    : demonstration;
+              2    : convrepgreg(demande_date(verbeux));
+              3    : convgregrep(demande_date(verbeux));
+              4    : calend(demande_annee('année ? (n''oubliez pas de positionner le papier en début de page) ', verbeux));
+              5    : begin
+                        if verbeux then
+                           writeln('Règle astronomique des équinoxes');
+                        vnd1 := @equinoxe;
+                     end;
+              6    : begin
+                        if verbeux then
+                           writeln('Règle arithmétique de Romme');
+                        vnd1 := @regle_Romme;
+                     end;
             end;
       until action=0;
 end.
