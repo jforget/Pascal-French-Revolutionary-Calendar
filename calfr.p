@@ -87,16 +87,17 @@ if negatif
 then    ch[i]:='-';
 end;
 
+{ rend 1 si l'année grégorienne est bissextile, et 0 sinon. }
 function bissex(an:integer):integer;
-{ rend 1 si l'année est bissextile, et 0 sinon. }
 begin
-if an mod 400 = 0
-then    bissex:=1
-else    if an mod 100 = 0
-        then    bissex:=0
-        else    if an mod 4 = 0
-                then    bissex:=1
-                else    bissex:=0
+   if an mod 4 <> 0 then
+      bissex := 0
+   else if an mod 100 <> 0 then
+      bissex := 1
+   else if an mod 400 <> 0 then
+      bissex := 0
+   else
+      bissex := 1
 end;
 
 function equinoxe(annee:integer):integer;
