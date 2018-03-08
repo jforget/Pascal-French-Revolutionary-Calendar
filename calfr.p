@@ -141,13 +141,43 @@ case annee mod 4 of
         end;
 end;
 
+{ Nombre de "jours complémentaires 6" jusqu'à l'année demandée (année grégorienne)
+
+À ne pas utiliser avant l'an XX, soit 1811, date prévue pour mettre en vigueur
+la règle de Romme.
+}
+function nb_jc6(annee : integer) : integer;
+begin
+   annee  := annee - 1792;
+   nb_jc6 :=   annee div    4
+             - annee div  100
+             + annee div  400
+             - annee div 4000;
+end; { nb_jc6 }
+
+{ Nombre de "29 février" jusqu'à l'année demandée (année grégorienne)
+
+Il s'agit de compter les "29 février" dans le calendrier grégorien *proleptique*,
+c'est-à-dire un calendrier qui applique la règle bissextile depuis le début (an 1)
+et qui coïncide avec le calendrier grégorien à partir de 1582.
+
+La plage d'utilisation est à partir de l'année 1811 (an XX), date de la mise en vigueur
+de la règle de Romme.
+}
+function nb_f29(annee : integer) : integer;
+begin
+   nb_f29 :=   annee div    4
+             - annee div  100
+             + annee div  400;
+end; { nb_f29 }
+
 { Calcul du 1er Vendémiaire avec la règle arithmétique de Gilbert Romme }
 function regle_Romme(annee : integer) : integer;
 begin
-   if annee < 20 then
+   if annee < 1811 then
       regle_Romme := equinoxe(annee)
    else
-      regle_Romme := equinoxe(annee) { en attendant }
+      regle_Romme := 457 + nb_jc6(annee) - nb_f29(annee);
 end;
 
 function gregnum(date:tdate):integer;
@@ -911,6 +941,12 @@ writeln('Pour la conversion dans l''autre sens, avec l''exemple du 9 Thermidor a
 writeln('       calfr --rep=21109');
 writeln('(Thermidor étant le 11e mois du calendrier républicain). Ou plus simplement :');
 writeln('       calfr -r21109');
+writeln('À partir de l''an XX (1811) vous avez le choix entre l''algorithme arithmétique ');
+writeln('de Gilbert Romme ou l''algorithme astronomique basé sur l''équinoxe d''automne.');
+writeln('Utilisez le paramètre "-e" ou "-a" pour choisir l''un ou l''autre. Par exemple, ');
+writeln('pour obtenir les deux conversions possibles du premier janvier 2000, astronomique');
+writeln('puis arithmétique, tapez :');
+writeln('       calfr -e -g20000101 -a -g20000101');
 writeln;
 writeln('               Mode Dialogue');
 writeln('{ Tout ce qui est entre accolades est un commentaire du programme');

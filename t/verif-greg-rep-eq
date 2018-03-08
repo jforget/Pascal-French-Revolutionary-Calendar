@@ -24,7 +24,7 @@
 # GNU General Public License for more details.
 #
 
-../calfr --laconique --arith < entree-greg | diff - sortie-rep-equi
+../calfr --laconique --equinox < entree-greg | diff - sortie-rep-equi
 
 exit
 
