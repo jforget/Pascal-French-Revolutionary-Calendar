@@ -271,23 +271,25 @@ begin
    numgreg(numero, annee, dategreg);
 end;
 
-function joursem(date:tdate):integer;
-var
-        n,ans,siecle:integer;
+{ calcule le jour de la semaine sous la forme d'un nombre de 0 (=lundi) à 6 (=dimanche) }
+function joursem(date : Tdate) : integer;
 begin
-ans:=(date.an-1) mod 100;
-siecle:=1+(date.an-1) div 100;
-if (siecle>=18) and (siecle<=22)
-then    case siecle of
-                18: n := 4;
-                19: n := 2;
-                20: n := 0;
-                21: n := 6;
-                22: n := 4;
-                end;
-n:=n+ans+ans div 4;
-joursem:=(n+gregnum(date)) mod 7;
+   joursem := (date.an + nb_f29(date.an-1) + gregnum(date) + 5) mod 7;
 end;
+
+{ Jour de la semaine, cette fois-ci en tant que chaîne de caractères }
+function jour_semaine(date : Tdate) : string;
+begin
+  case joursem(date) of
+    0 : jour_semaine := 'lundi';
+    1 : jour_semaine := 'mardi';
+    2 : jour_semaine := 'mercredi';
+    3 : jour_semaine := 'jeudi';
+    4 : jour_semaine := 'vendredi';
+    5 : jour_semaine := 'samedi';
+    6 : jour_semaine := 'dimanche';
+  end; { case }
+end; { jour_semaine }
 
 { Jour de la décade (au lieu de la semaine) }
 function jour_decade(date :  Tdate) : string;
@@ -873,16 +875,7 @@ end;
 
 procedure affgreg(date:tdate);
 begin
-case joursem(date) of
-        0: write('lundi ');
-        1: write('mardi ');
-        2: write('mercredi ');
-        3: write('jeudi ');
-        4: write('vendredi ');
-        5: write('samedi ');
-        6: write('dimanche ');
-        end;
-write(date.jour:2);
+write(jour_semaine(date), ' ', date.jour:2);
 case date.mois of
          1: write(' janvier ');
          2: write(' février ');
