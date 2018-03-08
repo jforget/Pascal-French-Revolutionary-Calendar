@@ -741,20 +741,18 @@ begin
    else if n = 1 then
       date.jour := ord(ch[n]) - ord('0')
    else
-      date.jour := 1;
+      date.jour := 0;
 
    if n >= 4 then
       date.mois := 10 * (ord(ch[n-3]) - ord('0')) + ord(ch[n-2]) - ord('0')
    else if n = 3 then
       date.mois := ord(ch[n-2]) - ord('0')
    else
-      date.mois := 1;
+      date.mois := 0;
 
    date.an   := 0;
    for i := 1 to n - 4 do
       date.an := 10 * date.an + ord(ch[i]) - ord('0');
-   if date.an = 0 then
-      date.an := 1;
 
    decode_aaaammjj := date;
 end; { decode_aaaammjj }
@@ -769,83 +767,80 @@ var
 begin
    ver    := true;
    erreur := '';
-   if (date.mois < 1)
+   if date.mois < 1
       then begin
          ver    := false;
          erreur := 'mois zéro incorrect';
       end
-   else if (date.mois > 13)
+   else if date.mois > 13
       then begin
          ver    := false;
-         erreur := 'mois 14 ou plus incorrect';
+         erreur := Dec2Numb(date.mois, 2, 10) + ' : mois incorrect, doit être ≤ 12 pour un mois normal, = 13 pour les jours complémentaires';
       end
-   else if (date.jour < 1)
+   else if date.jour < 1
       then begin
          ver    := false;
          erreur := 'jour zéro incorrect';
       end
-   else if ((date.jour > 30) and (date.mois < 13))
+   else if (date.jour > 30) and (date.mois < 13)
       then begin
          ver    := false;
-         erreur := 'jour 31 ou plus incorrect';
+         erreur :=  Dec2Numb(date.jour, 2, 10) + ' : jour incorrect, doit être ≤ 30';
       end
-   else if ((date.jour > 6) and (date.mois = 13))
+   else if (date.jour > 6) and (date.mois = 13)
       then begin
          ver    := false;
-         erreur := 'jour complémentaire 7 ou plus incorrect';
+         erreur := Dec2Numb(date.jour, 1, 10) + ' : jour complémentaire incorrect, doit être ≤ 6';
       end
-   else if (date.an < 1) or (date.an > 407)
+   else if date.an < 1
       then begin
          ver    := false;
-         erreur := 'année en dehors de la plage autorisée';
+         erreur := 'impossible de traiter une date antérieure au début du calendrier républicain';
       end;
    verif_rep:=ver;
 end;
 
-{ Contrôle de cohérence des éléments de la date républicaine.
-
-  En faisant l'impasse sur les jours antérieurs au 22 septembre 1792.
-}
+{ Contrôle de cohérence des éléments de la date républicaine. }
 function verif_greg(date : Tdate; var erreur: string): boolean;
 var
    ver : boolean;
 begin
    ver    := true;
    erreur := '';
-   if (date.mois < 1)
+   if date.mois < 1
       then begin
          ver    := false;
          erreur := 'mois zéro incorrect';
       end
-   else if (date.mois > 12)
+   else if date.mois > 12
       then begin
          ver    := false;
-         erreur := 'mois 13 ou plus incorrect';
+         erreur := Dec2Numb(date.mois, 2, 10) + ' : mois incorrect, doit être ≤ 12';
       end
-   else if (date.jour < 1)
+   else if date.jour < 1
       then begin
          ver    := false;
          erreur := 'jour zéro incorrect';
       end
-   else if (date.an < 1792) or (date.an > 2199)
-      then begin
-         ver    := false;
-         erreur := 'année en dehors de la plage autorisée';
-      end
    else if (date.mois in [4, 6, 9, 11]) and (date.jour > 30)
       then begin
          ver    := false;
-         erreur := 'jour incorrect pour un mois à 30 jours';
+         erreur := Dec2Numb(date.jour, 2, 10) + ' : jour incorrect pour un mois à 30 jours';
       end
    else if (date.mois <> 2) and (date.jour > 31)
       then begin
          ver    := false;
-         erreur := 'jour incorrect pour un mois à 31 jours';
+         erreur := Dec2Numb(date.jour, 2, 10) + ' : jour incorrect pour un mois à 31 jours';
       end
    else if (date.mois = 2) and  (date.jour > 28 + bissex(date.an))
       then begin
          ver    := false;
-         erreur := 'jour incorrect pour février';
+         erreur := Dec2Numb(date.jour, 2, 10) + ' : jour incorrect pour février';
+      end
+   else if (10000 * date.an + 100 * date.mois + date.jour) < 17920922
+      then begin
+         ver    := false;
+         erreur := 'impossible de traiter une date antérieure au 22 septembre 1792';
       end;
    verif_greg := ver;
 end;
