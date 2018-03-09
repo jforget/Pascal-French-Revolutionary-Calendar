@@ -225,7 +225,7 @@ date.mois:=(n-1) div 30 +1;
 date.jour:=1+(n-1) mod 30
 end;
 
-{ convertit dategreg en daterep. }
+{ convertit dategreg dans le calendrier républicain. }
 function greg_rep(dategreg : Tdate) : Tdate;
 var
    numero, eq : integer;{ écart entre date ou équinoxe, et le 0 janvier }
@@ -288,7 +288,7 @@ begin
 end; { jour_semaine }
 
 { Jour de la décade (au lieu de la semaine) }
-function jour_decade(date :  Tdate) : string;
+function jour_decade(date : Tdate) : string;
 begin
    case date.jour mod 10 of
       0 : jour_decade := 'Décadi'; { éh oui, c'est la différence entre le modulo
@@ -694,7 +694,6 @@ begin
    fete_du_jour := 'jour ' + ch;
 end;
 
-
 { Fonction demandant une année à l'utilisateur }
 function demande_annee(annonce : String; verbeux : boolean) : integer;
 begin
@@ -719,7 +718,7 @@ end; { demande_date }
   Pas de contrôle de cohérence de la date. D'autant plus que cela sert aussi bien pour les
   dates grégoriennes (avec jusqu'à 31 jours par mois, mais seulement 12 mois) que pour les
   dates républicaines (jamais plus de 30 jours par mois, mais il existe un pseudo-mois 13,
-  les jours complémentaires.
+  les jours complémentaires).
 }
 function decode_aaaammjj(ch: string): Tdate;
 var
@@ -798,7 +797,7 @@ begin
    verif_rep:=ver;
 end;
 
-{ Contrôle de cohérence des éléments de la date républicaine. }
+{ Contrôle de cohérence des éléments de la date grégorienne. }
 function verif_greg(date : Tdate; var erreur: string): boolean;
 var
    ver : boolean;
@@ -1150,7 +1149,7 @@ end;
 
 begin
 
-   vnd1 := @equinoxe;
+   vnd1 := @regle_Romme;
    { spécification des arguments de ligne de commande }
    with theopts[1] do
    begin
@@ -1370,7 +1369,7 @@ Input date given in the Gregorian calendar. Use a YYYYMMDD format.
 
 Print  the calendar  for  a whole  year.  The input  parameter is  the
 Gregorian  date  corresponding  to   the  first  part  of  the  French
-Revolutionary yer.  For example use  C<--calend=1792> for year  I, use
+Revolutionary year. For example use  C<--calend=1792> for year  I, use
 C<--calend=2017> for year CCXXVI.
 
 =item equinox
@@ -1385,6 +1384,17 @@ leap years in the French  Revolutionary calendar are determined with a
 set of modulo rules similar to the Gregorian calendar.
 
 Yet, before year XX, the equinox rule is in effect.
+
+By default, the program uses Gilbert Romme's arithmetic rule.
+
+=item laconique
+
+Without this  option, if  no C<repub>, no  C<gregor> and  no C<calend>
+parameters are given, the program  runs in dialog mode, prompting user
+for input and  writing the result. With this  option, the program runs
+in "Unix  pipeline mode",  taking values from  the standard  input and
+writing the results  to the standard output.  The  difference with the
+dialog mode is that the program does not prompt for input values.
 
 =back
 
@@ -1428,7 +1438,7 @@ Select the equinox rule.
 
 =item 6
 
-Select the arithmetic (Romme) rule. Not coded yet.
+Select the arithmetic (Romme) rule.
 
 =back
 
@@ -1461,10 +1471,9 @@ processed  by the program  as C<VendÂ©miaire>  and C<DÂ©cadi>.   For a
 end-user it seems fine, but if  you want to dig within the program you
 will not be able to do proper string processing.
 
-The arithmetic rule is not coded yet.
-
 The equinox rule has not been  compared with a reliable source such as
-Reingold and Dershowitz's I<Calendar Calculations>.
+Reingold  and Dershowitz's  I<Calendar  Calculations>. And  it may  be
+wildly inaccurate, especially when converting dates in the far future.
 
 =head1 AUTHOR
 
