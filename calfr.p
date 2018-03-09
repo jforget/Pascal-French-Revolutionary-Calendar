@@ -226,29 +226,25 @@ date.jour:=1+(n-1) mod 30
 end;
 
 { convertit dategreg en daterep. }
-procedure gregrep(dategreg : Tdate; var daterep : Tdate);
+function greg_rep(dategreg : Tdate) : Tdate;
 var
    numero, eq : integer;{ écart entre date ou équinoxe, et le 0 janvier }
    dateeq     : Tdate;
+   daterep    : Tdate;
 begin
-   numero := gregnum(dategreg);
+   dateeq.an   := dategreg.an;
    dateeq.mois := 9;
-   if numero>=265 { 21/09 bissextile, ou 22/09 normal }
-   then
-      dateeq.an := dategreg.an
-   else begin
-      dateeq.an := dategreg.an - 1;
-      numero    := numero + 365 + bissex(dateeq.an)
-   end;
    dateeq.jour := vnd1(dateeq.an);
-   eq := gregnum(dateeq);
+   eq     := gregnum(dateeq);
+   numero := gregnum(dategreg);
    if eq > numero then begin
       dateeq.an   := dateeq.an - 1;
       dateeq.jour := vnd1(dateeq.an);
       eq     := gregnum(dateeq);
       numero := numero + 365 + bissex(dateeq.an)
    end;
-   numrep(numero - eq + 1, dateeq.an - 1791, daterep)
+   numrep(numero - eq + 1, dateeq.an - 1791, daterep);
+   greg_rep := daterep;
 end;
 
 procedure repgreg(daterep:tdate;var dategreg:tdate);
@@ -995,7 +991,7 @@ begin
    mode_dial := false;
    if verif_greg(dategreg, erreur)
       then begin
-         gregrep(dategreg, daterep);
+         daterep := greg_rep(dategreg);
          affgreg(dategreg);
          aff_rep(daterep);
       end
