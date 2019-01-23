@@ -1,0 +1,106 @@
+#!/bin/sh
+# -*- encoding: utf-8; indent-tabs-mode: nil -*-
+#
+# Test de la conversion du calendrier républicain vers le calendrier grégorien, avec la règle des équinoxes
+# Checking the conversion French Revolutionary to Gregorian, using the equinox rule.
+#
+# (c) 2019 Jean Forget, tous droits réservés
+# (c) 2019 Jean Forget, all rights reserved.
+#
+# Author: Jean Forget
+# Maintainer: Jean Forget
+# Keywords: French Revolution, calendar, checking, test suite
+#
+# This program is free software; you can redistribute it and modify
+# it under the terms of Perl:
+# -- either the GNU General Public License as published by
+#    the Free Software Foundation; version 1, or (at your option)
+#    any later version,
+# -- or the Artistic Licence.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+
+../calfr --laconique --equi < entree-astro-rg | diff - sortie-astro-rg
+
+exit
+
+=encoding utf8
+
+=head1 NAME / NOM
+
+verif1-rep-eq-greg -- program to check the conversion French Revolutionary to Gregorian, using the equinox rule.
+verif1-rep-eq-greg -- test de la conversion du calendrier républicain vers le calendrier grégorien, avec la règle des équinoxes
+
+=head1 UTILISATION
+
+  verif1-rep-eq-greg
+
+=head1 CALL PARAMETERS / PARAMÈTRES D'APPEL
+
+No call parameters.
+
+Aucun paramètre d'appel.
+
+=head1 DESCRIPTION
+
+This program  feeds a series of  conversion commands and  dates to the
+C<calfr> program, collects the standard output and compares it to what
+should be produced. If no difference is found the check succeeds.
+
+The program  checks each year during  6 millenia. The test  data files
+have been generated with a  script embedding Dershowitz and Reingold's
+F<calendrica-3.0.cl>.
+
+Ce programme fournit une série  de commandes de conversion et de dates
+au programme C<calfr>, récupère la  sortie standard et la compare avec
+ce qui est attendu. Le test réussit s'il n'y a aucune différence.
+
+Ce programme teste chaque année sur  une période de 6 millénaires. Les
+fichiers  de tests  ont été  générés par  un script  faisant appel  au
+programme F<calendrica-3.0.cl> de Dershowitz et Reingold.
+
+=head1 CONFIGURATION ET ENVIRONNEMENT
+
+None.
+
+Néant.
+
+=head1 DEPENDENCIES / DÉPENDANCES
+
+None.
+
+Néant.
+
+=head1 INCOMPATIBILITIES / INCOMPATIBILITÉS
+
+No known incompatibilities.
+
+Aucune incompatibilité identifiée.
+
+=head1 BUGS AND LIMITS / BOGUES ET LIMITES
+
+No known bugs.
+
+Aucune erreur identifiée.
+
+=head1 AUTHOR / AUTEUR
+
+Jean Forget, JFORGET (à) cpan.org
+
+=head1 LICENSE AND COPYRIGHT / LICENCE ET COPYRIGHT
+
+(C) 2019 Jean Forget, all rights reserved.
+
+The  terms of  license for  this script  are the  same as  Perl's: GNU
+General Public License (GPL) and Artistic License.
+
+(C) 2019 Jean Forget, tous droits réservés.
+
+Les termes  de licence  de ce  script sont les  mêmes termes  que pour
+S<Perl :> GNU General Public License (GPL) et Artistic License.
+
+=cut
