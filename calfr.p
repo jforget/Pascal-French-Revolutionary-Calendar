@@ -4,7 +4,7 @@ program calendrier(input,output);
  voici une réalisation de Jean Forget,
 un programme de conversion entre calendriers républicain & grégorien
 Program to convert Gregorian dates into French Revolutionary dates or the other way.
-Copyright (C) 1983, 1984, 2018 Jean Forget
+Copyright (C) 1983, 1984, 2018, 2019 Jean Forget
 
 Ce programme est distribué sous les mêmes termes que Perl 5.16.3 :
 Licence publique GPL version 1 ou ultérieure et Licence Artistique Perl.
@@ -103,42 +103,816 @@ begin
 end;
 
 { Calcul du 1er Vendémiaire avec la règle des équinoxes
-  (règle approximative, en attendant la règle définie par Reingold et Dershowitz)
+  (règle définie par Reingold et Dershowitz, mais calculée une bonne fois pour toutes au lieu d'être recalculée à chaque fois)
 }
 function equinoxe(annee : integer) : integer;
 begin
 case annee mod 4 of
-        0:      begin
-                equinoxe:=22;
-                if (annee=2092) or (annee=2096)
-                then    equinoxe:=21;
-                if ((annee>=1800) and (annee<=1836))
-                        or ((annee>=1900) and (annee<=1964))
-                then    equinoxe:=23;
-                end;
-        1:      begin
-                if annee<=1993
-                then    equinoxe:=23
-                else    equinoxe:=22;
-                if (annee<=1797) or ((annee>=1873) and (annee<=1897))
-                then    equinoxe:=22;
-                if (annee>=2101) and (annee<=2121)
-                then    equinoxe:=23;
-                end;
-        2:      begin
-                equinoxe:=23;
-                if (annee<=1798) or ((annee>=2030) and (annee<=2098))
-                        or (annee>=2154)
-                then    equinoxe:=22;
-                end;
-        3:      begin
-                equinoxe:=23;
-                if (annee=1803) or ((annee>=1903) and (annee<=1931))
-                then    equinoxe:=24;
-                if ((annee>=2059) and (annee<=2099)) or (annee>=2187)
-                then    equinoxe:=22;
-                end;
-        end;
+   0: begin
+         equinoxe := 21;
+         if (annee >= 1792) and (annee <= 1796) then
+            equinoxe := 22
+         else if (annee >= 1800) and (annee <= 1836) then
+            equinoxe := 23
+         else if (annee >= 1840) and (annee <= 1896) then
+            equinoxe := 22
+         else if (annee >= 1900) and (annee <= 1964) then
+            equinoxe := 23
+         else if (annee >= 1968) and (annee <= 2088) then
+            equinoxe := 22
+         else if (annee >= 2100) and (annee <= 2196) then
+            equinoxe := 22
+         else if (annee >= 2200) and (annee <= 2212) then
+            equinoxe := 23
+         else if (annee >= 2216) and (annee <= 2296) then
+            equinoxe := 22
+         else if (annee >= 2300) and (annee <= 2336) then
+            equinoxe := 23
+         else if (annee >= 2340) and (annee <= 2456) then
+            equinoxe := 22
+         else if (annee >= 2500) and (annee <= 2580) then
+            equinoxe := 22
+         else if (annee >= 2600) and (annee <= 2696) then
+            equinoxe := 22
+         else if (annee >= 2700) and (annee <= 2704) then
+            equinoxe := 23
+         else if (annee >= 2708) and (annee <= 2820) then
+            equinoxe := 22
+         else if (annee >= 2900) and (annee <= 2948) then
+            equinoxe := 22
+         else if (annee >= 3000) and (annee <= 3072) then
+            equinoxe := 22
+         else if (annee >= 3100) and (annee <= 3176) then
+            equinoxe := 22
+         else if (annee = 3300) then
+            equinoxe := 22
+         else if (annee >= 3400) and (annee <= 3420) then
+            equinoxe := 22
+         else if (annee >= 3500) and (annee <= 3544) then
+            equinoxe := 22
+         else if (annee >= 3668) and (annee <= 3696) then
+            equinoxe := 20
+         else if (annee >= 3788) and (annee <= 3796) then
+            equinoxe := 20
+         else if (annee >= 3900) and (annee <= 3908) then
+            equinoxe := 22
+         else if (annee >= 4028) and (annee <= 4096) then
+            equinoxe := 20
+         else if (annee >= 4136) and (annee <= 4196) then
+            equinoxe := 20
+         else if (annee >= 4244) and (annee <= 4296) then
+            equinoxe := 20
+         else if (annee >= 4364) and (annee <= 4476) then
+            equinoxe := 20
+         else if (annee >= 4480) and (annee <= 4496) then
+            equinoxe := 19
+         else if (annee >= 4500) and (annee <= 4596) then
+            equinoxe := 20
+         else if (annee >= 4608) and (annee <= 4696) then
+            equinoxe := 20
+         else if (annee >= 4712) and (annee <= 4824) then
+            equinoxe := 20
+         else if (annee >= 4828) and (annee <= 4896) then
+            equinoxe := 19
+         else if (annee >= 4900) and (annee <= 4944) then
+            equinoxe := 20
+         else if (annee >= 4948) and (annee <= 4996) then
+            equinoxe := 19
+         else if (annee >= 5000) and (annee <= 5056) then
+            equinoxe := 20
+         else if (annee >= 5060) and (annee <= 5096) then
+            equinoxe := 19
+         else if (annee >= 5100) and (annee <= 5164) then
+            equinoxe := 20
+         else if (annee >= 5168) and (annee <= 5272) then
+            equinoxe := 19
+         else if (annee = 5276) then
+            equinoxe := 18
+         else if (annee = 5280) then
+            equinoxe := 19
+         else if (annee >= 5284) and (annee <= 5296) then
+            equinoxe := 18
+         else if (annee >= 5300) and (annee <= 5384) then
+            equinoxe := 19
+         else if (annee = 5388) then
+            equinoxe := 18
+         else if (annee = 5392) then
+            equinoxe := 19
+         else if (annee = 5396) then
+            equinoxe := 18
+         else if (annee >= 5400) and (annee <= 5628) then
+            equinoxe := 19
+         else if (annee = 5632) then
+            equinoxe := 18
+         else if (annee = 5636) then
+            equinoxe := 19
+         else if (annee >= 5640) and (annee <= 5696) then
+            equinoxe := 18
+         else if (annee >= 5700) and (annee <= 5724) then
+            equinoxe := 19
+         else if (annee = 5728) then
+            equinoxe := 18
+         else if (annee = 5732) then
+            equinoxe := 19
+         else if (annee >= 5736) and (annee <= 5796) then
+            equinoxe := 18
+         else if (annee >= 5800) and (annee <= 5852) then
+            equinoxe := 19
+         else if (annee >= 5856) and (annee <= 5896) then
+            equinoxe := 18
+         else if (annee >= 5900) and (annee <= 5948) then
+            equinoxe := 19
+         else if (annee >= 5952) and (annee <= 6060) then
+            equinoxe := 18
+         else if (annee >= 6064) and (annee <= 6096) then
+            equinoxe := 17
+         else if (annee >= 6100) and (annee <= 6172) then
+            equinoxe := 18
+         else if (annee >= 6176) and (annee <= 6196) then
+            equinoxe := 17
+         else if (annee >= 6200) and (annee <= 6292) then
+            equinoxe := 18
+         else if (annee = 6296) then
+            equinoxe := 17
+         else if (annee = 6300) then
+            equinoxe := 19
+         else if (annee >= 6304) and (annee <= 6416) then
+            equinoxe := 18
+         else if (annee >= 6420) and (annee <= 6496) then
+            equinoxe := 17
+         else if (annee >= 6500) and (annee <= 6520) then
+            equinoxe := 18
+         else if (annee = 6524) then
+            equinoxe := 17
+         else if (annee = 6528) then
+            equinoxe := 18
+         else if (annee >= 6532) and (annee <= 6596) then
+            equinoxe := 17
+         else if (annee >= 6600) and (annee <= 6632) then
+            equinoxe := 18
+         else if (annee >= 6636) and (annee <= 6696) then
+            equinoxe := 17
+         else if (annee >= 6700) and (annee <= 6728) then
+            equinoxe := 18
+         else if (annee = 6732) then
+            equinoxe := 17
+         else if (annee = 6736) then
+            equinoxe := 18
+         else if (annee >= 6740) and (annee <= 6840) then
+            equinoxe := 17
+         else if (annee = 6844) then
+            equinoxe := 16
+         else if (annee = 6848) then
+            equinoxe := 17
+         else if (annee >= 6852) and (annee <= 6896) then
+            equinoxe := 16
+         else if (annee >= 6900) and (annee <= 6964) then
+            equinoxe := 17
+         else if (annee >= 6968) and (annee <= 6996) then
+            equinoxe := 16
+         else if (annee >= 7000) and (annee <= 7080) then
+            equinoxe := 17
+         else if (annee >= 7084) and (annee <= 7096) then
+            equinoxe := 16
+         else if (annee >= 7100) and (annee <= 7196) then
+            equinoxe := 17
+         else if (annee = 7200) then
+            equinoxe := 16
+         else if (annee = 7204) then
+            equinoxe := 17
+         else if (annee >= 7208) and (annee <= 7288) then
+            equinoxe := 16
+         else if (annee >= 7292) and (annee <= 7296) then
+            equinoxe := 15
+         else if (annee >= 7300) and (annee <= 7396) then
+            equinoxe := 16
+         else if (annee = 7400) then
+            equinoxe := 17
+         else if (annee >= 7404) and (annee <= 7408) then
+            equinoxe := 16
+         else if (annee = 7412) then
+            equinoxe := 17
+         else if (annee >= 7416) and (annee <= 7496) then
+            equinoxe := 16
+         else if (annee >= 7500) and (annee <= 7504) then
+            equinoxe := 17
+         else if (annee = 7508) then
+            equinoxe := 16
+         else if (annee >= 7512) and (annee <= 7516) then
+            equinoxe := 17
+         else if (annee >= 7520) and (annee <= 7636) then
+            equinoxe := 16
+         else if (annee >= 7640) and (annee <= 7696) then
+            equinoxe := 15
+         else if (annee >= 7700) and (annee <= 7748) then
+            equinoxe := 16
+         else if (annee = 7752) then
+            equinoxe := 15
+         else if (annee = 7756) then
+            equinoxe := 16
+         else if (annee >= 7760) and (annee <= 7792) then
+            equinoxe := 15
+      end;
+   1: begin
+         equinoxe := 17;
+         if (annee >= 1793) and (annee <= 1797) then
+            equinoxe := 22
+         else if (annee >= 1801) and (annee <= 1869) then
+            equinoxe := 23
+         else if (annee >= 1873) and (annee <= 1897) then
+            equinoxe := 22
+         else if (annee >= 1901) and (annee <= 1993) then
+            equinoxe := 23
+         else if (annee >= 1997) and (annee <= 2097) then
+            equinoxe := 22
+         else if (annee >= 2101) and (annee <= 2117) then
+            equinoxe := 23
+         else if (annee >= 2121) and (annee <= 2197) then
+            equinoxe := 22
+         else if (annee >= 2201) and (annee <= 2245) then
+            equinoxe := 23
+         else if (annee >= 2249) and (annee <= 2297) then
+            equinoxe := 22
+         else if (annee >= 2301) and (annee <= 2365) then
+            equinoxe := 23
+         else if (annee >= 2369) and (annee <= 2489) then
+            equinoxe := 22
+         else if (annee >= 2493) and (annee <= 2497) then
+            equinoxe := 21
+         else if (annee >= 2501) and (annee <= 2597) then
+            equinoxe := 22
+         else if (annee >= 2601) and (annee <= 2613) then
+            equinoxe := 23
+         else if (annee >= 2617) and (annee <= 2697) then
+            equinoxe := 22
+         else if (annee >= 2701) and (annee <= 2729) then
+            equinoxe := 23
+         else if (annee >= 2733) and (annee <= 2853) then
+            equinoxe := 22
+         else if (annee >= 2857) and (annee <= 2897) then
+            equinoxe := 21
+         else if (annee >= 2901) and (annee <= 2977) then
+            equinoxe := 22
+         else if (annee >= 2981) and (annee <= 2997) then
+            equinoxe := 21
+         else if (annee >= 3001) and (annee <= 3209) then
+            equinoxe := 22
+         else if (annee >= 3213) and (annee <= 3297) then
+            equinoxe := 21
+         else if (annee >= 3301) and (annee <= 3325) then
+            equinoxe := 22
+         else if (annee >= 3329) and (annee <= 3397) then
+            equinoxe := 21
+         else if (annee >= 3401) and (annee <= 3453) then
+            equinoxe := 22
+         else if (annee >= 3457) and (annee <= 3497) then
+            equinoxe := 21
+         else if (annee >= 3501) and (annee <= 3569) then
+            equinoxe := 22
+         else if (annee >= 3573) and (annee <= 3685) then
+            equinoxe := 21
+         else if (annee >= 3689) and (annee <= 3697) then
+            equinoxe := 20
+         else if (annee >= 3701) and (annee <= 3797) then
+            equinoxe := 21
+         else if (annee >= 3801) and (annee <= 3813) then
+            equinoxe := 22
+         else if (annee >= 3817) and (annee <= 3897) then
+            equinoxe := 21
+         else if (annee >= 3901) and (annee <= 3929) then
+            equinoxe := 22
+         else if (annee >= 3933) and (annee <= 4041) then
+            equinoxe := 21
+         else if (annee >= 4045) and (annee <= 4097) then
+            equinoxe := 20
+         else if (annee >= 4101) and (annee <= 4153) then
+            equinoxe := 21
+         else if (annee >= 4157) and (annee <= 4197) then
+            equinoxe := 20
+         else if (annee >= 4201) and (annee <= 4269) then
+            equinoxe := 21
+         else if (annee >= 4273) and (annee <= 4297) then
+            equinoxe := 20
+         else if (annee >= 4301) and (annee <= 4397) then
+            equinoxe := 21
+         else if (annee >= 4401) and (annee <= 4497) then
+            equinoxe := 20
+         else if (annee >= 4501) and (annee <= 4513) then
+            equinoxe := 21
+         else if (annee >= 4517) and (annee <= 4597) then
+            equinoxe := 20
+         else if (annee >= 4601) and (annee <= 4629) then
+            equinoxe := 21
+         else if (annee >= 4633) and (annee <= 4697) then
+            equinoxe := 20
+         else if (annee >= 4701) and (annee <= 4729) then
+            equinoxe := 21
+         else if (annee >= 4733) and (annee <= 4849) then
+            equinoxe := 20
+         else if (annee >= 4853) and (annee <= 4897) then
+            equinoxe := 19
+         else if (annee >= 4901) and (annee <= 4957) then
+            equinoxe := 20
+         else if (annee >= 4961) and (annee <= 4997) then
+            equinoxe := 19
+         else if (annee >= 5001) and (annee <= 5085) then
+            equinoxe := 20
+         else if (annee >= 5089) and (annee <= 5097) then
+            equinoxe := 19
+         else if (annee >= 5101) and (annee <= 5193) then
+            equinoxe := 20
+         else if (annee >= 5197) and (annee <= 5297) then
+            equinoxe := 19
+         else if (annee = 5301) then
+            equinoxe := 20
+         else if (annee = 5305) then
+            equinoxe := 19
+         else if (annee = 5309) then
+            equinoxe := 20
+         else if (annee >= 5313) and (annee <= 5397) then
+            equinoxe := 19
+         else if (annee >= 5401) and (annee <= 5413) then
+            equinoxe := 20
+         else if (annee = 5417) then
+            equinoxe := 19
+         else if (annee >= 5421) and (annee <= 5425) then
+            equinoxe := 20
+         else if (annee >= 5429) and (annee <= 5497) then
+            equinoxe := 19
+         else if (annee >= 5501) and (annee <= 5529) then
+            equinoxe := 20
+         else if (annee = 5533) then
+            equinoxe := 19
+         else if (annee = 5537) then
+            equinoxe := 20
+         else if (annee >= 5541) and (annee <= 5657) then
+            equinoxe := 19
+         else if (annee >= 5661) and (annee <= 5697) then
+            equinoxe := 18
+         else if (annee >= 5701) and (annee <= 5769) then
+            equinoxe := 19
+         else if (annee >= 5773) and (annee <= 5797) then
+            equinoxe := 18
+         else if (annee >= 5801) and (annee <= 5881) then
+            equinoxe := 19
+         else if (annee >= 5885) and (annee <= 5897) then
+            equinoxe := 18
+         else if (annee >= 5901) and (annee <= 5977) then
+            equinoxe := 19
+         else if (annee >= 5981) and (annee <= 6089) then
+            equinoxe := 18
+         else if (annee >= 6101) and (annee <= 6197) then
+            equinoxe := 18
+         else if (annee = 6201) then
+            equinoxe := 19
+         else if (annee >= 6205) and (annee <= 6209) then
+            equinoxe := 18
+         else if (annee = 6213) then
+            equinoxe := 19
+         else if (annee >= 6217) and (annee <= 6297) then
+            equinoxe := 18
+         else if (annee >= 6301) and (annee <= 6317) then
+            equinoxe := 19
+         else if (annee >= 6321) and (annee <= 6445) then
+            equinoxe := 18
+         else if (annee >= 6501) and (annee <= 6549) then
+            equinoxe := 18
+         else if (annee = 6557) then
+            equinoxe := 18
+         else if (annee >= 6601) and (annee <= 6641) then
+            equinoxe := 18
+         else if (annee >= 6701) and (annee <= 6765) then
+            equinoxe := 18
+         else if (annee = 6873) then
+            equinoxe := 16
+         else if (annee >= 6881) and (annee <= 6897) then
+            equinoxe := 16
+         else if (annee = 6985) then
+            equinoxe := 16
+         else if (annee >= 6993) and (annee <= 6997) then
+            equinoxe := 16
+         else if (annee >= 7101) and (annee <= 7113) then
+            equinoxe := 18
+         else if (annee = 7121) then
+            equinoxe := 18
+         else if (annee = 7229) then
+            equinoxe := 16
+         else if (annee >= 7237) and (annee <= 7297) then
+            equinoxe := 16
+         else if (annee >= 7305) and (annee <= 7309) then
+            equinoxe := 16
+         else if (annee >= 7317) and (annee <= 7397) then
+            equinoxe := 16
+         else if (annee = 7437) then
+            equinoxe := 16
+         else if (annee >= 7445) and (annee <= 7497) then
+            equinoxe := 16
+         else if (annee >= 7549) and (annee <= 7657) then
+            equinoxe := 16
+         else if (annee >= 7661) and (annee <= 7697) then
+            equinoxe := 15
+         else if (annee >= 7701) and (annee <= 7785) then
+            equinoxe := 16
+         else if (annee = 7789) then
+            equinoxe := 15
+      end;
+   2: begin
+         equinoxe := 22;
+         if (annee >= 1802) and (annee <= 2026) then
+            equinoxe := 23
+         else if (annee >= 2102) and (annee <= 2150) then
+            equinoxe := 23
+         else if (annee >= 2202) and (annee <= 2274) then
+            equinoxe := 23
+         else if (annee >= 2302) and (annee <= 2398) then
+            equinoxe := 23
+         else if (annee >= 2502) and (annee <= 2522) then
+            equinoxe := 23
+         else if (annee >= 2602) and (annee <= 2646) then
+            equinoxe := 23
+         else if (annee >= 2702) and (annee <= 2758) then
+            equinoxe := 23
+         else if (annee >= 2894) and (annee <= 2898) then
+            equinoxe := 21
+         else if (annee >= 3002) and (annee <= 3010) then
+            equinoxe := 23
+         else if (annee >= 3102) and (annee <= 3114) then
+            equinoxe := 23
+         else if (annee >= 3246) and (annee <= 3298) then
+            equinoxe := 21
+         else if (annee >= 3362) and (annee <= 3398) then
+            equinoxe := 21
+         else if (annee >= 3486) and (annee <= 3498) then
+            equinoxe := 21
+         else if (annee = 3602) then
+            equinoxe := 21
+         else if (annee >= 3610) and (annee <= 3698) then
+            equinoxe := 21
+         else if (annee >= 3726) and (annee <= 3798) then
+            equinoxe := 21
+         else if (annee >= 3846) and (annee <= 3898) then
+            equinoxe := 21
+         else if (annee >= 3962) and (annee <= 4062) then
+            equinoxe := 21
+         else if (annee >= 4066) and (annee <= 4098) then
+            equinoxe := 20
+         else if (annee >= 4102) and (annee <= 4182) then
+            equinoxe := 21
+         else if (annee >= 4186) and (annee <= 4198) then
+            equinoxe := 20
+         else if (annee >= 4202) and (annee <= 4298) then
+            equinoxe := 21
+         else if (annee >= 4310) and (annee <= 4426) then
+            equinoxe := 21
+         else if (annee >= 4430) and (annee <= 4498) then
+            equinoxe := 20
+         else if (annee >= 4502) and (annee <= 4542) then
+            equinoxe := 21
+         else if (annee >= 4546) and (annee <= 4598) then
+            equinoxe := 20
+         else if (annee >= 4602) and (annee <= 4654) then
+            equinoxe := 21
+         else if (annee >= 4658) and (annee <= 4698) then
+            equinoxe := 20
+         else if (annee >= 4702) and (annee <= 4758) then
+            equinoxe := 21
+         else if (annee >= 4762) and (annee <= 4878) then
+            equinoxe := 20
+         else if (annee = 4882) then
+            equinoxe := 19
+         else if (annee = 4886) then
+            equinoxe := 20
+         else if (annee >= 4890) and (annee <= 4898) then
+            equinoxe := 19
+         else if (annee >= 4902) and (annee <= 4986) then
+            equinoxe := 20
+         else if (annee >= 4990) and (annee <= 4998) then
+            equinoxe := 19
+         else if (annee >= 5002) and (annee <= 5098) then
+            equinoxe := 20
+         else if (annee >= 5102) and (annee <= 5114) then
+            equinoxe := 21
+         else if (annee = 5118) then
+            equinoxe := 20
+         else if (annee = 5122) then
+            equinoxe := 21
+         else if (annee >= 5126) and (annee <= 5218) then
+            equinoxe := 20
+         else if (annee >= 5222) and (annee <= 5298) then
+            equinoxe := 19
+         else if (annee >= 5302) and (annee <= 5326) then
+            equinoxe := 20
+         else if (annee >= 5330) and (annee <= 5398) then
+            equinoxe := 19
+         else if (annee >= 5402) and (annee <= 5454) then
+            equinoxe := 20
+         else if (annee >= 5458) and (annee <= 5498) then
+            equinoxe := 19
+         else if (annee >= 5502) and (annee <= 5566) then
+            equinoxe := 20
+         else if (annee >= 5570) and (annee <= 5670) then
+            equinoxe := 19
+         else if (annee >= 5674) and (annee <= 5698) then
+            equinoxe := 18
+         else if (annee >= 5702) and (annee <= 5802) then
+            equinoxe := 19
+         else if (annee >= 5806) and (annee <= 5810) then
+            equinoxe := 20
+         else if (annee >= 5814) and (annee <= 5886) then
+            equinoxe := 19
+         else if (annee >= 5890) and (annee <= 5898) then
+            equinoxe := 18
+         else if (annee >= 5902) and (annee <= 5990) then
+            equinoxe := 19
+         else if (annee = 5994) then
+            equinoxe := 18
+         else if (annee = 5998) then
+            equinoxe := 19
+         else if (annee >= 6002) and (annee <= 6098) then
+            equinoxe := 18
+         else if (annee >= 6102) and (annee <= 6122) then
+            equinoxe := 19
+         else if (annee = 6126) then
+            equinoxe := 18
+         else if (annee = 6130) then
+            equinoxe := 19
+         else if (annee >= 6134) and (annee <= 6198) then
+            equinoxe := 18
+         else if (annee >= 6202) and (annee <= 6234) then
+            equinoxe := 19
+         else if (annee = 6238) then
+            equinoxe := 18
+         else if (annee = 6242) then
+            equinoxe := 19
+         else if (annee >= 6246) and (annee <= 6298) then
+            equinoxe := 18
+         else if (annee >= 6302) and (annee <= 6346) then
+            equinoxe := 19
+         else if (annee >= 6350) and (annee <= 6474) then
+            equinoxe := 18
+         else if (annee >= 6478) and (annee <= 6498) then
+            equinoxe := 17
+         else if (annee >= 6502) and (annee <= 6586) then
+            equinoxe := 18
+         else if (annee >= 6590) and (annee <= 6598) then
+            equinoxe := 17
+         else if (annee >= 6602) and (annee <= 6666) then
+            equinoxe := 18
+         else if (annee >= 6670) and (annee <= 6698) then
+            equinoxe := 17
+         else if (annee >= 6702) and (annee <= 6794) then
+            equinoxe := 18
+         else if (annee >= 6798) and (annee <= 6802) then
+            equinoxe := 17
+         else if (annee = 6806) then
+            equinoxe := 18
+         else if (annee >= 6810) and (annee <= 6902) then
+            equinoxe := 17
+         else if (annee >= 6906) and (annee <= 6910) then
+            equinoxe := 18
+         else if (annee >= 6914) and (annee <= 6998) then
+            equinoxe := 17
+         else if (annee >= 7002) and (annee <= 7022) then
+            equinoxe := 18
+         else if (annee >= 7026) and (annee <= 7098) then
+            equinoxe := 17
+         else if (annee >= 7102) and (annee <= 7134) then
+            equinoxe := 18
+         else if (annee >= 7138) and (annee <= 7254) then
+            equinoxe := 17
+         else if (annee = 7258) then
+            equinoxe := 16
+         else if (annee = 7262) then
+            equinoxe := 17
+         else if (annee >= 7266) and (annee <= 7298) then
+            equinoxe := 16
+         else if (annee >= 7302) and (annee <= 7342) then
+            equinoxe := 17
+         else if (annee >= 7346) and (annee <= 7398) then
+            equinoxe := 16
+         else if (annee >= 7402) and (annee <= 7462) then
+            equinoxe := 17
+         else if (annee >= 7466) and (annee <= 7498) then
+            equinoxe := 16
+         else if (annee >= 7502) and (annee <= 7574) then
+            equinoxe := 17
+         else if (annee = 7578) then
+            equinoxe := 16
+         else if (annee = 7582) then
+            equinoxe := 17
+         else if (annee >= 7586) and (annee <= 7686) then
+            equinoxe := 16
+         else if (annee >= 7690) and (annee <= 7694) then
+            equinoxe := 15
+         else if (annee >= 7698) and (annee <= 7790) then
+            equinoxe := 16
+      end;
+   3: begin
+         equinoxe := 22;
+         if (annee >= 1795) and (annee <= 1799) then
+            equinoxe := 23
+         else if (annee = 1803) then
+            equinoxe := 24
+         else if (annee >= 1807) and (annee <= 1899) then
+            equinoxe := 23
+         else if (annee >= 1903) and (annee <= 1931) then
+            equinoxe := 24
+         else if (annee >= 1935) and (annee <= 2059) then
+            equinoxe := 23
+         else if (annee >= 2103) and (annee <= 2183) then
+            equinoxe := 23
+         else if (annee >= 2203) and (annee <= 2299) then
+            equinoxe := 23
+         else if (annee >= 2303) and (annee <= 2307) then
+            equinoxe := 24
+         else if (annee >= 2311) and (annee <= 2427) then
+            equinoxe := 23
+         else if (annee >= 2503) and (annee <= 2551) then
+            equinoxe := 23
+         else if (annee >= 2603) and (annee <= 2675) then
+            equinoxe := 23
+         else if (annee >= 2703) and (annee <= 2787) then
+            equinoxe := 23
+         else if (annee >= 2903) and (annee <= 2919) then
+            equinoxe := 23
+         else if (annee >= 3003) and (annee <= 3039) then
+            equinoxe := 23
+         else if (annee >= 3103) and (annee <= 3147) then
+            equinoxe := 23
+         else if (annee >= 3271) and (annee <= 3299) then
+            equinoxe := 21
+         else if (annee >= 3395) and (annee <= 3399) then
+            equinoxe := 21
+         else if (annee >= 3503) and (annee <= 3515) then
+            equinoxe := 23
+         else if (annee >= 3639) and (annee <= 3699) then
+            equinoxe := 21
+         else if (annee >= 3755) and (annee <= 3799) then
+            equinoxe := 21
+         else if (annee >= 3875) and (annee <= 3899) then
+            equinoxe := 21
+         else if (annee >= 3999) and (annee <= 4095) then
+            equinoxe := 21
+         else if (annee = 4099) then
+            equinoxe := 20
+         else if (annee >= 4107) and (annee <= 4199) then
+            equinoxe := 21
+         else if (annee >= 4223) and (annee <= 4299) then
+            equinoxe := 21
+         else if (annee >= 4343) and (annee <= 4447) then
+            equinoxe := 21
+         else if (annee >= 4451) and (annee <= 4499) then
+            equinoxe := 20
+         else if (annee >= 4503) and (annee <= 4567) then
+            equinoxe := 21
+         else if (annee >= 4571) and (annee <= 4599) then
+            equinoxe := 20
+         else if (annee >= 4603) and (annee <= 4691) then
+            equinoxe := 21
+         else if (annee >= 4695) and (annee <= 4699) then
+            equinoxe := 20
+         else if (annee >= 4703) and (annee <= 4795) then
+            equinoxe := 21
+         else if (annee >= 4799) and (annee <= 4899) then
+            equinoxe := 20
+         else if (annee >= 4903) and (annee <= 4911) then
+            equinoxe := 21
+         else if (annee >= 4915) and (annee <= 4999) then
+            equinoxe := 20
+         else if (annee >= 5003) and (annee <= 5015) then
+            equinoxe := 21
+         else if (annee >= 5019) and (annee <= 5099) then
+            equinoxe := 20
+         else if (annee >= 5103) and (annee <= 5139) then
+            equinoxe := 21
+         else if (annee >= 5143) and (annee <= 5243) then
+            equinoxe := 20
+         else if (annee = 5247) then
+            equinoxe := 19
+         else if (annee = 5251) then
+            equinoxe := 20
+         else if (annee >= 5255) and (annee <= 5299) then
+            equinoxe := 19
+         else if (annee >= 5303) and (annee <= 5355) then
+            equinoxe := 20
+         else if (annee = 5359) then
+            equinoxe := 19
+         else if (annee = 5363) then
+            equinoxe := 20
+         else if (annee >= 5367) and (annee <= 5399) then
+            equinoxe := 19
+         else if (annee >= 5403) and (annee <= 5483) then
+            equinoxe := 20
+         else if (annee >= 5487) and (annee <= 5499) then
+            equinoxe := 19
+         else if (annee >= 5503) and (annee <= 5595) then
+            equinoxe := 20
+         else if (annee >= 5599) and (annee <= 5691) then
+            equinoxe := 19
+         else if (annee >= 5695) and (annee <= 5699) then
+            equinoxe := 18
+         else if (annee >= 5703) and (annee <= 5799) then
+            equinoxe := 19
+         else if (annee >= 5803) and (annee <= 5823) then
+            equinoxe := 20
+         else if (annee >= 5827) and (annee <= 5899) then
+            equinoxe := 19
+         else if (annee >= 5903) and (annee <= 5907) then
+            equinoxe := 20
+         else if (annee = 5911) then
+            equinoxe := 19
+         else if (annee = 5915) then
+            equinoxe := 20
+         else if (annee >= 5919) and (annee <= 6019) then
+            equinoxe := 19
+         else if (annee = 6023) then
+            equinoxe := 18
+         else if (annee >= 6027) and (annee <= 6031) then
+            equinoxe := 19
+         else if (annee >= 6035) and (annee <= 6099) then
+            equinoxe := 18
+         else if (annee >= 6103) and (annee <= 6151) then
+            equinoxe := 19
+         else if (annee >= 6155) and (annee <= 6199) then
+            equinoxe := 18
+         else if (annee >= 6203) and (annee <= 6263) then
+            equinoxe := 19
+         else if (annee = 6267) then
+            equinoxe := 18
+         else if (annee = 6271) then
+            equinoxe := 19
+         else if (annee >= 6275) and (annee <= 6299) then
+            equinoxe := 18
+         else if (annee >= 6303) and (annee <= 6375) then
+            equinoxe := 19
+         else if (annee = 6379) then
+            equinoxe := 18
+         else if (annee = 6383) then
+            equinoxe := 19
+         else if (annee >= 6387) and (annee <= 6487) then
+            equinoxe := 18
+         else if (annee >= 6491) and (annee <= 6495) then
+            equinoxe := 17
+         else if (annee >= 6499) and (annee <= 6599) then
+            equinoxe := 18
+         else if (annee >= 6603) and (annee <= 6619) then
+            equinoxe := 19
+         else if (annee = 6623) then
+            equinoxe := 18
+         else if (annee = 6627) then
+            equinoxe := 19
+         else if (annee >= 6631) and (annee <= 6695) then
+            equinoxe := 18
+         else if (annee = 6699) then
+            equinoxe := 17
+         else if (annee >= 6703) and (annee <= 6811) then
+            equinoxe := 18
+         else if (annee = 6815) then
+            equinoxe := 17
+         else if (annee = 6819) then
+            equinoxe := 18
+         else if (annee >= 6823) and (annee <= 6899) then
+            equinoxe := 17
+         else if (annee >= 6903) and (annee <= 6939) then
+            equinoxe := 18
+         else if (annee >= 6943) and (annee <= 6999) then
+            equinoxe := 17
+         else if (annee >= 7003) and (annee <= 7051) then
+            equinoxe := 18
+         else if (annee >= 7055) and (annee <= 7099) then
+            equinoxe := 17
+         else if (annee >= 7103) and (annee <= 7163) then
+            equinoxe := 18
+         else if (annee >= 7167) and (annee <= 7279) then
+            equinoxe := 17
+         else if (annee >= 7283) and (annee <= 7299) then
+            equinoxe := 16
+         else if (annee >= 7303) and (annee <= 7371) then
+            equinoxe := 17
+         else if (annee >= 7375) and (annee <= 7399) then
+            equinoxe := 16
+         else if (annee >= 7403) and (annee <= 7475) then
+            equinoxe := 17
+         else if (annee = 7479) then
+            equinoxe := 16
+         else if (annee = 7483) then
+            equinoxe := 17
+         else if (annee >= 7487) and (annee <= 7499) then
+            equinoxe := 16
+         else if (annee >= 7503) and (annee <= 7615) then
+            equinoxe := 17
+         else if (annee >= 7619) and (annee <= 7699) then
+            equinoxe := 16
+         else if (annee >= 7703) and (annee <= 7719) then
+            equinoxe := 17
+         else if (annee = 7723) then
+            equinoxe := 16
+         else if (annee = 7727) then
+            equinoxe := 17
+         else if (annee >= 7731) and (annee <= 7791) then
+            equinoxe := 16
+      end;
+   end;
 end;
 
 { Nombre de "jours complémentaires 6" jusqu'à l'année demandée (année grégorienne)
@@ -162,7 +936,7 @@ c'est-à-dire un calendrier qui applique la règle bissextile depuis le début (
 et qui coïncide avec le calendrier grégorien à partir de 1582.
 
 La plage d'utilisation est à partir de l'année 1811 (an XX), date de la mise en vigueur
-de la règle de Romme.
+de la règle de Romme. Donc, calendrier proleptique ou calendrier réel, peu importe.
 }
 function nb_f29(annee : integer) : integer;
 begin
@@ -1471,9 +2245,11 @@ processed  by the program  as C<VendÂ©miaire>  and C<DÂ©cadi>.   For a
 end-user it seems fine, but if  you want to dig within the program you
 will not be able to do proper string processing.
 
-The equinox rule has not been  compared with a reliable source such as
-Reingold  and Dershowitz's  I<Calendar  Calculations>. And  it may  be
-wildly inaccurate, especially when converting dates in the far future.
+The equinox  rule has been generated  for 6 millenia to  coincide with
+Reingold and Dershowitz's I<Calendar  Calculations>. But actually, the
+algorithm used in I<Calendar Calculations> is reliable, I think, for a
+few centuries, but not for several millenia. Only I do not know when I
+should stop computing autumn equinoxes.
 
 =head1 AUTHOR
 
