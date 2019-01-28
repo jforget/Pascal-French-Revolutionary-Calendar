@@ -2251,6 +2251,17 @@ algorithm used in I<Calendar Calculations> is reliable, I think, for a
 few centuries, but not for several millenia. Only I do not know when I
 should stop computing autumn equinoxes.
 
+Even the arithmetic rule has limits. 6 millenia is a very long time in
+human History.  There will be several  calendar reforms in the  next 6
+millenia, just as there has been  several calendar reforms in the past
+6 millenia, since the end of prehistory and the beginning of History.
+
+Anyhow, if  you really  want to  examine the  very distant  future, be
+aware that there will be a numeric rollover after Gregorian year 32767
+(French Revolutionary year 30976). I see no real reason to fix a known
+bug  that will  strike  in 28  millenia, long  after  other bugs  have
+striken.
+
 =head1 AUTHOR
 
 Jean Forget, JFORGET (à) cpan.org
@@ -2280,6 +2291,8 @@ L<https://github.com/jforget/emacs-lisp-cal-french>, a fork of F<calendar/cal-fr
 CALENDRICA 3.0 -- Common Lisp, which can be download in the "Resources" section of
 L<http://www.cambridge.org/us/academic/subjects/computer-science/computing-general-interest/calendrical-calculations-3rd-edition?format=PB&isbn=9780521702386>
 
+L<https://metacpan.org/pod/Date::Converter>
+
 French Calendar for Android at
 L<https://f-droid.org/packages/ca.rmen.android.frenchcalendar/>
 or L<https://github.com/caarmen/FRCAndroidWidget>
@@ -2291,7 +2304,7 @@ A Ruby program at L<https://github.com/jhbadger/FrenchRevCal-ruby>
 
 =head2 Books
 
-Quid 2001, M and D Frémy, publ. Robert Laffont
+Quid 2006, M and D Frémy, publ. Robert Laffont, page 341.
 
 Agenda Républicain 197 (1988/89), publ. Syros Alternatives
 
@@ -2320,9 +2333,9 @@ L<http://prairial.free.fr/calendrier/calendrier.php?lien=sommairefr> (in French)
 
 =head1 LICENSE AND COPYRIGHT
 
-(C) Jean Forget,  1983, 1984, 2018 all rights  reserved.  This program
-is  free software. You  can distribute,  modify, and  otherwise mangle
-this program under the same terms as perl 5.16.3.
+(C)  Jean Forget,  1983, 1984,  2018, 2019  all rights  reserved. This
+program is  free software. You  can distribute, modify,  and otherwise
+mangle this program under the same terms as perl 5.16.3.
 
 This program is  distributed under the same terms  as Perl 5.16.3: GNU
 Public License version 1 or later and Perl Artistic License
