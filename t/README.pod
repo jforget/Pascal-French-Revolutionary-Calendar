@@ -20,47 +20,67 @@ Gregorian, I use the following files:
 
 =item *
 
-F<entree-rep> a series of C<2>  conversion commandes and of dates such as
-C<18 2 8> (for 18 Brumaire VIII)
+F<entree-rep> a series of C<2>  conversion commandes and of dates such
+as C<18 2 8> (for 18 Brumaire VIII)
 
 =item *
 
-F<sortie-greg-arith>  the  expected  result  of the  conversions,  using
+F<sortie-greg-arith>  the expected  result of  the conversions,  using
 Romme's arithmetic rule.
 
 =item *
 
-F<sortie-greg-equi> the  expected result  of the conversions,  using the
+F<sortie-greg-equi> the expected result  of the conversions, using the
 astronomical rule with autumn equinoxes.
 
 =back
 
-For the backward conversion from Gregorian to French Revolutionary, I use:
+For the backward conversion from  Gregorian to French Revolutionary, I
+use:
 
 =over 4
 
 =item *
 
-F<entree-greg> a series of C<3>  conversion commands and of dates such as
-C<22 9 1792>
+F<entree-greg> a series of C<3>  conversion commands and of dates such
+as C<22 9 1792>
 
 =item *
 
-F<sortie-rep-arith>  the  expected  result  of the  conversions,  using
+F<sortie-rep-arith>  the expected  result  of  the conversions,  using
 Romme's arithmetic rule.
 
 =item *
 
-F<sortie-rep-equi> the  expected result  of the conversions,  using the
+F<sortie-rep-equi> the  expected result of the  conversions, using the
 astronomical rule with autumn equinoxes.
 
 =back
+
+For  an exhaustive  checking of  the equinox  rule computation  of 1st
+Vendémiaire, I use:
+
+=over 4
+
+=item *
+
+F<entree-astro-gr> and F<sortie-astro-gr> to check the conversion from
+Gregorian calendar to French Revolutionary calendar.
+
+=item *
+
+F<entree-astro-rg> and F<sortie-astro-rg> to check the conversion from
+French Revolutionary calendar to Gregorian calendar.
+
+=back
+
 
 In addition to the date results, the expected output files contain the
 prompt messages from the dialog mode.
 
 =head2 ORIGIN
 
-At first, the files will be "hand-typed". Then they will be generated
-by the C<gen-tests> program from the L<utility repository|https://github.com/jforget/French-Revolution-calendar-utilities>.
+At first, the files were "hand-typed". Then they have been generated
+by the C<gen-tests> and C<gen-astro-tests> programs from the L<utility
+repository|https://github.com/jforget/French-Revolution-calendar-utilities>.
 
