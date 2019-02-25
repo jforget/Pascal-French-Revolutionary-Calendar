@@ -13,12 +13,12 @@ This program is distributed under the same terms as Perl 5.16.3:
 GNU Public License version 1 or later and Perl Artistic License
 
 Vous pouvez trouver le texte des licences en anglais dans le fichier LICENSE 
-ou aux adresses http://www.perlfoundation.org/artistic_license_1_0
-et http://www.gnu.org/licenses/gpl-1.0.html.
+ou aux adresses https://dev.perl.org/licenses/artistic.html
+et https://www.gnu.org/licenses/gpl-1.0.html.
 
 You can find the text of the licenses in the LICENSE file or at
-http://www.perlfoundation.org/artistic_license_1_0
-and http://www.gnu.org/licenses/gpl-1.0.html.
+https://dev.perl.org/licenses/artistic.html
+and https://www.gnu.org/licenses/gpl-1.0.html.
 
 Voici le résumé de la GPL (en anglais) :
 
@@ -36,7 +36,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software Foundation,
-Inc., http://www.fsf.org/.
+Inc., https://www.fsf.org/.
 }
 
 uses getopts, strutils;
@@ -2288,8 +2288,10 @@ L<https://github.com/jforget/emacs-lisp-cal-french>, a fork of F<calendar/cal-fr
 
 =head3 Not by me
 
-CALENDRICA 3.0 -- Common Lisp, which can be download in the "Resources" section of
-L<http://www.cambridge.org/us/academic/subjects/computer-science/computing-general-interest/calendrical-calculations-3rd-edition?format=PB&isbn=9780521702386>
+CALENDRICA 4.0 -- Common Lisp, which can be download in the "Resources" section of
+L<https://www.cambridge.org/us/academic/subjects/computer-science/computing-general-interest/calendrical-calculations-ultimate-edition-4th-edition?format=PB&isbn=9781107683167>
+
+(Actually, I have used the 3.0 version which is not longer available)
 
 L<https://metacpan.org/pod/Date::Converter>
 
@@ -2317,7 +2319,7 @@ Calendrier Militaire, anonymous
 Calendrical Calculations (Third Edition) by Nachum Dershowitz and
 Edward M. Reingold, Cambridge University Press, see
 L<http://www.calendarists.com>
-or L<http://www.cambridge.org/us/academic/subjects/computer-science/computing-general-interest/calendrical-calculations-3rd-edition?format=PB&isbn=9780521702386>.
+or L<https://www.cambridge.org/us/academic/subjects/computer-science/computing-general-interest/calendrical-calculations-ultimate-edition-4th-edition?format=PB&isbn=9781107683167>.
 
 =head2 Internet
 
@@ -2329,7 +2331,8 @@ L<http://www.allhotelscalifornia.com/kokogiakcom/frc/default.asp>
 
 L<https://en.wikipedia.org/wiki/French_Republican_Calendar>
 
-L<http://prairial.free.fr/calendrier/calendrier.php?lien=sommairefr> (in French)
+L<http://prairial.free.fr/index.php?lien=cal_sommaireFR> (in French)
+or L<http://prairial.free.fr/index.php?lien=cal_sommaireEN> (in English)
 
 =head1 LICENSE AND COPYRIGHT
 
@@ -2341,8 +2344,8 @@ This program is  distributed under the same terms  as Perl 5.16.3: GNU
 Public License version 1 or later and Perl Artistic License
 
 You can find the text of the licenses in the F<LICENSE> file or at
-L<http://www.perlfoundation.org/artistic_license_1_0> and
-L<http://www.gnu.org/licenses/gpl-1.0.html>.
+L<https://dev.perl.org/licenses/artistic.html>
+and L<https://www.gnu.org/licenses/gpl-1.0.html>.
 
 Here is the summary of GPL:
 
@@ -2357,8 +2360,8 @@ MERCHANTABILITY  or FITNESS  FOR A  PARTICULAR PURPOSE.   See  the GNU
 General Public License for more details.
 
 You  should have received  a copy  of the  GNU General  Public License
-along with this program; if not, see <http://www.gnu.org/licenses/> or
-write to the Free Software Foundation, Inc., L<http://fsf.org>.
+along with this program; if not, write to the Free Software Foundation,
+Inc., L<https://www.fsf.org/>.
 
 
 =cut
