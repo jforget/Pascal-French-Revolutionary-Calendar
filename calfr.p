@@ -60,7 +60,7 @@ var
    action      : integer;
    c           : char;
    optionindex : Longint;
-   theopts     : array [1..7] of TOption;
+   theopts     : array [1..8] of TOption;
    mode_dial   : boolean;
    verbeux     : boolean;
    vnd1        : Tvnd1; { calcul du 1er vendémiaire }
@@ -946,12 +946,18 @@ begin
 end; { nb_f29 }
 
 { Calcul du 1er Vendémiaire avec la règle arithmétique de Gilbert Romme }
-function regle_Romme(annee : integer) : integer;
+function regle_arith(annee : integer) : integer;
+begin
+   regle_arith := 457 + nb_jc6(annee) - nb_f29(annee);
+end;
+
+{ Calcul du 1er Vendémiaire avec la règle historique }
+function regle_histo(annee : integer) : integer;
 begin
    if annee < 1811 then
-      regle_Romme := equinoxe(annee)
+      regle_histo := equinoxe(annee)
    else
-      regle_Romme := 457 + nb_jc6(annee) - nb_f29(annee);
+      regle_histo := regle_arith(annee);
 end;
 
 function gregnum(date:tdate):integer;
@@ -1675,11 +1681,12 @@ repeat
       writeln('4 : affichage du calendrier pour une année entière');
       writeln('5 : utilisation de la règle astronomique des équinoxes');
       writeln('6 : utilisation de la règle arithmétique de Romme');
+      writeln('7 : utilisation de la règle historique');
    end;
    if demo
       then    n := 1
       else    read(n)
-         until (n >= 0) and (n <= 6);
+         until (n >= 0) and (n <= 7);
    menu := n;
 end;
 
@@ -1923,7 +1930,7 @@ end;
 
 begin
 
-   vnd1 := @regle_Romme;
+   vnd1 := @regle_histo;
    { spécification des arguments de ligne de commande }
    with theopts[1] do
    begin
@@ -1962,12 +1969,19 @@ begin
    end ;
    with theopts [6] do
    begin
-      name    := 'laconique';
+      name    := 'historique';
       has_arg := 0;
       flag    := nil;
       value   := #0;
    end ;
    with theopts [7] do
+   begin
+      name    := 'laconique';
+      has_arg := 0;
+      flag    := nil;
+      value   := #0;
+   end ;
+   with theopts [8] do
    begin
       name    := '' ;
       has_arg := 0 ;
@@ -1979,7 +1993,7 @@ begin
    verbeux   := true;
    c := #0;
    repeat
-      c := getlongopts('r:g:c:eal' , @theopts[1], optionindex);
+      c := getlongopts('r:g:c:eahl' , @theopts[1], optionindex);
       case c of
         #0 : begin
            case optionindex of
@@ -1987,15 +2001,17 @@ begin
              2 : convgregrep(decode_aaaammjj(optarg)) ;
              3 : calend(Numb2Dec(optarg, 10));
              4 : vnd1 := @equinoxe;
-             5 : vnd1 := @regle_Romme;
-             6 : verbeux := false;
+             5 : vnd1 := @regle_arith;
+             6 : vnd1 := @regle_histo;
+             7 : verbeux := false;
            end;
         end;   
         'r': convrepgreg(decode_aaaammjj(optarg)) ;
         'g': convgregrep(decode_aaaammjj(optarg)) ;
         'c': calend(Numb2Dec(optarg, 10));
         'e': vnd1 := @equinoxe;
-        'a': vnd1 := @regle_Romme;
+        'a': vnd1 := @regle_arith;
+        'h': vnd1 := @regle_histo;
         'l': verbeux := false;
         '?' , ':' : writeln('Erreur avec l''option : ', optopt);
       end ; { case }
@@ -2017,7 +2033,12 @@ begin
               6    : begin
                         if verbeux then
                            writeln('Règle arithmétique de Romme');
-                        vnd1 := @regle_Romme;
+                        vnd1 := @regle_arith;
+                     end;
+              7    : begin
+                        if verbeux then
+                           writeln('Règle historique');
+                        vnd1 := @regle_histo;
                      end;
             end;
       until action=0;
@@ -2104,11 +2125,37 @@ Carlyle proposes these translations for the month names:
 
 =back
 
-Each month has  a duration of 30 days. Since a  year lasts 365.25 days
+Each month has a  duration of 30 days. Since a  year lasts 365.25 days
 (or so), five  additional days (or six on leap  years) are added after
-Fructidor. These days  are called I<Sans-Culottides>.  For programming
-purposes, they are  considered as a 13th month  (much shorter than the
-12 others).
+Fructidor.  These  days  are   called  I<Sans-Culottides>  or  I<Jours
+complémentaires>. For  programming purposes, they are  considered as a
+13th month (much shorter than the 12 others).
+
+Because  of the  two ways  to compute  the beginning  of the  year, we
+define three variants for the calendar:
+
+=over 4
+
+=item Historical
+
+From year  I to  year XX, use  the equinox rule.  And then,  after the
+reform, use Romme's arithmetic rule.
+
+"Historical" is  somewhat a  misnomer, since the  French Revolutionary
+calendar was canceled before the year  XX reform. But I have not found
+a better naming.
+
+=item Equinox
+
+Use the equinox astronomical rule  from the beginning until well after
+year XX, without applying Romme's reform.
+
+=item Arithmetic
+
+Use the arithmetic  rule from the beginning, without  waiting for year
+XX.
+
+=back
 
 =head1 OPTIONS AND PARAMETERS
 
@@ -2119,8 +2166,8 @@ converted from  Gregorian to French Revolutionary and  printed. Or you
 can  print the  calendar  for a  whole  year by  entering a  C<calend>
 parameter.
 
-Interspersed  with   these  parameters  are   options  C<equinox>  and
-C<arithm>  to  select  which   algorithm  will  determine  the  French
+Interspersed with these parameters are options C<historic>, C<equinox>
+and  C<arithm> to  select which  algorithm will  determine the  French
 Revolutionary leap years. Each option is in effect until overridden by
 another option.
 
@@ -2149,17 +2196,21 @@ C<--calend=2017> for year CCXXVI.
 =item equinox
 
 Option without value. Use the equinox rule: the 1st Vendémiaire (first
-day of the year) must coincide with the automn equinox.
+day of the year) must coincide with the automn equinox. The rule stays
+in effect even after year XX.
 
 =item arithm
 
-Option without value. Use the  arithmetic rule: starting with year XX,
-leap years in the French  Revolutionary calendar are determined with a
-set of modulo rules similar to the Gregorian calendar.
+Option without value. Use the arithmetic rule starting with year I.
 
-Yet, before year XX, the equinox rule is in effect.
+=item historic
 
-By default, the program uses Gilbert Romme's arithmetic rule.
+Option without value. Use the "historic" rule: before year XX, use the
+equinox  rule.  Starting  with  year  XX, leap  years  in  the  French
+Revolutionary  calendar are  determined  with a  set  of modulo  rules
+similar to the Gregorian calendar.
+
+By default, the program uses the "historic" rule.
 
 =item laconique
 
@@ -2214,6 +2265,10 @@ Select the equinox rule.
 
 Select the arithmetic (Romme) rule.
 
+=item 7
+
+Select the "historic" rule.
+
 =back
 
 =head2 UNIX PIPELINE MODE
@@ -2248,8 +2303,8 @@ will not be able to do proper string processing.
 The equinox  rule has been generated  for 6 millenia to  coincide with
 Reingold and Dershowitz's I<Calendar  Calculations>. But actually, the
 algorithm used in I<Calendar Calculations> is reliable, I think, for a
-few centuries, but not for several millenia. Only I do not know when I
-should stop computing autumn equinoxes.
+few centuries, but  not for several millenia. The problem  is I do not
+know when I should stop computing autumn equinoxes.
 
 Even the arithmetic rule has limits. 6 millenia is a very long time in
 human History.  There will be several  calendar reforms in the  next 6
