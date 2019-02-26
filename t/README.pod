@@ -31,7 +31,11 @@ Romme's arithmetic rule.
 =item *
 
 F<sortie-greg-equi> the expected result  of the conversions, using the
-astronomical rule with autumn equinoxes.
+
+=item *
+
+F<sortie-greg-histo> the expected result  of the conversions, using the
+historical rule (autumn equinoxes until XIX, arithmetic from XX on).
 
 =back
 
@@ -54,6 +58,11 @@ Romme's arithmetic rule.
 
 F<sortie-rep-equi> the  expected result of the  conversions, using the
 astronomical rule with autumn equinoxes.
+
+=item *
+
+F<sortie-rep-histo> the  expected result of the  conversions, using the
+historical rule (autumn equinoxes until XIX, arithmetic from XX on).
 
 =back
 

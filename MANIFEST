@@ -47,11 +47,15 @@ t/sortie-astro-gr
 t/sortie-astro-rg
 t/sortie-greg-arith
 t/sortie-greg-equi
+t/sortie-greg-histo
 t/sortie-rep-arith
 t/sortie-rep-equi
+t/sortie-rep-histo
 t/verif1-greg-rep-eq
 t/verif1-rep-eq-greg
 t/verif-greg-rep-ar
 t/verif-greg-rep-eq
+t/verif-greg-rep-hi
 t/verif-rep-ar-greg
 t/verif-rep-eq-greg
+t/verif-rep-hi-greg

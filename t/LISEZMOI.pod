@@ -33,6 +33,11 @@ arithmétique de Romme
 F<sortie-greg-equi> le résultat  attendu des conversions, en  utilisant la règle
 astronomique de l'équinoxe d'automne.
 
+=item *
+
+F<sortie-greg-histo> le résultat  attendu des conversions, en  utilisant la règle
+historique (équinoxe jusqu'en XIX, arithmétique à partir de XX).
+
 =back
 
 Pour la  conversion en sens inverse  du calendrier grégorien  vers le calendrier
@@ -53,6 +58,11 @@ arithmétique de Romme
 
 F<sortie-rep-equi> le  résultat attendu des  conversions, en utilisant  la règle
 astronomique de l'équinoxe d'automne.
+
+=item *
+
+F<sortie-rep-histo> le  résultat attendu des  conversions, en utilisant  la règle
+historique (équinoxe jusqu'en XIX, arithmétique à partir de XX).
 
 =back
 
