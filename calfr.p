@@ -2300,22 +2300,47 @@ processed  by the program  as C<VendÂ©miaire>  and C<DÂ©cadi>.   For a
 end-user it seems fine, but if  you want to dig within the program you
 will not be able to do proper string processing.
 
-The equinox  rule has been generated  for 6 millenia to  coincide with
-Reingold and Dershowitz's I<Calendar  Calculations>. But actually, the
-algorithm used in I<Calendar Calculations> is reliable, I think, for a
-few centuries, but  not for several millenia. The problem  is I do not
-know when I should stop computing autumn equinoxes.
+=head2 About FR 1000 or GR 2791
 
-Even the arithmetic rule has limits. 6 millenia is a very long time in
-human History.  There will be several  calendar reforms in the  next 6
-millenia, just as there has been  several calendar reforms in the past
-6 millenia, since the end of prehistory and the beginning of History.
+The  equinox  rule  has  been  generated  according  to  Reingold  and
+Dershowitz's  I<Calendar Calculations>.  But  actually, the  algorithm
+used  in I<Calendar  Calculations> is  reliable,  I think,  for a  few
+centuries, but not for several millenia.  The problem is I do not know
+when I should  stop computing autumn equinoxes. Let us  say that after
+1000 years, the errors  will be too many. Before that,  we will have a
+few errors yet.
 
-Anyhow, if  you really  want to  examine the  very distant  future, be
-aware that there will be a numeric rollover after Gregorian year 32767
-(French Revolutionary year 30976). I see no real reason to fix a known
-bug  that will  strike  in 28  millenia, long  after  other bugs  have
-striken.
+This bug does not apply to the arithmetic rule.
+
+=head2 About FR 1419 or GR 3210
+
+There has been several calendar reforms in the past: the Julian reform
+in 46 BC  and the Gregorian reform  in 1582. So I guess  there will be
+another reform after a similar span,  which would be in the year 3210.
+Of course, this is pure guesswork.
+
+This possible  bug applies  to the Gregorian  calendar, so  it applies
+indifferently to the equinox rule and the arithmetic rule.
+
+=head2 In FR 6000 or GR 7791
+
+I have  computed the equinox dates  for 6000 years using  Reingold and
+Dershowitz's   F<calendrica-3.0.cl>    program.   After    that,   the
+astronomical rule repeats itself every 4 years with no relation to the
+duration of the astronomical year.
+
+This bug does not apply to the arithmetic rule.
+
+=head2 On 18 Nivôse 30976 or 1st January 32768
+
+The basic integer type in a Pascal program is the signed 16-bit integer.
+So it will rollover from 32767 to -32768. So with Gregorian year 32768
+and higher, the program will give negative years starting with -32768
+and going on with -32767, -32766 and so on. 
+
+This bug applies to both the  arithmetic and equinox rules. Because of
+all the errors on  previous years, I see no reason to  fix this bug by
+using a no longer portable integer type.
 
 =head1 AUTHOR
 
