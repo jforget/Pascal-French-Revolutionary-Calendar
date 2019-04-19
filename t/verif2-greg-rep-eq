@@ -26,7 +26,7 @@
 # GNU General Public License for more details.
 #
 
-../calfr --laconique --equinox < entree-astro-gr2 #| diff - sortie-astro-gr2
+../calfr --laconique --equinox < entree-astro-gr2 | diff - sortie-astro-gr2
 
 exit
 

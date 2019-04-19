@@ -310,7 +310,7 @@ case annee mod 4 of
             equinoxe := 15
          else if (annee = 7756) then
             equinoxe := 16
-         else if (annee >= 7760) and (annee <= 7792) then
+         else if (annee >= 7760) then
             equinoxe := 15
       end;
    1: begin
@@ -515,6 +515,8 @@ case annee mod 4 of
             equinoxe := 16
          else if (annee = 7789) then
             equinoxe := 15
+         else if (annee >= 7793) then
+            equinoxe := 16
       end;
    2: begin
          equinoxe := 22;
@@ -704,7 +706,7 @@ case annee mod 4 of
             equinoxe := 16
          else if (annee >= 7690) and (annee <= 7694) then
             equinoxe := 15
-         else if (annee >= 7698) and (annee <= 7790) then
+         else if (annee >= 7698) then
             equinoxe := 16
       end;
    3: begin
@@ -909,7 +911,7 @@ case annee mod 4 of
             equinoxe := 16
          else if (annee = 7727) then
             equinoxe := 17
-         else if (annee >= 7731) and (annee <= 7791) then
+         else if (annee >= 7731) then
             equinoxe := 16
       end;
    end;
