@@ -1,0 +1,116 @@
+#!/bin/sh
+# -*- encoding: utf-8; indent-tabs-mode: nil -*-
+#
+# Test de la conversion du calendrier grégorien vers le calendrier républicain,
+# avec la prolongation de la règle astronomique des équinoxes
+# Checking the conversion Gregorian to French Revolutionary, using the prolongation
+# of the equinox astronomical rule.
+#
+# (c) 2019 Jean Forget, tous droits réservés
+# (c) 2019 Jean Forget, all rights reserved.
+#
+# Author: Jean Forget
+# Maintainer: Jean Forget
+# Keywords: French Revolution, calendar, checking, test suite
+#
+# This program is free software; you can redistribute it and modify
+# it under the terms of Perl:
+# -- either the GNU General Public License as published by
+#    the Free Software Foundation; version 1, or (at your option)
+#    any later version,
+# -- or the Artistic Licence.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+
+../calfr --laconique --equinox < entree-astro-gr2 #| diff - sortie-astro-gr2
+
+exit
+
+=encoding utf8
+
+=head1 NAME / NOM
+
+verif2-greg-rep-eq -- program to check the conversion Gregorian to French Revolutionary, using the prolongation of the equinox rule.
+
+verif2-greg-rep-eq -- test de la conversion du calendrier grégorien vers le calendrier républicain, avec la prolongation de la règle astronomique des équinoxes.
+
+=head1 UTILISATION
+
+  verif2-greg-rep-eq
+
+=head1 CALL PARAMETERS / PARAMÈTRES D'APPEL
+
+No call parameters.
+
+Aucun paramètre d'appel.
+
+=head1 DESCRIPTION
+
+This program  feeds a series of  conversion commands and  dates to the
+C<calfr> program, collects the standard output and compares it to what
+should be produced. If no difference is found the check succeeds.
+
+The  program  checks  the  mid-september  dates  after  the  6000-year
+arbitrary  limit   adopted  when   using  Dershowitz   and  Reingold's
+F<calendrica-3.0.cl>. The  equinox computation is no  longer done, but
+the  F<calfr> program  should still  give result  consistent with  the
+calendar definition, that is years ending on the 5th or 6th additional
+days, no more, no less.
+
+Ce programme fournit une série  de commandes de conversion et de dates
+au programme C<calfr>, récupère la  sortie standard et la compare avec
+ce qui est attendu. Le test réussit s'il n'y a aucune différence.
+
+Ce programme teste  les dates de mi-septembre après la  limite de l'an
+6000  adoptée comme  la fin  des calculs  d'équinoxe faisant  appel au
+programme F<calendrica-3.0.cl>  de Dershowitz et Reingold.  Après l'an
+6000, il n'y  a plus de calcul d'équinoxe, mais  le programme F<calfr>
+est  tout  de  même  censé  donner des  résultats  cohérents  avec  la
+définition  du  calendrier  républicain, c'est-à-dire  des  années  se
+terminant par le 5e ou le 6e jour complémentaire, ni plus, ni moins.
+
+=head1 CONFIGURATION ET ENVIRONNEMENT
+
+None.
+
+Néant.
+
+=head1 DEPENDENCIES / DÉPENDANCES
+
+None.
+
+Néant.
+
+=head1 INCOMPATIBILITIES / INCOMPATIBILITÉS
+
+No known incompatibilities.
+
+Aucune incompatibilité identifiée.
+
+=head1 BUGS AND LIMITS / BOGUES ET LIMITES
+
+No know bug.
+
+Aucun problème identifié.
+
+=head1 AUTHOR / AUTEUR
+
+Jean Forget, JFORGET (à) cpan.org
+
+=head1 LICENSE AND COPYRIGHT / LICENCE ET COPYRIGHT
+
+(C) 2019 Jean Forget, all rights reserved.
+
+The  terms of  license for  this script  are the  same as  Perl's: GNU
+General Public License (GPL) and Artistic License.
+
+(C) 2019 Jean Forget, tous droits réservés.
+
+Les termes  de licence  de ce  script sont les  mêmes termes  que pour
+S<Perl :> GNU General Public License (GPL) et Artistic License.
+
+=cut
