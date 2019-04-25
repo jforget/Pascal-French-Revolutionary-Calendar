@@ -2296,25 +2296,34 @@ No known incompatibilities.
 
 =head1 BUGS AND LIMITS
 
+=head2 Since the beginning
+
 Bad  support of  UTF-8:  dates  may be  printed  as C<Vendémiaire>  or
 C<Décadi>  on  a UTF-8-configured  console,  but  internally they  are
 processed  by the program  as C<VendÂ©miaire>  and C<DÂ©cadi>.   For a
 end-user it seems fine, but if  you want to dig within the program you
 will not be able to do proper string processing.
 
-=head2 About FR 1000 or GR 2791
+About the  4th Additional  Day, the historical  sources do  not agree.
+Some say I<Jour  de l'Opinion> (day of opinion), others  say I<Jour de
+la Raison> (day of wisdom).
+
+Both bugs apply to the equinox rule, to the arithmetic rule and to the
+historic rule.
+
+=head2 About FR 500--1000 or GR 2300--2800
 
 The  equinox  rule  has  been  generated  according  to  Reingold  and
 Dershowitz's  I<Calendar Calculations>.  But  actually, the  algorithm
 used  in I<Calendar  Calculations> is  reliable,  I think,  for a  few
 centuries, but not for several millenia.  The problem is I do not know
 when I should  stop computing autumn equinoxes. Let us  say that after
-1000 years, the errors  will be too many. Before that,  we will have a
-few errors yet.
+500 or 1000 years,  the errors will be too many.  Before that, we will
+have a few errors yet.
 
-This bug does not apply to the arithmetic rule.
+This bug does not apply to the arithmetic and historic rules.
 
-=head2 About FR 1419 or GR 3210
+=head2 About FR 1400 or GR 3200
 
 There has been several calendar reforms in the past: the Julian reform
 in 46 BC  and the Gregorian reform  in 1582. So I guess  there will be
@@ -2322,27 +2331,41 @@ another reform after a similar span,  which would be in the year 3210.
 Of course, this is pure guesswork.
 
 This possible  bug applies  to the Gregorian  calendar, so  it applies
-indifferently to the equinox rule and the arithmetic rule.
+indifferently  to  the  equinox  rule, the  arithmetic  rule  and  the
+historical rule.
 
 =head2 In FR 6000 or GR 7791
 
 I have  computed the equinox dates  for 6000 years using  Reingold and
 Dershowitz's   F<calendrica-3.0.cl>    program.   After    that,   the
-astronomical rule repeats itself every 4 years with no relation to the
-duration of the astronomical year.
+astronomical  rule  repeats itself  every  4  years in  a  Julian-like
+fashion with no relation to the duration of the astronomical year.
 
-This bug does not apply to the arithmetic rule.
+This bug  does not apply  to the  arithmetic and historical  rules. It
+applies only to the equinox rule.
 
 =head2 On 18 Nivôse 30976 or 1st January 32768
 
-The basic integer type in a Pascal program is the signed 16-bit integer.
-So it will rollover from 32767 to -32768. So with Gregorian year 32768
-and higher, the program will give negative years starting with -32768
-and going on with -32767, -32766 and so on. 
+The  basic integer  type  in a  Pascal program  is  the signed  16-bit
+integer. So it will rollover from 32767 to -32768. With Gregorian year
+32768 and higher,  the program will give negative  years starting with
+-32768 and going on with -32767, -32766 and so on.
 
-This bug applies to both the  arithmetic and equinox rules. Because of
-all the errors on  previous years, I see no reason to  fix this bug by
-using a no longer portable integer type.
+This  bug  applies  to  the   three  rules,  arithmetic,  equinox  and
+historical. Because  of all  the errors  on previous  years, I  see no
+reason to fix this bug by using a no longer portable integer type.
+
+=head3 In FR 80 000 or GR 81 791
+
+The  conversion  program  assumes   that  1st  Vendémiaire  occurs  in
+September. But  since it  shifts by  one day  every 4000  years, after
+80_000 years,  some 1st Vendémiaire days  will fall in August  and the
+behaviour of the program is not guaranteed.
+
+This bug  would apply to  the arithmetic  and historical rules  if the
+rollover bug  had been  fixed. As  for the  equinox rule,  the problem
+arises in  earlier years, but it  does not matter because  the equinox
+algorithm is already out of its validity domain.
 
 =head1 AUTHOR
 
