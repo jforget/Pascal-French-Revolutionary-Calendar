@@ -32,6 +32,14 @@ Le compilateur utilisé est B<Free Pascal> version 3.0.4.
 
 Cf. L<https://www.freepascal.org/>.
 
+=head2 REMARQUE
+
+Si vous lisez cette page parce que vous avez remarqué que j'ai été actif sous Github en
+L<1983|https://github.com/jforget?tab=overview&from=1983-12-01&to=1983-12-31>
+et en L<1984|https://github.com/jforget?tab=overview&from=1983-12-01&to=1983-12-31>,
+vous pourrez trouver l'explication en consultant
+L<un autre projet|https://github.com/jforget/Perl-fixed-width-char-human-recognition/blob/master/description/description.pod>.
+
 =head2 LICENCE
 
 Les programmes de ce dépôt sont sous la même licence que S<Perl :> GPL et licence

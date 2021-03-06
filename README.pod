@@ -26,6 +26,15 @@ The compiler used is B<Free Pascal> version 3.0.4.
 
 See L<https://www.freepascal.org/>.
 
+=head2 REMARK
+
+If you read this page because you noticed that I had some Github activity in
+L<1983|https://github.com/jforget?tab=overview&from=1983-12-01&to=1983-12-31>
+and L<1984|https://github.com/jforget?tab=overview&from=1983-12-01&to=1983-12-31>,
+you might be interested in reading
+L<this other project|https://github.com/jforget/Perl-fixed-width-char-human-recognition/blob/master/description/description.pod>
+(sorry, French only for the moment).
+
 =head2 LICENSE
 
 The program is licensed under the same terms as Perl 5: GPL and Artistic
